@@ -9,11 +9,10 @@ const AnswerSchema = new Schema({
     },
     upVotes:Number,
     downvotes:Number,
-    lastAnswerAdded:Date,
     user:{
         type:Schema.Types.ObjectId,
         ref:'User'
     }
-})
+},{timestamps:true})
 
 module.exports = mongoose.model('Answer',AnswerSchema);
