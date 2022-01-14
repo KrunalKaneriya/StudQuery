@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/styles/styles.css">
+    <title>StudQuery</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Sign up to StudQuery</h1>
+        <h3>Already A Member? <a href="/login">Login</a></h3>
+
+        <form action="/signup" method="post">
+
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username">
+
+            <br>
+
+            <label for="alias">Alias</label>
+            <input type="text" name="alias" id="alias">
+            <br>
+
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email">
+            <br>
+
+            <label for="age">Age</label>
+            <input type="number" name="age" id="age">
+            <br>
+
+
+
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password">
+            <br>
+
+           
+
+            <label for="std">Studying In</label>
+            <input type="text" name="studyingIn" id="std">
+            <br>
+
+            <label for="city">City</label>
+            <input type="text" name="city" id="city">
+
+            <br>
+
+            <label for="description">Description</label>
+            <textarea name="description" id="description" cols="30" rows="10"></textarea>
+            <br>
+            <button>Create A New Account</button>
+        </form>
+    </div>
+</body>
+</html>
