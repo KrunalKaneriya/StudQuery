@@ -12,14 +12,12 @@ const QuestionSchema = new Schema({
         type:String,
         default:"No Question Specified"
     },
-    questionCreationDate:Date,
-    questionUpdatedDate:Date,
     upVotes:Number,
     downVotes:Number,
     user:{
         type:Schema.Types.ObjectId,
         ref:"User"
     }
-})
+},{timestamps:true})
 
 module.exports = mongoose.model("Question",QuestionSchema);
