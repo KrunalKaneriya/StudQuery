@@ -8,12 +8,12 @@ const crypt = require("bcrypt");
 
 router.get("/",async (req,res) => {
 
+    const {username,userid,email} = req.session;
+
+
     const users = await User.find({});
 
-    res.render("home",{users});
+    res.render("home",{users,username,userid,email});
 })
 
-router.get("/addQuestion",async (req,res) => {
-    
-})
 module.exports = router;
