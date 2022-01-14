@@ -18,19 +18,20 @@ router.post("/login",async (req,res) => {
     if(user) {
         const result = await crypt.compare(password,user.userHash);
 
-        if(result) {
-            res.send("Welcome Home")
-        } else {
-            res.send("Username Or Password is Incorrect");
-        }
-
         const {_id : id} = user;
 
         //Find The Logged in User and run Update Query to Update the lastLoggedIn To Latest Time
         await User.findByIdAndUpdate(id , {$set: {"lastLoggedIn" : new Date() }});
 
+        req.session.username = user.username;
+        req.session.userid = user._id;
+        req.session.isLoggedIn =  true;
         
-
+        if(result) {
+            res.redirect("/");
+        } else {
+            res.send("Username Or Password is Incorrect");
+        }
     } else {
         res.send("User is not Registered");
     }
