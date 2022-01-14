@@ -8,5 +8,24 @@
 </head>
 <body>
     <h1>Add A New Question</h1>
+
+    <div>
+        <form action="/user/<%= user._id%>/addQuestion" method="post">
+            <label for="questionname">Question Name</label>
+            <input type="text" name="questionTitle" id="questionname">
+
+            <br>
+            <br>
+            <br>
+            <label for="questionDescription">Description</label>
+            <textarea name="questionDescription" id="questionDescription" cols="30" rows="10"></textarea>
+
+            <br><br>
+
+            
+            <button type="submit">Submit Question</button>
+            <button type="reset">Reset</button>
+        </form>
+    </div>
 </body>
 </html>
