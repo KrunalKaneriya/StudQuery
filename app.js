@@ -2,12 +2,15 @@ const express = require('express');
 const mongoose = require("mongoose");
 const path = require("path");
 const app = express();
+const session = require("express-session");
+
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 
+app.use(session({secret:"thisissecret",resave:false,saveUninitialized:false}))
 /*********************
  * IMPORTING ROUTERS *
  *********************/
@@ -15,7 +18,8 @@ app.use(express.urlencoded({ extended: true }));
 const login = require("./routes/login");
 const signup = require("./routes/signup");
 const home = require("./routes/home");
-
+const user = require("./routes/user");
+const question = require('./routes/question');
 /*************************************
  * CONNECTING TO DATABASE AND SERVER *
  *************************************/
@@ -51,3 +55,15 @@ mongoose.connect('mongodb://localhost:27017/studquery')
  *********************/
 
     app.use(home);
+
+/*********************
+ * USING USER ROUTER *
+ *********************/
+
+    app.use(user);
+
+/*************************
+ * USING QUESTION ROUTER *
+ *************************/
+
+    app.use(question);
