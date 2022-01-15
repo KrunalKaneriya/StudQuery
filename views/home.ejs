@@ -1,36 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/public/styles/styles.css">
+    <link rel="stylesheet" href="/styles/output.css">
     <title>StudQuery</title>
 </head>
-<body>
-    <% if(userid) { %> 
-    <div >
-        <b>User Logged in: </b>
-        <%= username %> 
-        
-        <%= userid %> 
-    </div>
-    <% } %> 
-   <div>
-       <h3>All Users</h3>
-       <% for(let user of users) { %> 
-        <ul>
-            <li> <a href= "/user/<%= user._id %>"><%= user.username %> </a></li>
-            <li><%= user.alias %> </li>
-            <li><%= user.email %></li>
-            <li><%= user.studyingIn %></li>
-            <a href = "/user/<%= user._id %>/addQuestion">Add A New Question</a>
-        </ul>
-            
-           
-        <% } %> 
-       
-   </div>
-    
+
+<body class= "min-w-full">
+    <% if(userid) { %>
+        <div>
+            <b>User Logged in: </b>
+            <%= username %>
+
+                <%= userid %>
+        </div>
+    <% } %>
+
+
+            <div class="h-screen">
+                <h3>All Users</h3>
+
+                <% for (let question of questions) { %>
+                    <div class="container min-h-[30%] min-w-[96%] border-2 border-slate-300 mt-4 rounded-lg mx-auto">
+
+                        <div class="container ">
+                            <p class="font-bold float-left text-slate-400 ml-11 mt-6"> <%= question.user.username %> </p>
+
+                            <p class="font-bold float-right text-right text-slate-400 mt-6 mr-11">Also Called as <%= question.user.alias %> </p>
+                        </div>
+                        
+                        <div class="container mt-16">
+                            <p class="font-bold text-left text-slate-400 ml-11 mt-1">Question: <%= question.questionTitle %> </p>
+                            <p class="font-bold text-left text-slate-400 ml-11 mt-1">Answer: The Answer is so Simple. Firstly Focus on your sleep after that do other things.The Answer is so Simple. Firstly Focus on your sleep after that do other things.The Answer is so Simple. Firstly Focus on your sleep after that do other things.The Answer is so Simple. Firstly Focus on your sleep after that do other things.The Answer is so Simple. Firstly Focus on your sleep after that do other things.The Answer is so Simple. Firstly Focus on your sleep after that do other things. </p>
+                        </div>
+                    
+
+                    </div>
+
+                <% } %> 
+            </div>
+
 </body>
+
 </html>
