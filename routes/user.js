@@ -7,7 +7,12 @@ const crypt = require("bcrypt");
 router.get("/user/:id",async (req,res) => {
     const {id} = req.params;
     const user = await User.findById(id);
-    res.render("user",{user});
+   
+
+    const questions = await User.findById(id).populate("questions");
+    console.log(questions)
+    
+    res.render("user",{user,questions});
 })
 
 module.exports = router;
