@@ -2,46 +2,105 @@
 <html lang="en">
 
 <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="/js/homePage.js"></script>
+    
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/styles/output.css">
     <title>StudQuery</title>
+    
+
 </head>
 
-<body class= "min-w-full">
-    <% if(userid) { %>
-        <div>
-            <b>User Logged in: </b>
-            <%= username %>
+<body class="font-cera">
 
-                <%= userid %>
-        </div>
-    <% } %>
+    <div class="container h-20 min-w-[100%] mx-auto flex justify-between items-center bg-gray-100 rounded-md flex-row shadow-lg"
+        id="navbar">
+
+        <img src="/images/logo.png" alt="" class="w-20 h-16 ml-10 inline-block">
 
 
-            <div class="h-screen">
-                <h3>All Users</h3>
+        <ul class="min-w-[70%]">
+            <li class="list-none inline-block pb-5">StudQuery</li>
+            <div class="h-12 w-[80%]  inline-block pt-5 "> <span class="pl-10">Search Here!!</span></div>
+            <li class="list-none inline-block pb-5">Username</li>
+        </ul>
 
-                <% for (let question of questions) { %>
-                    <div class="container min-h-[30%] min-w-[96%] border-2 border-slate-300 mt-4 rounded-lg mx-auto">
+        <span class="mr-10 bg-red-600 cursor-pointer p-2 rounded-lg text-white">Log Out</span>
 
-                        <div class="container ">
-                            <p class="font-bold float-left text-slate-400 ml-11 mt-6"> <%= question.user.username %> </p>
 
-                            <p class="font-bold float-right text-right text-slate-400 mt-6 mr-11">Also Called as <%= question.user.alias %> </p>
-                        </div>
-                        
-                        <div class="container mt-16">
-                            <p class="font-bold text-left text-slate-400 ml-11 mt-1">Question: <%= question.questionTitle %> </p>
-                            <p class="font-bold text-left text-slate-400 ml-11 mt-1">Answer: The Answer is so Simple. Firstly Focus on your sleep after that do other things.The Answer is so Simple. Firstly Focus on your sleep after that do other things.The Answer is so Simple. Firstly Focus on your sleep after that do other things.The Answer is so Simple. Firstly Focus on your sleep after that do other things.The Answer is so Simple. Firstly Focus on your sleep after that do other things.The Answer is so Simple. Firstly Focus on your sleep after that do other things. </p>
-                        </div>
-                    
+
+    </div>
+
+
+    
+
+        <div class="container w-[55%] mx-auto my-6 min-h-max" id="home">
+
+            <% for(let question of questions) { %>
+            <div id="post" class="mb-10 shadow-md">
+
+                <div id="arrows" class="w-[10%] pt-4 float-left">
+
+                    <span>
+                        <svg class="cursor-pointer" width="70" height="20" viewBox="0 0 90 108" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path id="Arrow 1"
+                                d="M49.2426 2.57276C46.8995 0.229614 43.1005 0.229614 40.7574 2.57276L2.57359 40.7565C0.230446 43.0997 0.230446 46.8987 2.57359 49.2418C4.91674 51.585 8.71573 51.585 11.0589 49.2418L45 15.3007L78.9411 49.2418C81.2843 51.585 85.0833 51.585 87.4264 49.2418C89.7696 46.8987 89.7696 43.0997 87.4264 40.7565L49.2426 2.57276ZM51 107.094L51 6.8154H39L39 107.094H51Z"
+                                fill="#9643FF" />
+                        </svg>
+
+                    </span>
+
+                    <span id="votes" class="text-xl ml-6 py-2 inline-block text-slate-600">32</span>
+
+                    <span>
+                        <svg class="cursor-pointer" width="70" height="20" viewBox="0 0 90 107" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path id="Arrow 2"
+                                d="M40.7574 105.191C43.1005 107.534 46.8995 107.534 49.2426 105.191L87.4264 67.0071C89.7696 64.664 89.7696 60.865 87.4264 58.5219C85.0833 56.1787 81.2843 56.1787 78.9411 58.5219L45 92.463L11.0589 58.5219C8.71573 56.1787 4.91674 56.1787 2.57359 58.5219C0.230447 60.865 0.230447 64.664 2.57359 67.0071L40.7574 105.191ZM39 0.669922L39 100.948H51L51 0.669922L39 0.669922Z"
+                                fill="#E16A6A" />
+                        </svg>
+
+                    </span>
+                </div>
+
+                <div id="question" class="ml-20">
+                    <div class="w-full ">
+                        <p class=" font-medium inline-block mt-2 text-gray-600">
+                            <%= question.questionTitle %>
+                        </p>
+                        <p class="  inline-block right-4 bg-green-600 text-white text-sm p-2 rounded-md float-right"> Question</p>
+                    </div>
+
+                    <p class="font-normal pt-4 text-gray-600"><%= question.questionDescription %> </p>
+
+                    <div id="additional" class="py-4">
+
+                        <span class="font-medium mr-10 text-blue-500 cursor-pointer reply-btn">Reply</span>
+                        <span class="font-medium mr-96 text-rose-500">Report</span>
+                        <span class="font-medium text-orange-500">12 HR Ago</span>
 
                     </div>
 
-                <% } %> 
+                </div>
+
+                <div class="ml-20 answer-container hidden">
+                    <form action="" method="post">
+                        <input type="text" name="answer" id="ans" class="w-full rounded-xl border-0 focus:ring focus:ring-sky-300 border-gray-300 shadow-md focus:outline-none ">
+                        <button type="submit" class="p-3 my-3 bg-fuchsia-500 rounded-xl text-white">Add Answer</button>
+                    </form>
+                </div>
+
+
+
             </div>
+            <% } %>
+        </div>
+
+       
 
 </body>
 
