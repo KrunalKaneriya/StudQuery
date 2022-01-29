@@ -12,8 +12,7 @@ const QuestionSchema = new Schema({
         type:String,
         default:"No Question Specified"
     },
-    upVotes:Number,
-    downVotes:Number,
+    votes:Number,
     user:{
         type:Schema.Types.ObjectId,
         ref:"User"
