@@ -10,7 +10,8 @@
     "ejs-mate": "^3.0.0",
     "express": "^4.17.2",
     "express-session": "^1.17.2",
-    "mongoose": "^6.1.4",
+    "method-override": "^3.0.0",
+    "mongoose": "^6.1.8",
     "nodemon": "^2.0.15",
     "tailwindcss": "^3.0.15"
   }
