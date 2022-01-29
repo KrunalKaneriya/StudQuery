@@ -1,22 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="/js/homePage.js"></script>
     
+
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <link rel="stylesheet" href="/styles/output.css">
     <title>StudQuery</title>
-    
 
 </head>
 
-<body class="font-cera">
+<body class="font-cera bg-gray-100" >
 
-    <div class="container h-20 min-w-[100%] mx-auto flex justify-between items-center bg-gray-100 rounded-md flex-row shadow-lg"
+    <div class="container h-20 min-w-[100%] mx-auto flex justify-evenly  items-center bg-gray-100 rounded-md flex-row shadow-lg"
         id="navbar">
 
         <img src="/images/logo.png" alt="" class="w-20 h-16 ml-10 inline-block">
@@ -24,23 +25,34 @@
 
         <ul class="min-w-[70%]">
             <li class="list-none inline-block pb-5">StudQuery</li>
-            <div class="h-12 w-[80%]  inline-block pt-5 "> <span class="pl-10">Search Here!!</span></div>
-            <li class="list-none inline-block pb-5">Username</li>
-        </ul>
+            <div class="h-12 w-[65%]  inline-block pt-5 mr-10"> <span class="pl-10">Search Here!!</span></div>
+            <li class="list-none min-w-max inline-block"><a href="/user/<%= userSession.userid ? userSession.userid : '' %> "><%= userSession.isLoggedIn ? userSession.username : "" %></a> </li>        </ul>
 
-        <span class="mr-10 bg-red-600 cursor-pointer p-2 rounded-lg text-white">Log Out</span>
+        <span class="mr-10 bg-red-600 cursor-pointer p-2 rounded-lg text-white">
+            <a href=<%= userSession.isLoggedIn ? "/logout" : "/login" %> ><%= userSession.isLoggedIn ? "Log Out" : "Log In" %></a>
+        </span>
+
+        
 
 
 
     </div>
 
+    <div class="container bg-[#7C98B3] w-48 p-3 rounded-xl mt-10 float-right mr-12 text-white text-center">
+        <% if(userSession.userid) { %> 
+            <a href="/user/<%=userSession.userid%>/question">Ask A Question </a> 
+        <% } else { %>
+            <a href="/login">To Ask Questions Login!!</a>    
+        <% } %> 
+    </div>
 
-    
 
-        <div class="container w-[55%] mx-auto my-6 min-h-max" id="home">
 
-            <% for(let question of questions) { %>
-            <div id="post" class="mb-10 shadow-md">
+
+    <div class="container w-[55%] mx-auto my-6" id="home">
+
+        <% for(let post of posts) { %>
+            <div id="post" class="mb-10 rounded-2xl p-4 overflow-hidden">
 
                 <div id="arrows" class="w-[10%] pt-4 float-left">
 
@@ -54,7 +66,7 @@
 
                     </span>
 
-                    <span id="votes" class="text-xl ml-6 py-2 inline-block text-slate-600">32</span>
+                    <span id="votes" class="text-xl ml-6 py-2 inline-block text-gray-500">32</span>
 
                     <span>
                         <svg class="cursor-pointer" width="70" height="20" viewBox="0 0 90 107" fill="none"
@@ -67,40 +79,45 @@
                     </span>
                 </div>
 
-                <div id="question" class="ml-20">
-                    <div class="w-full ">
-                        <p class=" font-medium inline-block mt-2 text-gray-600">
-                            <%= question.questionTitle %>
+                <div id="questionWrapper">
+                    <div id="question" class="ml-20">
+                        <div class="w-full relative">
+                            <a class="text-xl inline-block mt-2 font-semibold text-gray-700 font-sans max-w-xl" href="/question/<%= post._id%>">
+                                <%= post.questionTitle %>
+                                   
+                            </a>
+                        </div>
+
+                        <p class="font-normal font-inter leading-8 pt-4 pb-4 text-gray-500/90">
+                            <%= post.questionDescription %>
                         </p>
-                        <p class="  inline-block right-4 bg-green-600 text-white text-sm p-2 rounded-md float-right"> Question</p>
+
+                        <div id="separator" class="bg-slate-200 h-0.5 mt-3"></div>
+
+                        <div class="mt-3 rounded-xl bg-sky-100 w-max p-2 outline-none border">
+                            <div class="rounded-full float-left bg-red-300 w-6 h-6"></div>
+                            <a class="ml-2 font-medium font-inter text-blue-500" href="/user/<%= post.user._id %>"><%=
+                                post.user.username %> </a>
+                        </div>
+
+
                     </div>
-
-                    <p class="font-normal pt-4 text-gray-600"><%= question.questionDescription %> </p>
-
-                    <div id="additional" class="py-4">
-
-                        <span class="font-medium mr-10 text-blue-500 cursor-pointer reply-btn">Reply</span>
-                        <span class="font-medium mr-96 text-rose-500">Report</span>
-                        <span class="font-medium text-orange-500">12 HR Ago</span>
-
-                    </div>
-
                 </div>
 
-                <div class="ml-20 answer-container hidden">
-                    <form action="" method="post">
-                        <input type="text" name="answer" id="ans" class="w-full rounded-xl border-0 focus:ring focus:ring-sky-300 border-gray-300 shadow-md focus:outline-none ">
-                        <button type="submit" class="p-3 my-3 bg-fuchsia-500 rounded-xl text-white">Add Answer</button>
-                    </form>
-                </div>
+
+
+
+                
 
 
 
             </div>
             <% } %>
-        </div>
+    </div>
 
-       
+    
+
+
 
 </body>
 

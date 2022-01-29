@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create A New Question</title>
+    <title>Edit An Existing Question</title>
     <link rel="stylesheet" href="/styles/output.css">
 
 </head>
@@ -21,7 +21,8 @@
         <ul class="min-w-[70%]">
             <li class="list-none inline-block pb-5">StudQuery</li>
             <div class="h-12 w-[65%]  inline-block pt-5 mr-10"> <span class="pl-10">Search Here!!</span></div>
-            <li class="list-none min-w-max inline-block"><a href="/user/<%= userSession.userid ? userSession.userid : '' %> "><%= userSession.isLoggedIn ? userSession.username : "" %></a> </li>        </ul>
+            <li class="list-none min-w-max inline-block"><a href="/user/<%= userSession.userid ? userSession.userid : '' %> "><%= userSession.isLoggedIn ? userSession.username : "" %></a> </li>
+        </ul>
 
         <span class="mr-10 bg-red-600 cursor-pointer p-2 rounded-lg text-white">
             <a href=<%= userSession.isLoggedIn ? "/logout" : "/login" %> ><%= userSession.isLoggedIn ? "Log Out" : "Log In" %></a>
@@ -36,26 +37,26 @@
 
 
     <div class="container w-[55%] mx-auto my-6 min-h-max">
-        <h1 class="text-3xl text-slate-700 font-cera font-semibold my-6">Add A New Question</h1>
+        <h1 class="text-3xl text-slate-700 font-cera font-semibold my-6">Edit a Question</h1>
 
         <div>
-            <form action="/user/<%= user._id%>/question" method="post" autocomplete="off">
+            <form action="/question/<%=question._id%>/edit?_method=PUT" method="post" autocomplete="off">
 
-                <span class="drop-shadow-lg rounded-3xl bg-violet-400 text-white p-3">Posting As User</span>
+                <span class="drop-shadow-lg rounded-3xl bg-violet-400 text-white p-3">Editing As <%= question.user.username %> </span>
 
                 <br><br>
                 <label for="questionTitle" class="text-slate-600">Question Title</label>
                 <br>
-                <input type="text" name="questionTitle" id="questionTitle" class=" mt-2 rounded-xl border border-slate-300 shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 w-full text-slate-600">
+                <input type="text" name="questionTitle" id="questionTitle" class=" mt-2 rounded-xl border border-slate-300 shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 w-full text-slate-600" value="<%= question.questionTitle %>">
 
                 <br><br>
 
                 <label for="questionDescription" class="text-slate-600">Description</label>
                 <br>
-                <textarea name="questionDescription" id="questionDescription" cols="30" rows="5" class="rounded-2xl mt-3 border border-slate-300 focus:border-sky-500 focus:ring-1 focus:ring-sky-500 w-full text-slate-600"></textarea>
+                <textarea name="questionDescription" id="questionDescription" cols="30" rows="10" class="min-h-min rounded-2xl mt-3 border border-slate-300 focus:border-sky-500 focus:ring-1 focus:ring-sky-500 w-full text-slate-600"><%= question.questionDescription %></textarea>
 
                 <br><br>
-                <button type="submit" class="p-3 mr-5 ring-2 ring-green-500 hover:bg-green-400 hover:text-white bg-green-200 text-green-600 rounded-xl drop-shadow-lg">Submit Question</button>
+                <button type="submit" class="p-3 mr-5 ring-2 ring-green-500 hover:bg-green-400 hover:text-white bg-green-200 text-green-600 rounded-xl drop-shadow-lg">Edit Question</button>
                 <button type="reset" class="p-3 ring-2 hover:bg-blue-400 hover:text-white ring-blue-500 text-blue-600 bg-blue-200 rounded-xl drop-shadow-lg">Reset</button>
             </form>
         </div>
