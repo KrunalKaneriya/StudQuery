@@ -13,10 +13,8 @@ router.post("/signup",async (req,res) => {
         const user = new User({
             username,alias,email,age,userHash,description,studyingIn,city
         });
-
-        
         await user.save();
-        res.redirect("/signup");
+        res.redirect("/login");
 })
 
 module.exports = router;
