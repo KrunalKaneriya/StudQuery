@@ -3,12 +3,14 @@ const mongoose = require("mongoose");
 const path = require("path");
 const app = express();
 const session = require("express-session");
+const methodOverride = require("method-override");
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
 
 app.use(session({secret:"thisissecret",resave:false,saveUninitialized:false}))
 /*********************
@@ -20,6 +22,7 @@ const signup = require("./routes/signup");
 const home = require("./routes/home");
 const user = require("./routes/user");
 const question = require('./routes/question');
+const answer = require("./routes/answer");
 /*************************************
  * CONNECTING TO DATABASE AND SERVER *
  *************************************/
@@ -27,7 +30,8 @@ app.listen(3000, () => {
     console.log('Started Server At Port 3000');
 })
 
-mongoose.connect('mongodb://localhost:27017/studquery')
+mongoose.connect('mongodb://127.0.0.1:27017/studquery')
+
     .then(() => {
         console.log("Mongodb Connected");
     })
@@ -67,3 +71,9 @@ mongoose.connect('mongodb://localhost:27017/studquery')
  *************************/
 
     app.use(question);
+
+/**********************************
+ * USING ANSWER OR COMMENT ROUTER *
+ **********************************/
+
+    app.use(answer);
