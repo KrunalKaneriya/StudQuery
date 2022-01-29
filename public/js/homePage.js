@@ -1,12 +1,11 @@
 $(document).ready(function () {
-    // $(".answer-container").hide();
-
-    $(".reply-btn").on('click',function (e) {
-        
-        $(this).click(function() {
-            // $(".answer-container").slideToggle();
-        })
-        
-    })
+    $(".answer-container").hide();
+    toggle();
 })
 
+function toggle() {
+    $(".reply-btn").click(function (e) {
+        $(this).closest(".toggle-wrap").find(".answer-container").stop().slideToggle();
+    })
+
+}
