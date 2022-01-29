@@ -7,15 +7,17 @@ const AnswerSchema = new Schema({
         type:String,
         default:"No Answer Given"
     },
-    upVotes:Number,
-    downvotes:Number,
-    user:{
-        type:Schema.Types.ObjectId,
-        ref:'User'
+    votes:{
+        default:0,
+        type:Number
     },
     question:{
         type:Schema.Types.ObjectId,
         ref:"Question"
+    },
+    user:{
+        type:Schema.Types.ObjectId,
+        ref:"User"
     }
 },{timestamps:true})
 
