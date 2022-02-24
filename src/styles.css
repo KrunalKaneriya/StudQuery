@@ -6,6 +6,10 @@ button {
     transition: all ease-in-out 0.3s;
 }
 
+div#message {
+    transition: opacity 1s;
+}
+
 @layer components{
     .input-text {
         @apply rounded-xl mt-3 mb-10 w-96 border-slate-300 focus:border-white;
@@ -39,5 +43,17 @@ button {
 
     .font-inter {
         font-family:"Inter"
+    }
+
+    .font-google {
+        font-family:"Roboto";
+    }
+
+    .font-neue {
+        font-family:"Neue Haas Grotesk Display Pro"
+    }
+
+    .font-jost {
+        font-family:"Jost";
     }
 }
