@@ -1,20 +1,26 @@
+const crypt = require("bcrypt");
 const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
-const session = require("express-session");
-const crypt = require("bcrypt");
 const Question = require("../models/question");
+const session = require("express-session");
+const Post = require("../models/postSchema");
+const Answer = require("../models/answer");
+const catchAsync = require("../utils/catchAsync");
+const ExpressError = require("../utils/ExpressError");
 
+/**********************************************************************
+ * THIS ROUTE WILL BE DISPLAYED FIRST WHEN THE USER LOGS IN.HOME PAGE *
+ **********************************************************************/
 
-
-//This router page is the home route and it will display the questions and answers of the users
-//This route will be displayed first when the user logs in.
-
-router.get("/",async (req,res) => {
+router.get("/",catchAsync(async (req,res) => {
     const posts = await Question.find().populate("answers").populate("user");
+    const newUsers = await User.find().sort({createdAt:'desc'});
+
     const userSession = req.session;
-    res.render("home",{posts,userSession});
-});
+    req.session.redirectUrl = req.originalUrl;
+    res.render("home",{posts,newUsers,userSession});
+}));
 
 
 
