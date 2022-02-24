@@ -1,21 +1,32 @@
+const crypt = require("bcrypt");
 const express = require("express");
-const router = express.Router();
 const User = require("../models/user");
-const crypt = require('bcrypt');
+const router = express.Router();
+const catchAsync = require("../utils/catchAsync");
+const ExpressError = require("../utils/ExpressError");
+
+
+/*******************
+ * VALIDATION SCHEMA *
+ *******************/
+ const {signUpValidator} = require("../models/validationSchema"); 
 
 router.get("/signup",(req,res) => {
         res.render("signup");
 }) 
 
-router.post("/signup",async (req,res) => {
+router.post("/signup",signUpValidator,catchAsync(async (req,res) => {
         const {username,alias,email,age,password,studyingIn,description,city} = req.body;
         const userHash = await crypt.hash(password,12);
         const user = new User({
             username,alias,email,age,userHash,description,studyingIn,city
         });
-        await user.save();
+
         res.redirect("/login");
-})
+
+        await user.save();
+
+}))
 
 module.exports = router;
 
