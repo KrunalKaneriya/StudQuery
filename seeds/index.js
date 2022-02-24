@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const question = require("./question");
 const Question = require("../models/question");
-const User = require("../models/user");
+const User  = require("../models/user");
 mongoose.connect("mongodb://127.0.0.1:27017/studquery",{
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -28,6 +28,6 @@ const seedQuestions = async (userid) => {
     }
 }
 
-seedQuestions('61f294272d85c63689e18713').then(() => {
+seedQuestions('62152b7ef8f7a5474d5b6be8').then(() => {
     mongoose.connection.close();
 });
