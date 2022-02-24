@@ -11,6 +11,14 @@ const AnswerSchema = new Schema({
         default:0,
         type:Number
     },
+    upVotes:[{
+        type:Schema.Types.ObjectId,
+        ref:"User"
+    }],
+    downVotes:[{
+        type:Schema.Types.ObjectId,
+        ref:"User"
+    }],
     question:{
         type:Schema.Types.ObjectId,
         ref:"Question"
@@ -21,4 +29,4 @@ const AnswerSchema = new Schema({
     }
 },{timestamps:true})
 
-module.exports = mongoose.model('Answer',AnswerSchema);
+module.exports = mongoose.model("Answer",AnswerSchema);
