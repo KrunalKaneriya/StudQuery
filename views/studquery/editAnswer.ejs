@@ -1,0 +1,43 @@
+<% layout("../layout/boilerplate") %>
+<!--*All The Contents Of this File Will be Passed To This Layout File-->
+<%- include("../partials/sidebar") %>
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+
+
+<div class="container w-[55%] mx-auto my-6 pl-10 min-h-max">
+	<h1 class="text-3xl text-slate-700 font-cera font-semibold my-6">Edit Answer</h1>
+
+	<div>
+		<form action="/question/<%= question._id %>/answer/<%=answer._id%>/edit?_method=PUT" method="post" autocomplete="off" id="editAnswerForm">
+			<span class="drop-shadow-lg rounded-3xl bg-violet-400 text-white p-3">Editing As <%= answer.user.username %> </span>
+
+			<br /><br />
+
+			<label for="answerDescription" class="text-slate-600">Description</label>
+			<br />
+			<input type="hidden" name="answerDescription" id="ans">
+			<!-- <textarea name="answerDescription" id="answerDescription" cols="30" rows="10" class="min-h-min rounded-2xl mt-3 border border-slate-300 focus:border-sky-500 focus:ring-1 focus:ring-sky-500 w-full text-slate-600" required><%#= answer.answerDescription %></textarea> -->
+			<div id="editor">
+				<%- answer.answerDescription %>
+			</div>
+
+			<br /><br />
+			<button type="submit" class="p-3 mr-5 ring-2 ring-green-500 hover:bg-green-400 hover:text-white bg-green-200 text-green-600 rounded-xl drop-shadow-lg">Edit Answer</button>
+			<button type="reset" class="p-3 ring-2 hover:bg-blue-400 hover:text-white ring-blue-500 text-blue-600 bg-blue-200 rounded-xl drop-shadow-lg">Reset</button>
+		</form>
+	</div>
+</div>
+
+<script>
+	const editor = new toastui.Editor({
+		el:document.querySelector("#editor"),
+		previewStyle:'vertical',
+		initialEditType:"wysiwyg",	
+		height:'500px'
+	})
+
+	$("#editAnswerForm").submit(function() {
+		let data = editor.getHTML();
+		$("#ans").val(data);
+	})
+</script>

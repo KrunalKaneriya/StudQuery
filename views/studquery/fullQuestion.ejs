@@ -1,0 +1,209 @@
+<% layout ("../layout/boilerplate") %>
+<%- include("../partials/sidebar") %>
+<%- include("../partials/flash") %>
+
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+
+<!-- *Checks That the Question User is Equals to the User which is logged in -->
+<% if(question.user.equals(userSession.userid)) { %>
+<div id="questionOptions" class="container w-48 mt-10 float-right mr-12 text-white text-center">
+	<div class="bg-[#7C98B3] p-2 rounded-xl">
+		<% if(userSession.userid) { %>
+		<a href="/user/<%=userSession.userid%>/question">Ask A Question </a>
+		<% } else { %>
+		<a href="/login">To Ask Questions Login!!</a>
+		<% } %>
+	</div>
+	<div class="bg-yellow-300 p-2 rounded-xl mt-5 text-gray-700">
+		<a href="/question/<%=question._id%>/edit">Edit Question</a>
+	</div>
+	<div class="mt-5 bg-red-500 p-2 rounded-xl">
+		<form action="/question/<%=question._id%>?_method=DELETE" method="post">
+			<button type="submit">Delete Question</button>
+		</form>
+	</div>
+</div>
+<% } %>
+<!-- *Section End -->
+
+<div class="container w-[55%] mx-auto my-5" id="home">
+	<div id="post" class="mb-10 rounded-2xl p-4">
+		<div id="questionWrapper">
+			
+			<!-- Question Votes Section -->
+			<div id="arrows" class="w-[10%] pt-4 float-left">
+				<form action="/question/<%=question._id%>/vote/inc?fullQuestion=true&&_method=PUT" method="post" class="form1">
+					<button type="submit" id="post-inc">
+						<svg class="cursor-pointer" width="70" height="20" viewBox="0 0 90 108" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path class="post-inc-path" id="Arrow 1" d="M49.2426 2.57276C46.8995 0.229614 43.1005 0.229614 40.7574 2.57276L2.57359 40.7565C0.230446 43.0997 0.230446 46.8987 2.57359 49.2418C4.91674 51.585 8.71573 51.585 11.0589 49.2418L45 15.3007L78.9411 49.2418C81.2843 51.585 85.0833 51.585 87.4264 49.2418C89.7696 46.8987 89.7696 43.0997 87.4264 40.7565L49.2426 2.57276ZM51 107.094L51 6.8154H39L39 107.094H51Z" fill="#9643FF" />
+						</svg>
+					</button>
+				</form>
+			
+				<span id="" class="votes text-xl mx-auto py-2 inline-block text-gray-500 w-full text-center"><%= question.votes %> </span>
+			
+				<form action="/question/<%=question._id%>/vote/dec?fullQuestion=true&&_method=PUT" method="post" class="form2">
+					<button type="submit" id="post-dec">
+						<svg class="cursor-pointer" width="70" height="20" viewBox="0 0 90 107" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path id="Arrow 2" d="M40.7574 105.191C43.1005 107.534 46.8995 107.534 49.2426 105.191L87.4264 67.0071C89.7696 64.664 89.7696 60.865 87.4264 58.5219C85.0833 56.1787 81.2843 56.1787 78.9411 58.5219L45 92.463L11.0589 58.5219C8.71573 56.1787 4.91674 56.1787 2.57359 58.5219C0.230447 60.865 0.230447 64.664 2.57359 67.0071L40.7574 105.191ZM39 0.669922L39 100.948H51L51 0.669922L39 0.669922Z" fill="#E16A6A" />
+						</svg>
+					</button>
+				</form>
+			</div>
+			<!-- Question Votes Section End -->
+
+			<div id="question" class="ml-20">
+				<div class="w-full relative">
+					<p class="font-sans text-xl inline-block mt-2 text-gray-600 max-w-xl">
+						<%= question.questionTitle %>
+						<a class="ml-2 text-sm font-inter text-blue-500" href="/user/<%= question.user._id %>">By <%= question.user.username %> </a>
+					</p>
+				</div>
+
+				<div id="viewer" class="py-3 px-0.5 rounded-xl">
+					<%- question.questionDescription %> 
+				</div>
+				<!-- <p id="questionDescription" class=" text-gray-500 font-inter font-normal leading-8  rounded-md mt-4 mb-6">
+					<%#= question.questionDescription %>
+				</p> -->
+
+				<div class="tags space-x-2 mt-3 ">
+					<% question.tags.forEach(el=> { %>
+					<span class="font-inter bg-violet-200 p-2 rounded-xl text-gray-800/90">
+						<%= el %>
+					</span>
+					<% }) %>
+				</div>
+			</div>
+
+			<div class="toggle-wrap mt-3">
+				<div id="additional" class="py-4 ml-20">
+					<span class="font-medium mr-10 text-blue-500 cursor-pointer reply-btn">Reply</span>
+					<span class="font-medium mr-72 text-rose-500">Report</span>
+					<span class="font-medium text-orange-500 dateValue"><%= question.createdAt %> </span>
+
+					<script>
+						let date = document.querySelectorAll(".dateValue");
+						date.forEach(function(e) {
+							let date = new Date(e.textContent);
+							date.toLocaleTimeString('en-US',{"hour12:":"true"})
+							e.innerHTML = (`Created at:${date.getDate()}/${date.getMonth()}/${date.getFullYear()} ${date.getUTCHours()}:${date.getUTCMinutes()}`)
+						
+						})
+					</script>
+				</div>
+				<div class="ml-20 answer-container">
+					<form action="/question/<%=question._id%>/answer" method="post" autocomplete="off" id="answerForm">
+						<div id="editor">
+
+						</div>
+						<input type="hidden" name="answerDescription" id="ans">
+						<!-- <input type="text" name="answerDescription" id="ans" class="w-full rounded-xl ring-2 ring-gray-300 border-none focus:ring-2 focus:ring-teal-400 focus:outline-none focus:border-none" /> -->
+						<button type="submit" class="p-2 my-3 bg-fuchsia-200 rounded-2xl text-fuchsia-600 drop-shadow-lg border-2 border-pink-300">Add Answer</button>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<% if(typeof answers=='object' && answers && answers.length) { %> <!-- Display Answer Heading When Answer Length is > 0-->
+		<div id="answerTitle" class="mt-4 border-t-2 border-[#ff40007a] min-h-max">
+			<h4 class="text-xl pt-4 mb-5 ml-20 font-inter text-gray-600">Answers</h4>
+		</div>
+
+		<% for(let answer of answers) {%> <!-- *Loop Over all the answers -->
+
+		<div class="answerContainer">
+			<div class="profile rounded-full ml-20 w-10 h-10 float-left bg-[#EEE2DF]"></div>
+			<div id="user-information" class="inline-block p-2 ml-3 rounded-xl">
+				<a class="p-2 text-blue-600/80 font-semibold font-inter" href="/user/<%= answer.user._id %>">
+					<%=answer.user.username %> <!--Print the Answer Username -->
+				</a>
+			</div>
+
+			<div class="pb-5">
+
+				<div id="answerViewer" class="py-3 px-0.5 rounded-xl ml-36 pl-1 text-gray-500/95 font-inter leading-7">
+					<%- answer.answerDescription %> 
+				</div>
+				
+			</div>
+
+			<!-- *Answer Votes Section -->
+			<section class="ml-36 flex flex-row pb-5">
+				<form action="/question/<%= question._id %>/answer/<%= answer._id%>/voteinc?_method=PUT" method="post" class="ansForm1">
+					<button type="submit" id="post-inc">
+						<svg class="cursor-pointer" width="20" height="20" viewBox="0 0 90 108" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path class="post-inc-path" id="Arrow 1" d="M49.2426 2.57276C46.8995 0.229614 43.1005 0.229614 40.7574 2.57276L2.57359 40.7565C0.230446 43.0997 0.230446 46.8987 2.57359 49.2418C4.91674 51.585 8.71573 51.585 11.0589 49.2418L45 15.3007L78.9411 49.2418C81.2843 51.585 85.0833 51.585 87.4264 49.2418C89.7696 46.8987 89.7696 43.0997 87.4264 40.7565L49.2426 2.57276ZM51 107.094L51 6.8154H39L39 107.094H51Z" fill="#9643FF" />
+						</svg>
+					</button>
+				</form>
+				<span id="votesCount" class="mx-5 font-inter font-medium inline-block text-gray-500 text-center"><%= answer.votes %></span>
+				<form action="/question/<%= question._id %>/answer/<%= answer._id%>/votedec?_method=PUT" method="post" class="ansForm2">
+					<button type="submit" id="post-dec">
+						<svg class="cursor-pointer" width="20" height="20" viewBox="0 0 90 107" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path id="Arrow 2" d="M40.7574 105.191C43.1005 107.534 46.8995 107.534 49.2426 105.191L87.4264 67.0071C89.7696 64.664 89.7696 60.865 87.4264 58.5219C85.0833 56.1787 81.2843 56.1787 78.9411 58.5219L45 92.463L11.0589 58.5219C8.71573 56.1787 4.91674 56.1787 2.57359 58.5219C0.230447 60.865 0.230447 64.664 2.57359 67.0071L40.7574 105.191ZM39 0.669922L39 100.948H51L51 0.669922L39 0.669922Z" fill="#E16A6A" />
+						</svg>
+					</button>
+				</form>
+
+				<!-- *Bottom Side Options of Edit Delete and Report -->
+				<% if(answer.user._id == userSession.userid) { %>
+				<div id="answer-options" class="flex pl-10 text-gray-400/95 gap-12">
+					<form action="/question/<%= question._id %>/answer/<%=answer._id%>" method="get">
+						<div class="hover:text-amber-500">
+							<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 float-left mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+							</svg>
+							<button type="submit" class="hover:text-amber-500">Edit</button>
+						</div>
+					</form>
+					<form action="/question/<%=question._id%>/answer/<%=answer._id%>?_method=DELETE" method="post">
+						<div class="hover:text-red-500">
+							<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 float-left mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+							</svg>
+							<button type="submit">Delete</button>
+						</div>
+					</form>
+					<div class="hover:text-cyan-500">
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 float-left mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
+						</svg>
+						<span>Report</span>
+					</div>
+				</div>
+				<% } %>
+				<!-- *Bottom Side Options Section End -->
+			</section>
+			<!-- *Answer Votes Section End -->
+
+			<% } %> <% } %>
+		</div>
+	</div>
+</div>
+
+<script>
+
+	const editor = new toastui.Editor({
+		el:document.querySelector("#editor"),
+		initialEditType:"wysiwyg",
+		previewStyle:'vertical',
+		height:'500px'
+	});
+	
+	const viewer = toastui.Editor.factory({
+        el: document.querySelector('#viewer'),
+		viewer:true
+      });
+
+	  const answerViewer = toastui.Editor.factory({
+        el: document.querySelector('#answerViewer'),
+		viewer:true
+      });
+
+	  $("#answerForm").submit(function() {
+		  let data = editor.getHTML();
+		  $("#ans").val(data);
+	  })
+
+</script>

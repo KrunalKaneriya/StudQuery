@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="/js/homePage.js"></script>
+
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+	<link rel="stylesheet" href="/styles/output.css" />
+	<title>StudQuery</title>
+</head>
+
+<body class="">
+	<%- include("../partials/adminNavbar") %>
+
+		<%- body %>
+			<!--*Here The EJS or HTML Files Will be Passed-->
+
+			<!-- <script src="/js/notifications.js"></script> -->
+			<script>
+				/************************************************************************
+				* FUNCTIONS WHICH ARE USED TO CONTINUE WHERE WE LEFT THE PAGE POSITION *
+				************************************************************************/
+
+				window.onbeforeunload = function (e) {
+					sessionStorage.setItem("scrollpos", window.scrollY);
+				};
+
+				document.addEventListener("DOMContentLoaded", function (event) {
+					var scrollpos = sessionStorage.getItem("scrollpos");
+					if (scrollpos) window.scrollTo(0, scrollpos);
+				});
+				const closeButton = document.querySelectorAll(".close-btn");
+				const messageDiv = document.querySelectorAll(".message");
+
+				for (const close of closeButton) {
+
+					close.addEventListener("click", function () {
+						for (let msg of messageDiv) {
+							msg.classList.add("hidden");
+						}
+
+					});
+				}
+
+
+				setTimeout(function () {
+
+					for (let msgDiv of messageDiv) {
+						msgDiv.classList.add("hidden");
+					}
+
+				}, 3000);
+
+			
+				// const hoverOptionsDiv = document.querySelector(".hover-options");
+				// profile.addEventListener(onmousemove,function(e) {
+				// 	console.log(e);
+				// 	hoverOptionsDiv.classList.toggle("hidden");
+				// })
+				// profile.addEventListener(onmouseleave,function(e) {
+				//     hoverOptionsDiv.classList.add("hidden");
+				// })
+			</script>
+
+				
+
+</body>
+
+</html>

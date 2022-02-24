@@ -1,0 +1,77 @@
+<div class="container h-20 min-w-[100%] mx-auto flex justify-between items-center bg-gray-100 rounded-md flex-row shadow-lg"
+    id="navbar">
+
+    <div id="logo">
+        <a href="/">
+            <img src="/images/logo.png" alt="" class="w-20 h-16 ml-10 inline-block">
+            <li class="list-none inline-block py-5">StudQuery</li>
+        </a>
+    </div>
+
+    <div id="search" class="h-12 w-[45%]">
+        <form action="/search" method="get">
+            <svg class="absolute my-2 ml-4" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24"
+                width="24px" fill="#694E4E">
+                <path d="M0 0h24v24H0V0z" fill="none" />
+                <path
+                    d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+            </svg>
+            <input type="text" name="search" id="search" placeholder="Search Here"
+                class="w-full pl-14 rounded-lg border-0 bg-gray-200 focus:border-0 ring-offset-0">
+        </form>
+    </div>
+
+    <!-- <div id="auth" class="w-[25%] h-12 flex items-center justify-evenly">
+
+        <span class="list-none min-w-max inline-block basis-2">
+            <a>
+                <href="/user/<#%= userSession.userid ? userSession.userid : '' %> ">
+                    <#%= userSession.isLoggedIn ? userSession.username : "" %>
+            </a>
+        </span>
+
+
+
+        <span class=" bg-rose-200 cursor-pointer p-2 rounded-lg text-red-700 font-semibold flex-initial">
+            <a href=<#%=userSession.isLoggedIn ? "/logout" : "/login" %> ><#%= userSession.isLoggedIn ? "Log Out"
+                    : "Log In" %></a>
+
+        </span>
+
+        <span class=" bg-blue-200 cursor-pointer p-2 rounded-lg text-blue-700 font-semibold flex-initial">
+            <a href="/signup">Sign Up</a>
+        </span>
+
+    </div> -->
+
+    <div class="w-12 h-12 bg-violet-400 mr-32 rounded-full relative profile-container">
+        <div id="hover-options" class="hidden text-center min-h-full w-32 absolute top-12 -right-12 bg-[#F7F7F7] rounded-xl">
+            <ul class="list-none flex space-y-1 flex-col py-3">
+                <li class="hover:bg-blue-500 hover:text-white rounded-md cursor-pointer p-0.5"><a href="/">Home</a></li>
+                <% if (!userSession.isLoggedIn) { %>
+                    <li class="hover:bg-blue-500 hover:text-white rounded-md cursor-pointer p-0.5"><a href="/login">Login</a></li>
+                    <li class="hover:bg-blue-500 hover:text-white rounded-md cursor-pointer p-0.5"><a href="/signup">Signup</a></li>
+                <% } %>
+
+                <% if (userSession.isLoggedIn) { %>
+                    <li class="hover:bg-blue-500 hover:text-white rounded-md cursor-pointer p-0.5"><a href="<%= `/user/${userSession.userid}`%>">My Profile</a></li>
+                    <li class="hover:bg-blue-500 hover:text-white rounded-md cursor-pointer p-0.5"><a href="/logout">Logout</a></li>
+                <% } %>
+                
+               
+
+            </ul>
+        </div>
+    </div>
+    
+
+</div>
+
+<script>
+    	$(".profile-container").hover(function(e) {
+            $("#hover-options").toggleClass("hidden");
+        })
+        $(".hover-options").hover(function() {
+            $(this).toggleClass("hidden");
+        })
+</script>

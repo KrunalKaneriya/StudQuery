@@ -1,0 +1,217 @@
+<% layout("../layout/adminBoilerplate.ejs") %>
+
+<div class="container mt-10 w-[92%] float-right">
+    <header>
+        <h1 class="text-3xl font-cera ml-5">Search</h1>
+        <h3 class="text-xl font-cera mt-5 ml-5">Search and retrieve questions answers and Users</h3>
+    </header>
+
+    <section class="mt-8 ml-5">
+        <div class="">
+            <form action="/admin/searchData" method="get" id="searchFormData">
+                <input type="text" name="searchData" id="search" placeholder="Search here!!" class="rounded-lg shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 w-[70%] border-2 border-gray-300 px-3 py-2 mr-3">
+
+                <!-- <input type="checkbox" name="users" id="users" class="rounded border-gray-700 text-indigo-500 focus:ring-indigo-400">
+                <label for="users" class="ml-1 text-sm mr-4">Users</label>
+               
+                <input type="checkbox" name="questions" id="questions" class="rounded border-gray-700 text-indigo-500 focus:ring-indigo-400">
+                <label for="questions" class="ml-1 text-sm mr-4">Questions</label>
+
+                <input type="checkbox" name="answers" id="answers" class="rounded border-gray-700 text-indigo-500 focus:ring-indigo-400">
+                <label for="answers" class="ml-1 text-sm mr-4">Answers</label> -->
+
+                <button type="submit" class="p-2 w-32 bg-violet-400 hover:bg-indigo-500 text-white rounded-lg">Search</button>
+            </form>
+        </div>
+
+       
+    </section>
+
+    <section class="searchedData my-5 w-full float-right container">
+       
+<% if(typeof foundedUsers=='object' && foundedUsers && foundedUsers.length) { %> 
+    <div class="userSection">
+        <h3 class="text-xl my-4 font-cera font-medium ml-5">Founded Users</h3>
+
+        <div class="userDetails  overflow-auto ml-3">
+            <table class="table-auto">
+                <thead class="bg-gray-50 border-b-2 border-gray-200">
+                    <tr>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-inter ">Username</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-inter ">Alias</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-inter ">Email</th>
+                        <th class=" p-3 text-sm font-semibold tracking-wide text-left font-inter ">Age</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-inter">Studying In</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-inter">City</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-inter">Description</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-inter">Questions</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-inter">Answers</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-inter">Last Logged In</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-inter">Created At</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-inter">Options</th>
+                    </tr>
+                </thead>
+
+                <tbody class="border-b-2 border-gray-200 divide-y divide-gray-200">
+
+                    <% for(let user of foundedUsers) { %> 
+                    <tr>
+                        <td class="p-3 text-sm text-gray-700 font-inter "><%= user.username %> </td>
+                        <td class="p-3 text-sm text-gray-700 font-inter "><%= user.alias %> </td>
+                        <td class="p-3 text-sm text-gray-700 font-inter "><%= user.email %> </td>
+                        <td class="p-3 text-sm text-gray-700 font-inter "><%= user.age %> </td>
+                        <td class="p-3 text-sm text-gray-700 font-inter "><%= user.studyingIn %> </td>
+                        <td class="p-3 text-sm text-gray-700 font-inter "><%= user.city %> </td>
+                        <td class="p-3 text-sm text-gray-700 font-inter "><%= user.description %> </td>
+                        <td class="p-3 text-sm text-gray-700 font-inter "><%= user.questions.length %> </td>
+                        <td class="p-3 text-sm text-gray-700 font-inter "><%= user.answers.length %> </td>
+                        
+                        <td class="p-3 text-sm text-gray-700 dateValue font-inter "><%= user.lastLoggedIn %> </td>
+                        <td class="p-3 text-sm text-gray-700 dateValue font-inter "><%= user.createdAt%> </td>
+
+                        <td class="p-3"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-300 hover:text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </td>
+                    </tr>
+
+                    <% } %> 
+            </table>
+        </div>
+    </div>
+
+    <% } %> 
+
+    <% if(typeof foundedQuestions=='object' && foundedQuestions && foundedQuestions.length)  { %> 
+    <div class="questionSection">
+        <h3 class="text-xl my-4 font-cera font-medium ml-5">Founded Questions</h3>
+
+        <div class="questionDetails overflow-auto">
+
+            <table class="table-auto w-[99%] ml-2">
+                <thead class="bg-gray-50 border-b-2 border-gray-200">
+                    <tr>
+                        <th class="p-3 text-sm font-semibold font-inter tracking-wide text-left">Question Title</th>
+                        <th class="p-3 text-sm font-semibold font-inter tracking-wide text-left">Owner</th>
+                        <th class="p-3  text-sm font-semibold font-inter tracking-wide text-left">Created at</th>
+                        <th class="p-3 text-sm font-semibold font-inter tracking-wide text-left">Updated at</th>
+                        <th class="p-3 text-sm font-inter  font-semibold tracking-wide text-left">Answers</th>
+                        <th class="p-3 text-sm font-inter font-semibold tracking-wide text-left">Votes</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-inter">View Conversation</th>
+                    </tr>
+                </thead>
+
+                <tbody class="border-b-2 border-gray-200 divide-y divide-gray-200">
+
+                    <% for(let question of foundedQuestions) { %> 
+                    <tr>
+                        <td class="p-3 text-sm text-gray-700 font-inter"><%= question.questionTitle %> </td>
+                        <td class="p-3 text-sm text-gray-700 font-inter"><%= question.user.username %> </td>
+                        <td class="p-3 text-sm text-gray-700 dateValue font-inter"><%= question.updatedAt %> </td>
+                        <td class="p-3 text-sm text-gray-700 dateValue font-inter"><%= question.createdAt %> </td>
+                        <td class="p-3 text-sm text-gray-700 font-inter"><%= question.answers.length %> </td>
+                        <td class="p-3 text-sm text-gray-700 font-inter"><%= question.votes %> </td>
+                        <td class="p-3 text-sm text-gray-700">
+                            <form method="get" action="/admin/question/<%= question._id %>">
+                                <button class="p-3 w-28  bg-[#d9f5db] hover:bg-[#65C18C] hover:text-white rounded-xl cursor-pointer font-semibold font-inter">View</button>
+                            </form>
+                        </td>
+
+
+                    </tr>
+
+
+                    <% } %> 
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    <% } %> 
+
+
+
+    <% if(typeof foundedAnswers=='object' && foundedAnswers && foundedAnswers.length)  { %> 
+    <div class="answerSection">
+        <h3 class="text-xl my-4 font-cera font-medium ml-5">Founded Answers</h3>
+
+        <div class="answerDetails">
+            <table class="table-auto w-full ml-3">
+                <thead class="bg-gray-50 border-b-2 border-gray-200">
+                    <tr>
+                        <th class="p-3 text-sm font-semibold font-inter tracking-wide text-left">Answer Description
+                        </th>
+                        <th class="p-3 text-sm font-semibold font-inter tracking-wide text-left">Owner</th>
+                        <th class="p-3 text-sm font-semibold font-inter tracking-wide text-left">Created at</th>
+                        <th class="p-3 text-sm font-semibold font-inter tracking-wide text-left">Updated at</th>
+                        <th class="p-3 w-10 text-sm font-inter font-semibold tracking-wide text-left">Votes</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-inter">View Conversation
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody class="border-b-2 border-gray-200 divide-y divide-gray-200">
+
+                    <% for(let answer of foundedAnswers) { %>
+                        <tr>
+                            <td class="p-3 text-sm text-gray-700 font-inter">
+                                <%= answer.answerDescription %>
+                            </td>
+                            <td class="p-3 text-sm text-gray-700 font-inter">
+                                <%= answer.user.username %>
+                            </td>
+                            <td class="p-3 text-sm text-gray-700 dateValue font-inter">
+                                <%= answer.updatedAt %>
+                            </td>
+                            <td class="p-3 text-sm text-gray-700 dateValue font-inter">
+                                <%= answer.createdAt %>
+                            </td>
+                            <td class="p-3 text-sm text-gray-700 font-inter">
+                                <%= answer.votes %>
+                            </td>
+                            <td class="p-3 text-sm text-gray-700">
+                                <form method="get" action="/admin/question/<%= answer.question._id %> ">
+                                    <button
+                                        class="p-3 w-28 bg-[#d9f5db] hover:bg-[#65C18C] hover:text-white rounded-xl cursor-pointer font-semibold font-inter">View</button>
+                                </form>
+                            </td>
+
+
+                        </tr>
+
+
+                        <% } %>
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+
+    <% } %>     
+    </section>
+
+    <script>
+
+
+
+        let date = document.querySelectorAll(".dateValue");
+        date.forEach(function(e) {
+            let date = new Date(e.textContent);
+            date.toLocaleTimeString('en-US',{"hour12:":"true"})
+            e.innerHTML = (`${date.getDate()}/${date.toLocaleString('default',{month:"short"})}/${date.getFullYear()} ${date.getUTCHours()}:${date.getUTCMinutes()}`)
+            
+
+        
+        })
+    </script>
+</div>
+
+<!-- <h2>Username:Krunal Kaneria</h2>
+                <h2>Alias:Kennedy</h2>
+                <h2>Email:krunal@gmail.com</h2>
+                <h2>Age:22</h2>
+                <h2>Description:My name is Krunal Kaneria and I am studying in TYBCA..</h2>
+                <h2>Studying In:TYBCA</h2>
+                <h2>City</h2> -->
