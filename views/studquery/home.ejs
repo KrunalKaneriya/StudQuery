@@ -24,13 +24,7 @@
 					<div class="rounded-full bg-purple-200 w-8 h-8 float-left mb-2"></div>
 					<div><p class=" py-1 font-sans hover:text-blue-600 text-gray-500 delay-150 transition-colors ease-out ml-9"><%= user.username %> </p></div>
 				</div>
-
-				
 					
-
-
-					
-
 			<% } %> 
 	</div>
 </div>
@@ -184,6 +178,8 @@
 
 		<div id="questionWrapper">
 			<div id="question" class="ml-20">
+
+			
 				<div class="w-full relative">
 					<a class="text-xl inline-block mt-2 text-gray-700 font-sans max-w-xl" href="/question/<%= post._id%>">
 						<%= post.questionTitle %>
@@ -196,12 +192,23 @@
 
 				<div id="separator" class="bg-slate-200 h-0.5"></div>
 
+				<div class="tags space-x-2 mt-3 float-right">
+					<% post.tags.forEach(el=> { %>
+					<span class="font-inter bg-violet-200 p-2 rounded-xl text-gray-800/90">
+						<%= el %>
+					</span>
+					<% }) %>
+				</div>
+
 				<div class="mt-3 rounded-xl bg-sky-100 w-max p-2 outline-none border">
 					<div class="rounded-full float-left bg-red-300 w-6 h-6"></div>
 					<a class="ml-2 font-medium font-inter text-blue-500" href="/user/<%= post.user._id %>">
 						<%= post.user.username %>
 					</a>
 				</div>
+
+				
+				
 			</div>
 		</div>
 	</div>

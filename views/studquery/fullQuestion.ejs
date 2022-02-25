@@ -2,8 +2,6 @@
 <%- include("../partials/sidebar") %>
 <%- include("../partials/flash") %>
 
-<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
-
 <!-- *Checks That the Question User is Equals to the User which is logged in -->
 <% if(question.user.equals(userSession.userid)) { %>
 <div id="questionOptions" class="container w-48 mt-10 float-right mr-12 text-white text-center">
@@ -58,6 +56,7 @@
 						<%= question.questionTitle %>
 						<a class="ml-2 text-sm font-inter text-blue-500" href="/user/<%= question.user._id %>">By <%= question.user.username %> </a>
 					</p>
+
 				</div>
 
 				<div id="viewer" class="py-3 px-0.5 rounded-xl">
@@ -95,9 +94,9 @@
 				<div class="ml-20 answer-container">
 					<form action="/question/<%=question._id%>/answer" method="post" autocomplete="off" id="answerForm">
 						<div id="editor">
-
+							
 						</div>
-						<input type="hidden" name="answerDescription" id="ans">
+						<input type="hidden" name="answerDescription" class="answerField">
 						<!-- <input type="text" name="answerDescription" id="ans" class="w-full rounded-xl ring-2 ring-gray-300 border-none focus:ring-2 focus:ring-teal-400 focus:outline-none focus:border-none" /> -->
 						<button type="submit" class="p-2 my-3 bg-fuchsia-200 rounded-2xl text-fuchsia-600 drop-shadow-lg border-2 border-pink-300">Add Answer</button>
 					</form>
@@ -122,7 +121,7 @@
 
 			<div class="pb-5">
 
-				<div id="answerViewer" class="py-3 px-0.5 rounded-xl ml-36 pl-1 text-gray-500/95 font-inter leading-7">
+				<div class="py-3 px-0.5 rounded-xl ml-36 pl-1 text-gray-500/95 font-inter leading-7 answerViewer">
 					<%- answer.answerDescription %> 
 				</div>
 				
@@ -182,28 +181,35 @@
 	</div>
 </div>
 
-<script>
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 
+<script>
+	
 	const editor = new toastui.Editor({
 		el:document.querySelector("#editor"),
 		initialEditType:"wysiwyg",
 		previewStyle:'vertical',
 		height:'500px'
 	});
-	
+
 	const viewer = toastui.Editor.factory({
         el: document.querySelector('#viewer'),
 		viewer:true
       });
 
-	  const answerViewer = toastui.Editor.factory({
-        el: document.querySelector('#answerViewer'),
-		viewer:true
-      });
 
-	  $("#answerForm").submit(function() {
+	const answerViewer = document.querySelectorAll(".answerViewer");
+
+	answerViewer.forEach(function(e) {
+		toastui.Editor.factory({
+			el:e,
+			viewer:true
+		})
+	})
+
+	  $("#answerForm").submit(function(e) {
 		  let data = editor.getHTML();
-		  $("#ans").val(data);
+		  $(".answerField").val(data);
 	  })
 
 </script>

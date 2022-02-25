@@ -5,6 +5,7 @@ const Question = require("../models/question");
 const Answer = require("../models/answer");
 const catchAsync = require("../utils/catchAsync");
 
+
 /************************************************
  * ROUTE WHICH WILL ADD ANSWER TO A QUESTION. *
  ************************************************/
@@ -15,9 +16,9 @@ router.post("/question/:questionId/answer",catchAsync(async (req, res) => {
 		if (isLoggedIn) {
 			const question = await Question.findById(questionId);
 			const user = await User.findById(userid);
-			const { answerDescription } = req.body;
+			const {answerDescription} = req.body;
 			const answer = new Answer({
-				answerDescription,
+				answerDescription
 			});
 			answer.question = question;
 			answer.user = user;
