@@ -24,3 +24,4 @@ openBtn.addEventListener("click", function () {
 cancelBtn.addEventListener("click", function () {
 	modal.classList.add("hidden");
 });
+

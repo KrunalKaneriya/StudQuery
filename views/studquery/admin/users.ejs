@@ -6,29 +6,7 @@
         <h3 class="text-lg font-cera mt-5 ml-5">Delete or Review the Users of Studquery</h3>
     </header>
 
-    <section class="deleteModal hidden">
-        <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
-
-            <div class="relative top-[25%] mx-auto p-5 border w-96 shadow-lg rounded-lg bg-white">
-
-                <div class="mt-3 text-center">
-
-                    <div class="flex mx-auto items-center justify-center">
-                        <svg class="mx-auto mb-4 w-16 h-16 text-gray-400 dark:text-gray-200" fill="#FC4F4F" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    </div>
-
-                    <h1 class="text-xl font-inter font-medium">Are You sure you want to Delete the User?</h1>
-
-                    <div class="flex justify-evenly mt-8 mb-8">
-                        <button class="p-4 text-white bg-red-500 hover:bg-red-700 rounded-lg">Delete User</button>
-                        <button class="cancelDeletebtn p-4 text-gray-500 bg-white hover:bg-gray-100 rounded-lg border border-gray-200 hover:text-gray-900">Cancel</button>
-
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </section>
+    
 
     <section>
         <div class="mt-8 ml-5 overflow-auto">
@@ -66,11 +44,46 @@
                         
                         <td class="p-3 text-sm text-gray-700 dateValue font-inter "><%= user.lastLoggedIn %> </td>
                         <td class="p-3 text-sm text-gray-700 dateValue font-inter "><%= user.createdAt%> </td>
-
-                        <td class="p-3"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-300 hover:text-red-500 deleteUserbtn" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                            </svg>
+                        <td class="p-3">
+                            <form action="/admin/users/<%= user._id %>?_method=DELETE" method="post">
+                                
+                                    <button type="submit">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-300 hover:text-red-500 deleteUserbtn" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                                
+                            </form>
                         </td>
+                           
+
+                        <!-- <td>
+
+                            <section class="deleteModal hidden">
+                                <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+                        
+                                    <div class="relative top-[25%] mx-auto p-5 border w-96 shadow-lg rounded-lg bg-white">
+                        
+                                        <div class="mt-3 text-center">
+                        
+                                            <div class="flex mx-auto items-center justify-center">
+                                                <svg class="mx-auto mb-4 w-16 h-16 text-gray-400 dark:text-gray-200" fill="#FC4F4F" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                            </div>
+                        
+                                            <h1 class="text-xl font-inter font-medium">Are You sure you want to Delete the User?</h1>
+                        
+                                            <div class="flex justify-evenly mt-8 mb-8">
+                                                <button class="p-4 text-white bg-red-500 hover:bg-red-700 rounded-lg confirm-delete">Delete User</button>
+                                                <button class="cancelDeletebtn p-4 text-gray-500 bg-white hover:bg-gray-100 rounded-lg border border-gray-200 hover:text-gray-900">Cancel</button>
+                        
+                                            </div>
+                                        </div>
+                                    </div>
+                        
+                                </div>
+                            </section>
+
+                        </td> -->
                     </tr>
 
                     <% } %> 
@@ -94,14 +107,24 @@
 </div>
 
 <script>
-    const deleteUserbtn = document.querySelector(".deleteUserbtn");
-    const deleteModal = document.querySelector(".deleteModal");
-    const cancelBtn = document.querySelector(".cancelDeletebtn");
+    // const deleteUserbtn = document.querySelectorAll(".deleteUserbtn");
+    // const deleteModal = document.querySelectorAll(".deleteModal");
+    // const cancelBtn = document.querySelectorAll(".cancelDeletebtn");
+    // const confirmDeleteBtn = document.querySelectorAll(".confirmdelete");
 
-    cancelBtn.addEventListener("click",function(e) {
-        deleteModal.classList.add("hidden");
-    })
-    deleteUserbtn.addEventListener("click",function(e) {
-        deleteModal.classList.remove("hidden");
-    })
+    // deleteUserbtn.forEach(function(el) {
+    //     el.addEventListener("click",function(e) {
+    //         console.log(this);
+    //     })
+    // })
+
+    // for (let i = 0; i < deleteUserbtn.length; i++) {
+    //     const element = deleteUserbtn[i];
+    //     const deleteModal = deleteModal[i];
+    //     console.log(element);
+    //     console.log(deleteModal);
+    // }
+
+    
+   
 </script>

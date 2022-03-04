@@ -31,6 +31,10 @@ const UserSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:"Answer"
     }],
+    savedQuestions:[{
+        type:Schema.Types.ObjectId,
+        ref:"Question"
+    }],
     city:String,
     lastLoggedIn:{
         type:Date

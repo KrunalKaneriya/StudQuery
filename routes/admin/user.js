@@ -4,14 +4,12 @@ const User = require("../../models/user")
 const Question = require("../../models/question");
 const Answer = require("../../models/answer");
 const catchAsync = require("../../utils/catchAsync");
+const ReportedQuestions = require("../../models/reportedQuestions");
 
-router.get("/admin/users",catchAsync(async (req,res) => {
-    const userSession = req.session;
-    const users = await User.find();
-    res.render("admin/users",{userSession,users});
-}))
+const adminUsersController = require("../../controllers/admin/users");
 
+router.get("/admin/users",catchAsync(adminUsersController.renderAdminUsersPage));
 
-
+router.delete("/admin/users/:userid",catchAsync(adminUsersController.adminDeleteUser));
 
 module.exports = router;

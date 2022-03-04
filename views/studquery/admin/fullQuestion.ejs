@@ -1,6 +1,4 @@
 <% layout("../layout/adminBoilerplate.ejs") %>
-<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
-
 
     <div class="container mt-10 w-[90%] mr-2 float-right mb-10">
         <header>
@@ -13,18 +11,18 @@
         <section class="mt-5 ml-10 w-[80%]">
 
             <div class="w-[10%] pt-4 float-left">
-                <p class="text-white bg-[#4db36f] text-center rounded-md p-2 mb-5">Votes: <%= question.votes %>
+                <p class="text-white bg-[#00B25C] text-center rounded-md p-2 mb-5">Votes: <%= question.votes %>
                 </p>
                 <p class=" text-[#dee2e6]  bg-[#6c757d] text-center rounded-md p-2">Answers: <%= question.answers.length %>
                 </p>
             </div>
 
-            <div id="question" class="ml-32 mt-5">
+            <div id="question" class="ml-32 mt-5 ">
                 <p class="text-xl text-gray-700 font-sans pl-2 pt-3">
                     <%= question.questionTitle %>
                 </p>
 
-                <div id="viewer" class="text-gray-600  font-sans pl-2 pt-4">
+                <div id="viewer" class="text-gray-600 pl-2 pt-4">
                     <%- question.questionDescription %>
 
                 </div>
@@ -40,7 +38,7 @@
             </div>
 
             <div class="username mt-4 ml-32 pl-2">
-                <p class="text-teal-700 rounded-xl font-inter p-2 bg-teal-100 w-fit ring-2 font-medium ring-teal-500">
+                <p class="text-white rounded-xl p-2 bg-[#737EEE] w-fit font-medium drop-shadow-md">
                     Created By:<%= question.user.username %>
                 </p>
             </div>
@@ -54,19 +52,19 @@
 
                 <div class="answerContainer">
                     <div class="profile rounded-full mt-5 w-10 h-10 float-left bg-blue-200"></div>
-                    <div class="rounded-xl ml-3 p-2 mt-4 inline-block bg-[#D3DEDC] text-[#2C3333]">
+                    <div class="rounded-xl ml-3 p-2 mt-4 inline-block text-gray-700">
                         <span class="font-medium font-inter ">
                             <%= answer.user.username %>
                         </span>
                     </div>
 
-                    <div class="answerDescription  ml-14">
-                        <p class="font-inter leading-7 pl-1 text-gray-600">
-                            <%= answer.answerDescription %>
-                        </p>
+                    <div class="answerViewer ml-14 pl-1 text-gray-600 leading-7">
+                        <!-- <p class="font-inter leading-7 pl-1 text-gray-600"> -->
+                            <%- answer.answerDescription %>
+                        <!-- </p> -->
                     </div>
                     
-                    <p class="p-2 mt-2 ml-14 bg-[#9ad1ec96] text-[#1572A1] w-fit rounded-xl font-inter ring-2 ring-[#1572a18f]">Votes: <%= answer.votes %> </p>
+                    <p class="p-2 mt-2 ml-14  text-white bg-[#00B25C] w-fit rounded-md">Votes: <%= answer.votes %> </p>
                 </div>
             </div>
 
@@ -76,9 +74,21 @@
 
     </div>
 
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+
     <script>
         const viewer = toastui.Editor.factory({
             el:document.querySelector("#viewer"),
             viewer:true
         })
+
+        const answerViewers = document.querySelectorAll(".answerViewer");
+
+        answerViewers.forEach(function(e) {
+            toastui.Editor.factory({
+                el:e,
+                viewer:true
+            })
+        })
+
     </script>

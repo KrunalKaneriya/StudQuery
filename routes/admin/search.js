@@ -6,29 +6,11 @@ const Answer = require("../../models/answer");
 const catchAsync = require("../../utils/catchAsync");
 const ExpressError = require("../../utils/ExpressError");
 
+const adminSearchController = require("../../controllers/admin/search");
 
-router.get("/admin/search",catchAsync(async(req,res) => {
-    const userSession = req.session;
+router.get("/admin/search",catchAsync(adminSearchController.renderAdminSearchForm));
 
-    // if(!userSession.isLoggedIn) {
-    //     throw new ExpressError(401,"User is required to login..");
-    // }
-
-    res.render("admin/search",{userSession});
-}))
-
-router.get("/admin/searchData",catchAsync(async(req,res) => {
-    const userSession = req.session;
-
-    const {searchData,users,questions,answers} = req.query;
-
-
-        const foundedUsers = await User.find({username: new RegExp(searchData, "i") });
-        const foundedQuestions = await Question.find({questionTitle: new RegExp(searchData, "i")});
-        const foundedAnswers = await Answer.find({answerDescription: new RegExp(searchData, "i")});
-
-    res.render("admin/search",{userSession,foundedUsers,foundedQuestions,foundedAnswers});
-}))
+router.get("/admin/searchData",catchAsync(adminSearchController.searchAdminData))
 
 
 

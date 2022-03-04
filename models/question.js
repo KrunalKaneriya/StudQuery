@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const stripHTML = require("string-strip-html");
+const {stripHtml} = require("string-strip-html");
 const Schema = mongoose.Schema;
 
 const QuestionSchema = new Schema({
@@ -45,7 +45,7 @@ const QuestionSchema = new Schema({
 //Before saving the questionDescription strip the html tags and save the questionDescription in snippet
 QuestionSchema.pre("save",function(next) {
     if(this.questionDescription) {
-        this.snippet = stripHTML.stripHtml(this.questionDescription.substring(0,430)).result
+        this.snippet = stripHtml(this.questionDescription.substring(0,430)).result.concat("...");
     }
     next();
 })

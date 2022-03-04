@@ -69,9 +69,14 @@
                         <td class="p-3 text-sm text-gray-700 dateValue font-inter "><%= user.lastLoggedIn %> </td>
                         <td class="p-3 text-sm text-gray-700 dateValue font-inter "><%= user.createdAt%> </td>
 
-                        <td class="p-3"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-300 hover:text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                            </svg>
+                        <td class="p-3">
+                            <form action="/admin/users/<%=user._id%>?_method=DELETE" method="post">
+                                <button type="submit">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-300 hover:text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </button>
+                            </form>
                         </td>
                     </tr>
 
@@ -98,6 +103,7 @@
                         <th class="p-3 text-sm font-inter  font-semibold tracking-wide text-left">Answers</th>
                         <th class="p-3 text-sm font-inter font-semibold tracking-wide text-left">Votes</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left font-inter">View Conversation</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-inter">Options</th>
                     </tr>
                 </thead>
 
@@ -116,7 +122,15 @@
                                 <button class="p-3 w-28  bg-[#d9f5db] hover:bg-[#65C18C] hover:text-white rounded-xl cursor-pointer font-semibold font-inter">View</button>
                             </form>
                         </td>
-
+                        <td class="p-3">
+                            <form action="/admin/question/<%= question._id %>?_method=DELETE" method="post">
+                                <button type="submit">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-300 hover:text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                                </button>
+                            </form>
+                        </td>
 
                     </tr>
 
@@ -136,8 +150,8 @@
     <div class="answerSection">
         <h3 class="text-xl my-4 font-cera font-medium ml-5">Founded Answers</h3>
 
-        <div class="answerDetails">
-            <table class="table-auto w-full ml-3">
+        <div class="answerDetails ml-3">
+            <table class="table-auto w-full">
                 <thead class="bg-gray-50 border-b-2 border-gray-200">
                     <tr>
                         <th class="p-3 text-sm font-semibold font-inter tracking-wide text-left">Answer Description
@@ -148,6 +162,7 @@
                         <th class="p-3 w-10 text-sm font-inter font-semibold tracking-wide text-left">Votes</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-left font-inter">View Conversation
                         </th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-inter">Options</th>
                     </tr>
                 </thead>
 
@@ -156,7 +171,7 @@
                     <% for(let answer of foundedAnswers) { %>
                         <tr>
                             <td class="p-3 text-sm text-gray-700 font-inter">
-                                <%= answer.answerDescription %>
+                                <%- answer.answerDescription %>
                             </td>
                             <td class="p-3 text-sm text-gray-700 font-inter">
                                 <%= answer.user.username %>
@@ -174,6 +189,15 @@
                                 <form method="get" action="/admin/question/<%= answer.question._id %> ">
                                     <button
                                         class="p-3 w-28 bg-[#d9f5db] hover:bg-[#65C18C] hover:text-white rounded-xl cursor-pointer font-semibold font-inter">View</button>
+                                </form>
+                            </td>
+                            <td class="p-3">
+                                <form action="/admin/answer/<%= answer._id %>?_method=DELETE" method="post">
+                                    <button type="submit">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-300 hover:text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                    </button>
                                 </form>
                             </td>
 

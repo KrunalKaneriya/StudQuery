@@ -4,18 +4,16 @@ const User = require("../../models/user")
 const Question = require("../../models/question");
 const Answer = require("../../models/answer");
 const catchAsync = require("../../utils/catchAsync");
+const Answers = require("../../models/answer");
+const ReportedQuestion = require("../../models/reportedQuestions");
 
-router.get("/admin/questions", catchAsync(async (req, res) => {
-    const userSession = req.session;
-    const questions = await Question.find().populate("user");
-    res.render("admin/questions", { userSession, questions });
-}))
+const questionsController = require("../../controllers/admin/questions");
 
-router.get("/admin/question/:questionId",catchAsync(async (req, res) => {
-    const userSession = req.session;
-    const { questionId } = req.params;
-    const question = await Question.findById(questionId).populate({ path: "answers", populate: { path: "user" } }).populate("user");
-    res.render("admin/fullQuestion", { userSession, question });
-}))
+router.get("/admin/questions", catchAsync(questionsController.getAdminQuestions));
+
+router.get("/admin/question/:questionId",catchAsync(questionsController.getAdminSingleQuestion));
+
+router.delete("/admin/question/:questionId", catchAsync(questionsController.deleteAdminSingleQuestion)
+);
 
 module.exports = router;

@@ -2,8 +2,8 @@
 
     <div class="container min-h-screen mt-10 w-[92%] float-right">
         <header>
-            <h1 class="text-3xl font-cera ml-5">Answers</h1>
-            <h3 class="text-xl font-cera mt-5 ml-5">View or manage all answers of users</h3>
+            <h1 class="text-3xl font-cera ml-5">Reported Answers</h1>
+            <h3 class="text-xl font-cera mt-5 ml-5">View or manage all reported answers of users</h3>
         </header>
 
         <section>
@@ -25,31 +25,31 @@
 
                     <tbody class="border-b-2 border-gray-200 divide-y divide-gray-200">
 
-                        <% for(let answer of answers) { %>
+                        <% for(let answer of reportedAnswers) { %>
                             <tr>
                                 <td class="p-3 text-sm text-gray-700 font-inter">
-                                    <%- answer.answerDescription.slice(0,200) %>...
+                                    <%- answer.reportedAnswer.answerDescription.slice(0,200) %>...
                                 </td>
                                 <td class="p-3 text-sm text-gray-700 font-inter">
-                                    <%= answer.user.username %>
+                                    <%= answer.reportedAnswer.user.username %>
                                 </td>
                                 <td class="p-3 text-sm text-gray-700 dateValue font-inter">
-                                    <%= answer.updatedAt %>
+                                    <%= answer.reportedAnswer.updatedAt %>
                                 </td>
                                 <td class="p-3 text-sm text-gray-700 dateValue font-inter">
-                                    <%= answer.createdAt %>
+                                    <%= answer.reportedAnswer.createdAt %>
                                 </td>
                                 <td class="p-3 text-sm text-gray-700 font-inter">
-                                    <%= answer.votes %>
+                                    <%= answer.reportedAnswer.votes %>
                                 </td>
                                 <td class="p-3 text-sm text-gray-700">
-                                    <form method="get" action="/admin/question/<%= answer.question._id %>">
+                                    <form method="get" action="/admin/question/<%= answer.reportedAnswer.question._id %>">
                                         <button
                                             class="p-3 w-28 bg-[#d9f5db] hover:bg-[#65C18C] hover:text-white rounded-xl cursor-pointer font-semibold font-inter">View</button>
                                     </form>
                                 </td>
                                 <td class="p-5">
-                                    <form action="/admin/answer/<%= answer._id %>?_method=DELETE" method="post">
+                                    <form action="/admin/answer/<%= answer.reportedAnswer._id %>?_method=DELETE" method="post">
                                             <button type="submit">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-300 hover:text-red-500 deleteUserbtn" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />

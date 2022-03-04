@@ -9,7 +9,9 @@
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 	<link rel="stylesheet" href="/styles/output.css" />
 	<title>StudQuery</title>
+	<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor-viewer.min.css" />
 	<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+	
 </head>
 
 <body class="">
@@ -25,14 +27,16 @@
 				* FUNCTIONS WHICH ARE USED TO CONTINUE WHERE WE LEFT THE PAGE POSITION *
 				************************************************************************/
 
-				window.onbeforeunload = function (e) {
-					sessionStorage.setItem("scrollpos", window.scrollY);
-				};
+				// window.onbeforeunload = function (e) {
+				// 	sessionStorage.setItem("scrollpos", window.scrollY);
+				// };
 
-				document.addEventListener("DOMContentLoaded", function (event) {
-					var scrollpos = sessionStorage.getItem("scrollpos");
-					if (scrollpos) window.scrollTo(0, scrollpos);
-				});
+				// document.addEventListener("DOMContentLoaded", function (event) {
+					
+				// 	var scrollpos = sessionStorage.getItem("scrollpos");
+				// 	if (scrollpos) window.scrollTo(0, scrollpos);
+				// 	sessionStorage.removeItem("scrollpos");
+				// });
 				const closeButton = document.querySelectorAll(".close-btn");
 				const messageDiv = document.querySelectorAll(".message");
 
@@ -66,7 +70,7 @@
 				// })
 			</script>
 
-
+			<script src="/js/sendVoteReq.js"></script>
 </body>
 
 </html>

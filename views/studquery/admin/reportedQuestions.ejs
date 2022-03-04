@@ -1,0 +1,113 @@
+<% layout("../layout/adminBoilerplate.ejs") %>
+
+<div class="container min-h-screen mt-10 w-[92%] float-right">
+    <header>
+        <h1 class="text-3xl font-cera ml-5">Reported Questions</h1>
+        <h3 class="text-xl font-cera mt-5 ml-5">View or manage reported questions of users</h3>
+    </header>
+
+    <section class="reportModal hidden">
+        <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+
+            <div class="relative top-[25%] mx-auto p-5 border w-96 shadow-lg rounded-lg bg-white">
+
+                <div class="mt-3 text-center">
+
+                    <div class="flex mx-auto items-center justify-center">
+                        <svg class="mx-auto mb-4 w-16 h-16 text-gray-400 dark:text-gray-200" fill="#FC4F4F" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+
+                    <h1 class="text-xl font-inter font-medium">Are You sure you want to Delete the Question?</h1>
+
+                    <div class="flex justify-evenly mt-8 mb-8">
+                        <button class="p-4 text-white bg-red-500 hover:bg-red-700 rounded-lg">Delete Question</button>
+                        <button class="cancelDeletebtn p-4 text-gray-500 bg-white hover:bg-gray-100 rounded-lg border border-gray-200 hover:text-gray-900">Cancel</button>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section>
+        <div class="mt-8 ml-5 overflow-auto">
+            <table class="table-auto w-full">
+                <thead class="bg-gray-50 border-b-2 border-gray-200">
+                    <tr>
+                        <th class="p-3 text-sm font-semibold font-inter tracking-wide text-left">Question Title</th>
+                        <th class="p-3 text-sm font-semibold font-inter tracking-wide text-left">Owner</th>
+                        <th class="p-3 text-sm font-semibold font-inter tracking-wide text-left">Created at</th>
+                        <th class="p-3 text-sm font-semibold font-inter tracking-wide text-left">Updated at</th>
+                        <th class="p-3 w-10 text-sm font-inter  font-semibold tracking-wide text-left">Answers</th>
+                        <th class="p-3 w-10 text-sm font-inter font-semibold tracking-wide text-left">Votes</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-inter">View Conversation</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-inter">Delete</th>
+                    </tr>
+                </thead>
+
+                <tbody class="border-b-2 border-gray-200 divide-y divide-gray-200">
+
+                    <% for(let question of reportedQuestions) { %> 
+                    <tr>
+                        <td class="p-3 text-sm text-gray-700 font-inter"><%= question.reportedQuestion.questionTitle %> </td>
+                        <td class="p-3 text-sm text-gray-700 font-inter"><%= question.reportedQuestion.user.username %> </td>
+                        <td class="p-3 text-sm text-gray-700 dateValue font-inter"><%= question.reportedQuestion.updatedAt %> </td>
+                        <td class="p-3 text-sm text-gray-700 dateValue font-inter"><%= question.reportedQuestion.createdAt %> </td>
+                        <td class="p-3 text-sm text-gray-700 font-inter"><%= question.reportedQuestion.answers.length %> </td>
+                        <td class="p-3 text-sm text-gray-700 font-inter"><%= question.reportedQuestion.votes %> </td>
+                        <td class="p-3 text-sm text-gray-700">
+                            <form method="get" action="/admin/question/<%= question.reportedQuestion._id%>" class="">
+                                <button class="p-3 w-28 bg-[#d9f5db] hover:bg-[#65C18C] hover:text-white rounded-xl cursor-pointer font-semibold font-inter">View</button>
+                            </form>
+                        </td>
+
+                        <td class="p-3">
+                            <form action="/report/question/<%= question._id %>?_method=DELETE" method="post">
+                                
+                                    <button type="submit">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-300 hover:text-red-500 deleteUserbtn" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                            
+                            </form>
+                        </td>
+
+                    </tr>
+
+
+                    <% } %> 
+                </tbody>
+
+                <script>
+                    let date = document.querySelectorAll(".dateValue");
+                    date.forEach(function(e) {
+                        let date = new Date(e.textContent);
+                        date.toLocaleTimeString('en-US',{"hour12:":"true"})
+                        e.innerHTML = (`${date.getDate()}/${date.toLocaleString('default',{month:"short"})}/${date.getFullYear()} ${date.getUTCHours()}:${date.getUTCMinutes()}`)
+                    })
+                </script>
+            </table>
+        </div>
+    </section>
+</div>
+
+
+<script>
+    // const deleteUserbtn = document.querySelectorAll(".deleteUserbtn");
+    // const reportModal = document.querySelector(".reportModal");
+    // const cancelBtn = document.querySelector(".cancelDeletebtn");
+
+    // cancelBtn.addEventListener("click",function(e) {
+    //     reportModal.classList.add("hidden");
+    // })
+
+    // deleteUserbtn.forEach(function(el) {
+    //     el.addEventListener("click",function(e) {
+    //         reportModal.classList.remove("hidden");
+        
+    //     })
+    // })
+   
+</script>

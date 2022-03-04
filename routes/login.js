@@ -5,6 +5,7 @@ const User = require("../models/user");
 const Admin = require("../models/admin");
 const catchAsync = require("../utils/catchAsync");
 const ExpressError = require("../utils/ExpressError");
+const authenticateController = require("../controllers/user/authentication");
 
 //TODO: Separate the Login Route of Admin and create it in admin route folder
 
@@ -41,24 +42,10 @@ const requestLogin = catchAsync(async (req, res, next) => {
 	throw new ExpressError(404, "Username Or Password is Incorrect!");
 });
 
-router.get("/login", (req, res) => {
-	res.render("login");
-});
+router.get("/login", authenticateController.renderLoginForm);
 
-router.post("/login",requestLogin,logInValidator,catchAsync(async (req, res) => {
-		req.flash("welcome", "Welcome to Studquery");
-		const redirectUrl = req.session.redirectUrl || '/';
-		res.redirect(redirectUrl);
-	})
-);
+router.post("/login",requestLogin,logInValidator,authenticateController.loginSuccessful);
 
-
-router.get("/logout", (req, res) => {
-	if (req.session.isLoggedIn) {
-		req.session.destroy(() => {
-			res.redirect("/");
-		});
-	}
-});
+router.get("/logout", authenticateController.logout);
 
 module.exports = router;

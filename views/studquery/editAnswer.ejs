@@ -8,7 +8,7 @@
 	<h1 class="text-3xl text-slate-700 font-cera font-semibold my-6">Edit Answer</h1>
 
 	<div>
-		<form action="/question/<%= question._id %>/answer/<%=answer._id%>/edit?_method=PUT" method="post" autocomplete="off" id="editAnswerForm">
+		<form action="/question/<%= question._id %>/answer/<%=answer._id%>?_method=PUT" method="post" autocomplete="off" id="editAnswerForm">
 			<span class="drop-shadow-lg rounded-3xl bg-violet-400 text-white p-3">Editing As <%= answer.user.username %> </span>
 
 			<br /><br />
@@ -32,7 +32,7 @@
 	const editor = new toastui.Editor({
 		el:document.querySelector("#editor"),
 		previewStyle:'vertical',
-		initialEditType:"wysiwyg",	
+		initialEditType:"wysiwyg",
 		height:'500px'
 	})
 
