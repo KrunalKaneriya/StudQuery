@@ -2,7 +2,6 @@
 <%- include("../partials/sidebar") %>
 <%- include("../partials/flash") %>
 
-
 <!-- *Checks That the Question User is Equals to the User which is logged in -->
 <% if(question.user.equals(userSession.userid)) { %>
 <div id="questionOptions" class="container w-48 mt-10 float-right mr-12 text-white text-center">
@@ -144,7 +143,7 @@
 				<div class="ml-20 answer-container">
 					<form action="/question/<%=question._id%>/answer" method="post" autocomplete="off" id="answerForm">
 						<div id="editor">
-
+							
 						</div>
 						<input type="hidden" name="answerDescription" class="answerField">
 						<!-- <input type="text" name="answerDescription" id="ans" class="w-full rounded-xl ring-2 ring-gray-300 border-none focus:ring-2 focus:ring-teal-400 focus:outline-none focus:border-none" /> -->
@@ -266,7 +265,7 @@
 <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 
 <script>
-
+	
 	const editor = new toastui.Editor({
 		el:document.querySelector("#editor"),
 		initialEditType:"wysiwyg",
