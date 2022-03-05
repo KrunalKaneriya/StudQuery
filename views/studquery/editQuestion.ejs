@@ -3,8 +3,8 @@
 
 <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 
-    <div class="container w-[55%] mx-auto my-6 pl-10 min-h-max">
-        <h1 class="text-3xl text-slate-700 font-cera font-semibold my-6">Edit a Question</h1>
+    <div class="container w-[65%] mx-auto my-6 pl-10 min-h-max">
+        <h1 class="text-3xl text-slate-700 font-sofia font-semibold my-6">Edit a Question</h1>
 
         <div>
             <form action="/question/<%=question._id%>/edit?_method=PUT" method="post" autocomplete="off" id="questionEditForm">
@@ -26,12 +26,7 @@
                 </div>
 
                 <input type="hidden" name="questionDescription" id = "questionDescriptionInput">
-                <!-- <textarea name="questionDescription" id="questionDescription" cols="30" rows="10" class="min-h-min rounded-2xl mt-3 border border-slate-300 focus:border-sky-500 focus:ring-1 focus:ring-sky-500 w-full text-slate-600" required><%#- question.questionDescription %></textarea> -->
-
-
                 <br><br>
-
-
                 <label for="tags">Tags</label>
                 <input type="text" class="mt-2 rounded-xl border border-slate-300 shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 w-full text-slate-600" name="tags" id="tags" placeholder="Edit Tags" value="<%= tagsArray %>">
 

@@ -2,19 +2,18 @@
 <%- include("../partials/sidebar") %>
 <%- include("../partials/flash") %>
 
-
-            <div class="container w-[60%] mx-auto my-6">
-                <div id="heading" class="font-cera text-3xl pl-10 pt-5">
+            <div class="container w-[65%] mx-auto my-6">
+                <div id="heading" class="font-sofia text-gray-500 text-3xl pl-10 pt-5">
                     Explore Tags
-                    <div id="separator" class="h-0.5 w-full rounded-xl bg-orange-200 my-3"></div>
+                    <div id="separator" class="h-0.5 w-full rounded-xl bg-orange-200/80 my-3"></div>
                 </div>
 
                 <div class="tagsContainer flex flex-row flex-wrap">
                     <% for (let tag of uniqueTags) { %>
 
-                        <div class="ring-2 ring-indigo-200 m-3 bg-indigo-100/50 ml-10  rounded-lg drop-shadow-sm shadow-md">
+                        <div class="hover:bg-indigo-400 hover:-translate-y-1 transition-all duration-150 ring-2 ring-indigo-200 m-3 bg-indigo-100/50 ml-10  rounded-lg drop-shadow-sm shadow-md">
 
-                                <a class="font-cera text-base text-indigo-500 p-5  inline-block " href="/explore/<%= tag%>"><%= tag%></a>
+                                <a class="font-sofia hover:text-white text-indigo-500 p-5 inline-block " href="/explore/<%= tag%>"><%= tag%></a>
                                 
                         </div>
 

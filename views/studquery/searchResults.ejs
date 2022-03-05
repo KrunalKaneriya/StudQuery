@@ -1,77 +1,77 @@
 <% layout("../layout/boilerplate") %>
-    <!--*All The Contents Of this File Will be Passed To This Layout File-->
+<!--*All The Contents Of this File Will be Passed To This Layout File-->
 
-    <div class="container w-[55%] mx-auto my-6 min-h-max inline-block">
-        <h1 class="font-cera text-3xl mt-6 ml-10">Search Results</h1>
+<div class="container w-[65%] mx-auto my-6 min-h-max inline-block">
+    <h1 class="font-sofia text-gray-500 text-3xl mt-6 ml-10">Search Results</h1>
 
-        <div class="separator w-full  mt-2 rounded-xl ml-10 text-sm text-gray-500">
-            <%= count %> results
-        </div>
+    <div class="separator w-full  mt-2 rounded-xl ml-10 text-sm text-gray-500">
+        <%= count %> results
+    </div>
 
-        <div class="container">
-            <% for(let post of result) { %>
-                <div id="post" class="mb-10 ml-8 rounded-2xl p-2 overflow-hidden">
-
-
-                    <div id="arrows" class="w-[10%] pt-4 float-left">
-                        <span
-                            class="votes inline-block text-white text-center bg-[#4db36f] rounded-md text-sm w-full p-2">
-                            <%= post.votes%>
-                                <br>
-                                Votes
-                        </span>
-
-                        <span class="inline-block text-[#dee2e6] text-center bg-[#6c757d] rounded-md mt-3 p-2 text-sm">
-                            <%= post.answers.length %> Answers
-                        </span>
+    <div class="container">
+        <% for(let post of result) { %>
+        <div id="post" class="mb-10 ml-8 rounded-2xl p-2 overflow-hidden">
 
 
+            <div id="arrows" class="w-[10%] pt-4 float-left">
+                <span class="votes inline-block text-white text-center bg-[#4db36f] rounded-md text-sm w-full p-2">
+                    <%= post.votes%>
+                    <br>
+                    Votes
+                </span>
+
+                <span class="inline-block text-[#dee2e6] text-center bg-[#6c757d] rounded-md mt-3 p-2 text-sm">
+                    <%= post.answers.length %> Answers
+                </span>
+
+
+            </div>
+
+            <div id="questionWrapper">
+                <div id="question" class="ml-24">
+                    <div class="w-full">
+                        <a class="text-lg inline-block mt-2 text-gray-600 font-semibold"
+                            href="/question/<%= post._id%>">
+                            <%= post.questionTitle %>
+
+                        </a>
                     </div>
 
-                    <div id="questionWrapper">
-                        <div id="question" class="ml-24">
-                            <div class="w-full relative">
-                                <a class="text-lg inline-block mt-2 text-gray-700 font-inter font-semibold max-w-xl"
-                                    href="/question/<%= post._id%>">
-                                    <%= post.questionTitle %>
+                    <p class="leading-8 pt-2 pb-4 text-gray-500">
+                        <%= post.snippet %>
+                    </p>
 
-                                </a>
-                            </div>
-
-                            <p class="font-normal font-inter leading-8 pt-4 pb-4 text-gray-600/90">
-                                <%= post.snippet %>
-                            </p>
-
-                            <% post.tags.forEach(el=> { %>
-                                <span
-                                    class="font-inter font-light text-violet-900 drop-shadow p-2 bg-violet-200 mx-1  rounded-xl text-sm">
-                                    <%= el %>
-                                </span>
-                                <% }) %>
-
-                                    <div id="separator" class="bg-slate-200 h-0.5 mt-5"></div>
+                    <div class="tags">
+                        <% post.tags.forEach(el=> { %>
+                        <span class="bg-violet-200 p-2 rounded-xl text-violet-500 inline-block mb-1">
+                            <a href="/explore/<%= el %>">
+                                <%= el %>
+                            </a>
+                        </span>
+                        <% }) %>
 
 
 
-                                    <div class="mt-3 rounded-xl bg-sky-100 w-max p-2 outline-none border">
-                                        <div class="rounded-full float-left bg-red-300 w-6 h-6"></div>
-                                        <a class="ml-2 font-medium font-inter text-blue-500"
-                                            href="/user/<%= post.user._id %>">
-                                            <%= post.user.username %>
-                                        </a>
-                                    </div>
-
-
-
+                        <div class="rounded-xl bg-blue-100/70 w-max p-2 outline-none float-right">
+                            <div class="rounded-full float-left bg-red-300 w-6 h-6"></div>
+                            <a class="ml-2 font-medium text-blue-500" href="/user/<%= post.user._id %>">
+                                <%= post.user.username %>
+                            </a>
                         </div>
                     </div>
 
+
+
+
                 </div>
-                <% } %>
+            </div>
+
         </div>
-
-
+        <% } %>
     </div>
 
 
-    <%- include("../partials/sidebar") %>
+</div>
+
+
+<%- include("../partials/sidebar") %>
