@@ -34,7 +34,7 @@ module.exports.adminAddReportedQuestion = async (req, res) => {
 		const isQuestionReported = await ReportedQuestion.exists({
 			reportedQuestion: questionId
 		});
-    //If Question is Reported then don't add it again and redirect.
+		//If Question is Reported then don't add it again and redirect.
 		if (isQuestionReported) {
 			req.flash('error', 'This Question is already reported to our Servers');
 		} else {
@@ -56,11 +56,11 @@ module.exports.addReportedAnswer = async (req, res) => {
 	if (!isLoggedIn) {
 		req.flash('error', 'You need to login to report Answer');
 	} else {
-    //Checking is Answer Reported?
+		//Checking is Answer Reported?
 		const isAnswerReported = await ReportedAnswer.exists({
 			reportedAnswer: answerId
 		});
-    //If Answer is Reported then don't add it again and redirect.
+		//If Answer is Reported then don't add it again and redirect.
 		if (isAnswerReported) {
 			req.flash('error', 'This answer is already reported to our Servers!');
 		} else {
