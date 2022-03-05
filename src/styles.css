@@ -40,6 +40,9 @@ div#message {
         font-family:"Cera Pro"
     }
 
+    .font-biotif {
+        font-family:"Biotif"
+    }
 
     .font-inter {
         font-family:"Inter"
@@ -55,5 +58,8 @@ div#message {
 
     .font-jost {
         font-family:"Jost";
+    }
+    .font-sofia {
+        font-family: 'Sofia Pro', sans-serif;
     }
 }
