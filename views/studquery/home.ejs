@@ -4,7 +4,7 @@
 <%- include("../partials/sidebar") %>
 
 
-<div class="container  w-48 mt-10 float-right mr-12  font-medium   ">
+<div class="container  w-48 mt-10 float-right mr-12  font-medium">
 
 	<div class="bg-[#ffac5f79] p-3 text-[#f56606] text-center hover:ring-orange-300 hover:ring-2 rounded-xl">
 		<% if(userSession.userid) { %>
@@ -197,7 +197,7 @@
 			<div id="question" class="ml-20">
 
 			
-				<div class="w-full relative">
+				<div class="w-full">
 					<a class="text-lg inline-block mt-2 text-gray-600 font-semibold font-inter max-w-xl" href="/question/<%= post._id%>">
 						<%= post.questionTitle %>
 					</a>
