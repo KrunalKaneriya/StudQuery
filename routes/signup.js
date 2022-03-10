@@ -5,6 +5,9 @@ const router = express.Router();
 const catchAsync = require("../utils/catchAsync");
 const ExpressError = require("../utils/ExpressError");
 const authenticateController = require("../controllers/user/authentication");
+const multer = require("multer"); //Package Required to parse Images
+const {storage} = require("../cloudinary/user");
+const upload = multer({storage});
 
 /*******************
  * VALIDATION SCHEMA *
@@ -13,7 +16,7 @@ const authenticateController = require("../controllers/user/authentication");
 
 router.get("/signup", authenticateController.renderSignUpForm); 
 
-router.post("/signup",signUpValidator,catchAsync(authenticateController.sendSignUpInfo));
+router.post("/signup",upload.single("image"),catchAsync(authenticateController.sendSignUpInfo));
 
 module.exports = router;
 

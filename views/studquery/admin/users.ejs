@@ -2,8 +2,8 @@
 
 <div class="container min-h-screen mt-10 w-[92%] float-right">
     <header>
-        <h1 class="text-3xl font-cera ml-5 ">Users</h1>
-        <h3 class="text-lg font-cera mt-5 ml-5">Delete or Review the Users of Studquery</h3>
+        <h1 class="text-3xl font-segoe ml-5 ">Users</h1>
+        <h3 class="text-lg font-segoe mt-5 ml-5">Delete or Review the Users of Studquery</h3>
     </header>
 
     
@@ -13,18 +13,18 @@
             <table class="table-auto w-full">
                 <thead class="bg-gray-50 border-b-2 border-gray-200">
                     <tr>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-inter ">Username</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-inter ">Alias</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-inter ">Email</th>
-                        <th class=" p-3 text-sm font-semibold tracking-wide text-left font-inter ">Age</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-inter">Studying In</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-inter">City</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-inter">Description</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-inter">Questions</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-inter">Answers</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-inter">Last Logged In</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-inter">Created At</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-inter">Options</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-segoe ">Username</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-segoe ">Alias</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-segoe ">Email</th>
+                        <th class=" p-3 text-sm font-semibold tracking-wide text-left font-segoe ">Age</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-segoe">Studying In</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-segoe">City</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-segoe">Description</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-segoe">Questions</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-segoe">Answers</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-segoe">Last Logged In</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-segoe">Created At</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-segoe">Options</th>
                     </tr>
                 </thead>
 
@@ -32,18 +32,18 @@
 
                     <% for(let user of users) { %> 
                     <tr>
-                        <td class="p-3 text-sm text-gray-700 font-inter "><%= user.username %> </td>
-                        <td class="p-3 text-sm text-gray-700 font-inter "><%= user.alias %> </td>
-                        <td class="p-3 text-sm text-gray-700 font-inter "><%= user.email %> </td>
-                        <td class="p-3 text-sm text-gray-700 font-inter "><%= user.age %> </td>
-                        <td class="p-3 text-sm text-gray-700 font-inter "><%= user.studyingIn %> </td>
-                        <td class="p-3 text-sm text-gray-700 font-inter "><%= user.city %> </td>
-                        <td class="p-3 text-sm text-gray-700 font-inter "><%= user.description %> </td>
-                        <td class="p-3 text-sm text-gray-700 font-inter "><%= user.questions.length %> </td>
-                        <td class="p-3 text-sm text-gray-700 font-inter "><%= user.answers.length %> </td>
+                        <td class="p-3 text-sm text-gray-700 font-segoe "><%= user.username %> </td>
+                        <td class="p-3 text-sm text-gray-700 font-segoe "><%= user.alias %> </td>
+                        <td class="p-3 text-sm text-gray-700 font-segoe "><%= user.email %> </td>
+                        <td class="p-3 text-sm text-gray-700 font-segoe "><%= user.age %> </td>
+                        <td class="p-3 text-sm text-gray-700 font-segoe "><%= user.studyingIn %> </td>
+                        <td class="p-3 text-sm text-gray-700 font-segoe "><%= user.city %> </td>
+                        <td class="p-3 text-sm text-gray-700 font-segoe "><%= user.description %> </td>
+                        <td class="p-3 text-sm text-gray-700 font-segoe "><%= user.questions.length %> </td>
+                        <td class="p-3 text-sm text-gray-700 font-segoe "><%= user.answers.length %> </td>
                         
-                        <td class="p-3 text-sm text-gray-700 dateValue font-inter "><%= user.lastLoggedIn %> </td>
-                        <td class="p-3 text-sm text-gray-700 dateValue font-inter "><%= user.createdAt%> </td>
+                        <td class="p-3 text-sm text-gray-700 dateValue font-segoe "><%= user.lastLoggedIn %> </td>
+                        <td class="p-3 text-sm text-gray-700 dateValue font-segoe "><%= user.createdAt%> </td>
                         <td class="p-3">
                             <form action="/admin/users/<%= user._id %>?_method=DELETE" method="post">
                                 
@@ -70,7 +70,7 @@
                                                 <svg class="mx-auto mb-4 w-16 h-16 text-gray-400 dark:text-gray-200" fill="#FC4F4F" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                             </div>
                         
-                                            <h1 class="text-xl font-inter font-medium">Are You sure you want to Delete the User?</h1>
+                                            <h1 class="text-xl font-segoe font-medium">Are You sure you want to Delete the User?</h1>
                         
                                             <div class="flex justify-evenly mt-8 mb-8">
                                                 <button class="p-4 text-white bg-red-500 hover:bg-red-700 rounded-lg confirm-delete">Delete User</button>

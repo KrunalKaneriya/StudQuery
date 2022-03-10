@@ -4,70 +4,89 @@
 
 <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 
-<div class="container w-[60%] mx-auto my-6">
-    <div id="heading" class="font-cera text-3xl pl-10 pt-5">
+<div class="container w-[70%] ml-[18%] my-6">
+
+    <div id="heading" class="font-sofia text-gray-500 text-xl pl-10 pt-5">
         <%= tag %> 
-        <div id="separator" class="h-0.5 w-full rounded-xl bg-orange-200 my-3"></div>
     </div>
+    <div id="separator" class="h-0.5 w-full rounded-xl bg-[#EEEDFF] my-3">
 
     <div class="container">
         <% for(let post of tagResult) { %>
-            <div id="post" class="mb-10 ml-8 rounded-2xl p-2 overflow-hidden">
+            <div id="post" class="py-5 rounded-xl shadow-sm flex flex-row">
 
 
-                <div id="arrows" class="w-[10%] pt-4 float-left">
+                <!-- <div id="arrows" class="w-[10%] pt-4 float-left">
                     <span
                         class="votes inline-block text-white text-center bg-[#4db36f] rounded-md text-sm w-full p-2">
-                        <%= post.votes%>
+                        <%#= post.votes%>
                             <br>
                             Votes
                     </span>
 
                     <span class="inline-block text-[#dee2e6] text-center bg-[#6c757d] rounded-md mt-3 p-2 text-sm">
-                        <%= post.answers.length %> Answers
+                        <#%= post.answers.length %> Answers
                     </span>
 
 
-                </div>
+                </div> -->
 
-                <div id="questionWrapper">
-                    <div id="question" class="ml-24">
-                        <div class="w-full relative">
-                            <a class="text-lg inline-block font-semibold mt-2 text-gray-700 font-inter max-w-xl"
-                                href="/question/<%= post._id%>">
-                                <%= post.questionTitle %>
-                                
-
-                            </a>
+                <section class="profile-picture flex flex-col h-full items-center justify-center mx-5 mt-3 flex-wrap gap-y-6">
+                    <div class="image">
+                        <% if(post.user.image.url) {  %>
+                        <img src="<%= post.user.image ? `${post.user.image.url}` : "" %> " alt=""
+                            class="w-14 h-14 rounded-full">
+                        <% } else { %>
+                        <div class="w-14 h-14 rounded-full bg-gray-200"></div>
+                        <% } %>
+                    </div>
+                        
+                        <div class="flex flex-col gap-y-2">
+                            <p class="text-center font-sofia text-sm font-light my-2">Votes:<%= post.votes %></p>
+                            <p class="text-center font-sofia text-sm font-light">Answers: <%= post.answers.length %> </p>
+                            <div class="saveQuestion mx-auto w-full mt-2">
+        
+                                <% if(userSession && userSession.isLoggedIn) {  %>
+                                <form action="/user/<%= userSession.userid %>/question/<%= post._id %>/savedQuestions"
+                                    method="post">
+                                    <button type="submit">
+                                        <svg data-tooltip-target="tooltip-default" xmlns="http://www.w3.org/2000/svg"
+                                            class=" hover:scale-150 transition-all" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor" width="85" height="25">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="0"
+                                                d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" fill="#23C197" />
+                                        </svg>
+                                    </button>
+                                </form>
+                                <% } %>
+                            </div>
                         </div>
 
-                        <p class="font-normal font-inter leading-8 pt-4 pb-4 text-gray-600/90">
-                            <%= post.snippet %>
-                        </p>
+                </section>
 
+                <section class="question-body flex flex-col gap-y-3.5">
+                    <p class="font-sofia text-[#AAAABC] text-sm"><%= post.createdAt %> <a href=""></a> </p>
+                    <p class=""> <a href="/question/<%= post._id%>"
+                            class="font-sofia text-[#464555] text-xl font-semibold"><%= post.questionTitle %></a></p>
+                    <p class="font-sofia text-[#464555ce] font-light w-[94%] leading-7"><%= post.snippet %></p>
+                    <div class="tags flex flex-row flex-wrap gap-4 my-2">
                         <% post.tags.forEach(el=> { %>
-                            <span
-                                class="font-inter font-light text-violet-900 drop-shadow p-2 bg-violet-200  rounded-xl text-sm ml-2">
-                                <%= el %>
-                            </span>
-                            <% }) %>
-
-                                <div id="separator" class="bg-slate-200 h-0.5 mt-5"></div>
-
-
-
-                                <div class="mt-3 rounded-xl bg-sky-100 w-max p-2 outline-none border">
-                                    <div class="rounded-full float-left bg-red-300 w-6 h-6"></div>
-                                    <a class="ml-2 font-medium font-inter text-blue-500"
-                                        href="/user/<%= post.user._id %>">
-                                        <%= post.user.username %>
-                                    </a>
-                                </div>
-
-
-
+                        <div class="tag-wrapper px-2 py-1 bg-[#EEEDED] rounded-lg">
+                            <p><a href="/explore/<%= el %>" class="text-[#AAA4BC] font-semibold "><%= el %></a></p>
+                        </div>
+                        <% }) %>
                     </div>
-                </div>
+                    <div class="question-options flex flex-row gap-x-14 mt-3">
+                        <p class="text-[#7485F2] font-sofia font-light"><%= post.answers.length %> Answers</p>
+                        <p><a href="/question/<%= post._id %>" class="text-[#00A97B] font-sofia font-light">Add Answer</a></p>
+                        <form action="/report/question/<%= post._id %>" method="post">
+                            <button class="text-[#EE5C67] font-sofia font-light">Report</button>
+                        </form>
+        
+                    </div>
+        
+                </section>
+
 
             </div>
             <% } %>

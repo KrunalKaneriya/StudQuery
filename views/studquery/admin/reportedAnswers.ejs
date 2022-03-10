@@ -2,8 +2,8 @@
 
     <div class="container min-h-screen mt-10 w-[92%] float-right">
         <header>
-            <h1 class="text-3xl font-cera ml-5">Reported Answers</h1>
-            <h3 class="text-xl font-cera mt-5 ml-5">View or manage all reported answers of users</h3>
+            <h1 class="text-3xl font-segoe ml-5">Reported Answers</h1>
+            <h3 class="text-xl font-segoe mt-5 ml-5">View or manage all reported answers of users</h3>
         </header>
 
         <section>
@@ -11,13 +11,13 @@
                 <table class="table-auto w-full">
                     <thead class="bg-gray-50 border-b-2 border-gray-200">
                         <tr>
-                            <th class="p-3 text-sm font-semibold font-inter tracking-wide text-left">Answer Description
+                            <th class="p-3 text-sm font-semibold font-segoe tracking-wide text-left">Answer Description
                             </th>
-                            <th class="p-3 text-sm font-semibold font-inter tracking-wide text-left">Owner</th>
-                            <th class="p-3 text-sm font-semibold font-inter tracking-wide text-left">Created at</th>
-                            <th class="p-3 text-sm font-semibold font-inter tracking-wide text-left">Updated at</th>
-                            <th class="p-3 w-10 text-sm font-inter font-semibold tracking-wide text-left">Votes</th>
-                            <th class="p-3 text-sm font-semibold tracking-wide text-left font-inter">View Conversation
+                            <th class="p-3 text-sm font-semibold font-segoe tracking-wide text-left">Owner</th>
+                            <th class="p-3 text-sm font-semibold font-segoe tracking-wide text-left">Created at</th>
+                            <th class="p-3 text-sm font-semibold font-segoe tracking-wide text-left">Updated at</th>
+                            <th class="p-3 w-10 text-sm font-segoe font-semibold tracking-wide text-left">Votes</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-left font-segoe">View Conversation
                             <th class="p-3 text-sm text-gray-700 text-left">Options</th>
                             </th>
                         </tr>
@@ -27,25 +27,26 @@
 
                         <% for(let answer of reportedAnswers) { %>
                             <tr>
-                                <td class="p-3 text-sm text-gray-700 font-inter">
+                                <td class="p-3 text-sm text-gray-700 font-segoe">
                                     <%- answer.reportedAnswer.answerDescription.slice(0,200) %>...
                                 </td>
-                                <td class="p-3 text-sm text-gray-700 font-inter">
+                                <td class="p-3 text-sm text-gray-700 font-segoe">
                                     <%= answer.reportedAnswer.user.username %>
                                 </td>
-                                <td class="p-3 text-sm text-gray-700 dateValue font-inter">
-                                    <%= answer.reportedAnswer.updatedAt %>
-                                </td>
-                                <td class="p-3 text-sm text-gray-700 dateValue font-inter">
+                                <td class="p-3 text-sm text-gray-700 dateValue font-segoe">
                                     <%= answer.reportedAnswer.createdAt %>
                                 </td>
-                                <td class="p-3 text-sm text-gray-700 font-inter">
+                                <td class="p-3 text-sm text-gray-700 dateValue font-segoe">
+                                    <%= answer.reportedAnswer.updatedAt %>
+                                </td>
+                               
+                                <td class="p-3 text-sm text-gray-700 font-segoe">
                                     <%= answer.reportedAnswer.votes %>
                                 </td>
                                 <td class="p-3 text-sm text-gray-700">
                                     <form method="get" action="/admin/question/<%= answer.reportedAnswer.question._id %>">
                                         <button
-                                            class="p-3 w-28 bg-[#d9f5db] hover:bg-[#65C18C] hover:text-white rounded-xl cursor-pointer font-semibold font-inter">View</button>
+                                            class="p-3 w-28 bg-[#d9f5db] hover:bg-[#65C18C] hover:text-white rounded-xl cursor-pointer font-semibold font-segoe">View</button>
                                     </form>
                                 </td>
                                 <td class="p-5">
@@ -69,8 +70,7 @@
                         let date = document.querySelectorAll(".dateValue");
                         date.forEach(function (e) {
                             let date = new Date(e.textContent);
-                            date.toLocaleTimeString('en-US', { "hour12:": "true" })
-                            e.innerHTML = (`${date.getDate()}/${date.toLocaleString('default', { month: "short" })}/${date.getFullYear()} ${date.getUTCHours()}:${date.getUTCMinutes()}`)
+                            e.innerHTML = (`${date.getDate()}/${date.toLocaleString('default', { month: "short" })}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`)
 
 
 

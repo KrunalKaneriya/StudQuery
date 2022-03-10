@@ -1,104 +1,111 @@
 <% layout ("../layout/boilerplate") %>
-    <%- include("../partials/sidebar") %>
-        <%- include("../partials/flash") %>
+<%- include("../partials/sidebar") %>
+<%- include("../partials/flash") %>
 
 <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 
 
-            <div class="container w-[60%] mx-auto my-6">
-                <div id="heading" class="font-cera text-3xl pl-10 pt-5">
-                    My Questions
-                    <div id="separator" class="h-0.5 w-full rounded-xl bg-orange-200 my-3"></div>
+<div class="container w-[70%] ml-[18%] my-6">
+    <div id="heading" class="font-sofia text-gray-500 text-xl pl-10 pt-5">
+        My Questions
+    </div>
+    <div id="separator" class="h-0.5 w-full rounded-xl bg-[#EEEDFF] my-3">
+
+    </div>
+    <% for(let post of result) { %>
+    <div id="questionPost" class="py-5 rounded-xl shadow-sm flex flex-row">
+        <section class="profile-picture flex flex-col h-full items-center justify-center mx-5 mt-3 flex-wrap gap-y-6">
+            <div class="image">
+				<% if(user.image.url) {  %>
+				<img src="<%= user.image ? `${user.image.url}` : "" %> " alt=""
+					class="w-14 h-14 rounded-full">
+				<% } else { %>
+				<div class="w-14 h-14 rounded-full bg-gray-200"></div>
+				<% } %>
+			</div>
+
+            <div class="h-full">
+                <div id="arrows">
+                    <form action="/question/<%=post._id %>/vote/inc?_method=PUT"
+                        class="upForm hover:scale-125 transition-all" method="post">
+                        <button type="submit" id="post-inc">
+                            <svg class="cursor-pointer ml-1" width="75" height="20" viewBox="0 0 90 108" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path class="post-inc-path" id="Arrow 1"
+                                    d="M49.2426 2.57276C46.8995 0.229614 43.1005 0.229614 40.7574 2.57276L2.57359 40.7565C0.230446 43.0997 0.230446 46.8987 2.57359 49.2418C4.91674 51.585 8.71573 51.585 11.0589 49.2418L45 15.3007L78.9411 49.2418C81.2843 51.585 85.0833 51.585 87.4264 49.2418C89.7696 46.8987 89.7696 43.0997 87.4264 40.7565L49.2426 2.57276ZM51 107.094L51 6.8154H39L39 107.094H51Z"
+                                    fill="#9643FF" />
+                            </svg>
+                        </button>
+
+                        <input type="hidden" name="questionId" value="<%= post._id %>" />
+                    </form>
+
+                    <span class="w-full text-center text-xl font-sofia inline-block text-gray-500 votes">
+                        <%= post.votes %>
+                    </span>
+
+                    <form action="/question/<%= post._id %>/vote/dec?_method=PUT" method="post"
+                        class="downForm hover:scale-125 transition-all">
+                        <button type="submit" id="post-dec">
+                            <svg class="cursor-pointer ml-1 mt-1" width="75" height="20" viewBox="0 0 90 107"
+                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path id="Arrow 2"
+                                    d="M40.7574 105.191C43.1005 107.534 46.8995 107.534 49.2426 105.191L87.4264 67.0071C89.7696 64.664 89.7696 60.865 87.4264 58.5219C85.0833 56.1787 81.2843 56.1787 78.9411 58.5219L45 92.463L11.0589 58.5219C8.71573 56.1787 4.91674 56.1787 2.57359 58.5219C0.230447 60.865 0.230447 64.664 2.57359 67.0071L40.7574 105.191ZM39 0.669922L39 100.948H51L51 0.669922L39 0.669922Z"
+                                    fill="#E16A6A" />
+                            </svg>
+                        </button>
+
+                        <input type="hidden" name="questionId" value="<%= post._id %>" />
+                    </form>
                 </div>
 
-                <% for(let post of result) { %>
-                    <div id="post" class="mb-10 rounded-2xl p-2  overflow-hidden">
-                        <div id="arrows" class="w-[10%] pt-4 pl-2 float-left">
-                            <form action="/question/<%=post._id %>/vote/inc?_method=PUT&&isPersonalQuestion=true" class="upForm hover:scale-125 transition-all" method="post">
-                                <button type="submit" id="post-inc">
-                                    <svg class="cursor-pointer" width="70" height="20" viewBox="0 0 90 108" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path class="post-inc-path" id="Arrow 1"
-                                            d="M49.2426 2.57276C46.8995 0.229614 43.1005 0.229614 40.7574 2.57276L2.57359 40.7565C0.230446 43.0997 0.230446 46.8987 2.57359 49.2418C4.91674 51.585 8.71573 51.585 11.0589 49.2418L45 15.3007L78.9411 49.2418C81.2843 51.585 85.0833 51.585 87.4264 49.2418C89.7696 46.8987 89.7696 43.0997 87.4264 40.7565L49.2426 2.57276ZM51 107.094L51 6.8154H39L39 107.094H51Z"
-                                            fill="#9643FF" />
-                                    </svg>
-                                </button>
+                <div class="saveQuestion mx-auto w-full mt-2">
 
-                                <input type="hidden" name="questionId" value="<%= post._id %>" />
-                            </form>
-
-                            <span class="votes text-xl mx-auto py-2 inline-block text-gray-500 w-full text-center">
-                                <%= post.votes %>
-                            </span>
-
-                            <form action='/question/<%= post._id %>/vote/dec?_method=PUT&&isPersonalQuestion=true' method="post" class="downForm hover:scale-125 transition-all">
-                                <button type="submit" id="post-dec">
-                                    <svg class="cursor-pointer" width="70" height="20" viewBox="0 0 90 107" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path id="Arrow 2"
-                                            d="M40.7574 105.191C43.1005 107.534 46.8995 107.534 49.2426 105.191L87.4264 67.0071C89.7696 64.664 89.7696 60.865 87.4264 58.5219C85.0833 56.1787 81.2843 56.1787 78.9411 58.5219L45 92.463L11.0589 58.5219C8.71573 56.1787 4.91674 56.1787 2.57359 58.5219C0.230447 60.865 0.230447 64.664 2.57359 67.0071L40.7574 105.191ZM39 0.669922L39 100.948H51L51 0.669922L39 0.669922Z"
-                                            fill="#E16A6A" />
-                                    </svg>
-                                </button>
-
-                                <input type="hidden" name="questionId" value="<%= post._id %>"/>
-                            </form>
-                        </div>
-
-                        <div id="questionWrapper">
-                            <div id="question" class="ml-20">
-                                <div class="w-full relative">
-                                    <a class="text-xl inline-block mt-2 text-gray-700 font-sans max-w-xl"
-                                        href="/question/<%= post._id%>">
-                                        <%= post.questionTitle %>
-                                    </a>
-                                </div>
-
-                                <p class="font-normal font-inter leading-8 pt-4 pb-5 text-gray-600/90">
-                                    <%= post.snippet %>
-                                </p>
-
-                                <!-- <div id="separator" class="bg-slate-200 h-0.5"></div> -->
-
-                                <!-- <div class="mt-3 rounded-xl bg-sky-100 w-max p-2 outline-none border">
-                                        <div class="rounded-full float-left bg-red-300 w-6 h-6"></div>
-                                        <a class="ml-2 font-medium font-inter text-blue-500" href="/user/<%= post.user._id %>">
-                                            <%= user.username %>
-                                        </a>
-                                    </div> -->
-                            </div>
-                        </div>
-
-                            <div id="answer-options" class="flex ml-20  text-gray-400/95 gap-12">
-                                <form action="/question/<%= post._id %>/edit" method="get">
-                                    <div class="hover:text-amber-500">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 float-left mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                        </svg>
-                                        <button type="submit" class="hover:text-amber-500">Edit</button>
-                                    </div>
-                                </form>
-                                <form action="/question/<%=post._id%>?_method=DELETE&&isPersonalQuestion=true" method="post">
-                                    <div class="hover:text-red-500">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 float-left mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                        </svg>
-                                        <button type="submit">Delete</button>
-                                    </div>
-                                </form>
-                                <form action="/report/question/<%= post._id %>" method="post">
-                                    <div class="hover:text-cyan-500">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 float-left mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
-                                        </svg>
-                                        <button>Report</button>
-                                    </div>
-                                </form>
-                            </div>
-
-
-                    </div>
+                    <% if(userSession && userSession.isLoggedIn) {  %>
+                    <form action="/user/<%= userSession.userid %>/question/<%= post._id %>/savedQuestions"
+                        method="post">
+                        <button type="submit">
+                            <svg data-tooltip-target="tooltip-default" xmlns="http://www.w3.org/2000/svg"
+                                class=" hover:scale-150 transition-all" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" width="85" height="25">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="0"
+                                    d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" fill="#23C197" />
+                            </svg>
+                        </button>
+                    </form>
                     <% } %>
+                </div>
+            </div>
+        </section>
 
+        <section class="question-body flex flex-col gap-y-3.5">
+            <p class="font-sofia text-[#AAAABC] text-sm"><%= post.createdAt %> <a href=""></a> </p>
+            <p class=""> <a href="/question/<%= post._id%>"
+                    class="font-sofia text-[#464555] text-xl font-semibold"><%= post.questionTitle %></a></p>
+            <p class="font-sofia text-[#464555ce] font-light w-[94%] leading-7"><%= post.snippet %></p>
+            <div class="tags flex flex-row flex-wrap gap-4 my-2">
+                <% post.tags.forEach(el=> { %>
+                <div class="tag-wrapper px-2 py-1 bg-[#EEEDED] rounded-lg">
+                    <p><a href="/explore/<%= el %>" class="text-[#AAA4BC] font-semibold "><%= el %></a></p>
+                </div>
+                <% }) %>
+            </div>
+            <div class="question-options flex flex-row gap-x-14 mt-3">
+                <p class="text-[#7485F2] font-sofia font-light"><%= post.answers.length %> Answers</p>
+                <p><a href="/question/<%= post._id %>" class="text-[#00A97B] font-sofia font-light">Add Answer</a></p>
+                <form action="/report/question/<%= post._id %>" method="post">
+                    <button class="text-[#EE5C67] font-sofia font-light">Report</button>
+                </form>
 
             </div>
+
+        </section>
+    </div>
+    <% } %>
+
+
+
+
+
+
+</div>

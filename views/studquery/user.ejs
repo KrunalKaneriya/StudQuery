@@ -1,31 +1,29 @@
 <% layout("../layout/boilerplate") %> <!--*All The Contents Of this File Will be Passed To This Layout File-->
 
-    <div id="main-container" class="flex gap-16 py-4">
+    <div id="main-container" class="flex gap-20 py-4 font-sofia">
 
          
 
-        <div class="container mt-10 ml-10 w-56" id="profile">
+        <div class="container mt-10 ml-14 w-[50%]" id="profile">
             <div id="profile-pic-name">
-                <div id="profile-pic" class="rounded-full w-40 h-40 bg-violet-200 mx-auto"></div>
+                <% if(user.image) { %>
+                    <img src="<%= user.image.url %>" class="w-60 h-40" alt="">
+                <% } else { %>
+                    <div id="profile-pic" class="rounded-full w-40 h-40 bg-violet-200 mx-auto"></div>
+
+                <% } %> 
                 <div id="name">
-                    <h1 class="mt-3 text-2xl font-semibold font-cera text-center"><%= user.username %> </h1>
+                    <h1 class="mt-3 text-2xl font-semibold text-[#464555] font-sofia text-center"><%= user.username %> </h1>
                 </div>
-
-            </div>
-
-            <div id="about" class="w-48 ml-6 mt-16">
-                <h2 class="font-semibold text-2xl  text-left text-slate-700">About Me</h2>
-                <h3 class="mt-3 font-cera text-left text-slate-600"><%= user.description %> </h3>
-
             </div>
         </div>
 
         <div id="details" class="container w-[50%] inline-block mt-10">
             <div id="profile-text">
-                <h1 class="text-3xl font-cera font-bold ">Profile</h1>
+                <h1 class="text-3xl font-sofia font-bold text-[#464555c7]">Profile</h1>
                 <div id="personal-info-disclaimer" class="mt-6">
-                    <h2 class="text-xl font-cera font-semibold">Personal Information</h2>
-                    <h3 class="font-cera font-light mt-1 text-slate-600">Don't worry, your information will be kept in
+                    <h2 class="text-xl font-sofia font-semibold text-[#8C8DB9]">Personal Information</h2>
+                    <h3 class="font-sofia font-light mt-1 text-[#AAAABC]">Don't worry, your information will be kept in
                         safe and we
                         will not share this info with anyone outside Studquery web application.</h3>
                 </div>
@@ -35,9 +33,9 @@
                     <!-- Delete User Form -->
                     <% if(userSession.isLoggedIn && (userSession.userid == user._id)) { %> 
 
-                    <form action="/user/<%= user._id %>?_method=DELETE" method="post">
-                        <div id="delete-button-wrapper" class="font-inter">
-                            <div class="bg-orange-400 shadow-md shadow-orange-400/80 inline-block float-right mr-28 rounded-xl p-3 pl-10 relative mb-5 cursor-pointer">
+                    <form action="/user/<%= user._id %>?_method=DELETE" method="post" >
+                        <div id="delete-button-wrapper" class="font-sofia">
+                            <div class="bg-orange-300 shadow-md shadow-orange-200/80 inline-block float-right mr-28 rounded-xl p-3 pl-10 relative mb-5 cursor-pointer">
 
                                 <button type = "button" id="open-btn">
                                     <span class="material-icons right-[76%] absolute">
@@ -78,8 +76,8 @@
 
                     <form action="/user/<%= user._id %>?_method=PUT" method="post" autocomplete="off">
 
-                        <div id="edit-button-wrapper" class="font-inter">
-                            <div class="bg-yellow-400 shadow-md shadow-yellow-400/80 inline-block float-right mr-40 rounded-xl p-3 pl-10 relative mb-5 cursor-pointer"
+                        <div id="edit-button-wrapper" class="font-sofia">
+                            <div class="bg-yellow-300 shadow-md shadow-yellow-200/80 inline-block float-right mr-40 rounded-xl p-3 pl-10 relative mb-5 cursor-pointer"
                                 id="edit-button">
 
                                 <span class="material-icons absolute right-[75%]">
@@ -93,52 +91,54 @@
 
                     <% } %> 
 
+                    <!-- <input type="file" name="image" id="image" class="absolute left-16 ml-1 top-[55%]"> -->
+
                         <div id="form" class="container flex flex-wrap gap-5 justify-around py-1 text-gray-900 mt-5">
                             <div class="container w-1/3">
-                                <label for="username">Username</label>
+                                <label for="username" class="text-[#56B7B4]">Username</label>
                                 <input type="text" name="user[username]" id="username"
-                                    class=" border-slate-400 rounded-md mb-5 mt-1 w-60 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 disabled:text-gray-500 disabled:border-gray-300"
+                                    class="  rounded-md mb-5 mt-1 w-60 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 disabled:text-[#7485f296] disabled:border-[#F8F8FF] disabled:border-2 text-[#7485F2] border border-[#E6F4F1]"
                                     value="<%= user.username %>" disabled>
 
-                                <label for="alias">Alias</label>
+                                <label for="alias" class="text-[#56B7B4]">Alias</label>
                                 <input type="text" name="user[alias]" id="alias"
-                                    class=" border-slate-400 rounded-md mb-5 mt-1 w-60 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 disabled:text-gray-500 disabled:border-gray-300"
+                                    class="  text-[#7485F2] placeholder:text-[#7485F2] rounded-md mb-5 mt-1 w-60 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 disabled:text-[#7485f296]  disabled:border-[#F8F8FF] disabled:border-2 border border-[#E6F4F1]"
                                     value="<%= user.alias %>" disabled>
 
                                 <br>
-                                <label for="email">Email</label>
+                                <label for="email" class="text-[#56B7B4]">Email</label>
                                 <input type="email" name="user[email]" id="email"
-                                    class=" border-slate-400 rounded-md mb-5 mt-1 w-60 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 disabled:text-gray-500 disabled:border-gray-300"
+                                    class=" border border-[#E6F4F1] rounded-md mb-5 mt-1 w-60 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 disabled:text-[#7485f296] disabled:border-[#F8F8FF] disabled:border-2 text-[#7485F2] border border-[#E6F4F1]"
                                     value="<%= user.email %>" disabled>
 
 
                             </div>
 
                             <div id="" class="container w-1/3">
-                                <label for="age">Age</label>
+                                <label for="age" class="text-[#56B7B4]">Age</label>
                                 <br>
                                 <input type="number" name="user[age]" id="age"
-                                    class="border-slate-400 rounded-md mb-5 mt-1 w-60 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 disabled:text-gray-500 disabled:border-gray-300"
+                                    class="border border-[#E6F4F1] rounded-md mb-5 mt-1 w-60 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 disabled:text-[#7485f296] disabled:border-[#F8F8FF] text-[#7485F2] disabled:border-2"
                                     value="<%= user.age %>" disabled>
                                 <br>
-                                <label for="city">City</label>
+                                <label for="city" class="text-[#56B7B4]">City</label>
                                 <br>
                                 <input type="text" name="user[city]" id="city"
-                                    class="border-slate-400 rounded-md mb-5 mt-1 w-60 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 disabled:text-gray-500 disabled:border-gray-300"
+                                    class="border border-[#E6F4F1] rounded-md mb-5 mt-1 w-60 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 disabled:text-[#7485f296] disabled:border-[#F8F8FF] text-[#7485F2] disabled:border-2"
                                     value="<%= user.city %>" disabled>
 
                                 <br>
-                                <label for="studyingin">Studying In</label>
+                                <label for="studyingin" class="text-[#56B7B4]">Studying In</label>
                                 <br>
                                 <input type="text" name="user[studyingin]" id="studyingin"
-                                    class="border-slate-400 rounded-md mb-1 mt-1 w-60 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 disabled:text-gray-500 disabled:border-gray-300"
+                                    class=" rounded-md mb-1 mt-1 w-60 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 disabled:text-[#7485f296] disabled:border-[#F8F8FF] text-[#7485F2] disabled:border-2 border border-[#E6F4F1]"
                                     value="<%=user.studyingIn%>" disabled>
                             </div>
 
                             <div class="container w-full">
-                                <label for="description">Description</label>
+                                <label for="description" class="text-[#56B7B4]">Description</label>
                                 <textarea name="user[description]" id="description" cols="100" rows="7"
-                                    class="border-slate-400 rounded-md mb-5 mt-1 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 disabled:text-gray-500 disabled:border-gray-300"
+                                    class="border border-[#E6F4F1] rounded-md mb-5 mt-1 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 disabled:text-[#7485f296] disabled:border-[#F8F8FF] text-[#7485F2] disabled:border-2"
                                     disabled><%= user.description %></textarea>
                             </div>
 
@@ -147,10 +147,10 @@
 
                         <div class="buttons">
                             <button type="submit"
-                                class="bg-green-600 font-inter p-3 rounded-2xl text-white shadow-lg shadow-green-400/80 mr-5 font-semibold text-md">Save
+                                class="bg-green-600 font-sofia p-3 rounded-2xl text-white shadow-lg shadow-green-400/80 mr-5 font-semibold text-md">Save
                                 Changes</button>
                             <button type="reset"
-                                class="text-white p-3 font-inter rounded-2xl bg-red-700 text-md font-semibold shadow-lg shadow-red-400/80">Reset
+                                class="text-white p-3 font-sofia rounded-2xl bg-red-700 text-md font-semibold shadow-lg shadow-red-400/80">Reset
                                 Fields</button>
                         </div>
                     </form>
@@ -163,16 +163,16 @@
 
         <div id="stats" class="container">
 
-            <div class="w-[70%] text-center mt-10 bg-green-200 rounded-3xl py-2">
-                <p class="font-semibold text-md text-green-600">Question Asked</p>
-                <span class="font-semibold text-md text-green-600">
+            <div class="w-[70%] text-center mt-10 bg-[#464555] rounded-3xl py-2">
+                <p class="font-semibold text-md text-white">Question Asked</p>
+                <span class="font-semibold text-md text-white">
                     <%= questionCount %>
                 </span>
             </div>
 
-            <div class="w-[70%] text-center mt-10 bg-[#ade8f4] rounded-3xl py-2">
-                <p class="font-semibold text-md  text-[#0096c7]">Answers Given</p>
-                <span class="font-semibold text-md text-[#0096c7]">
+            <div class="w-[70%] text-center mt-10 bg-[#C0A975] rounded-3xl py-2">
+                <p class="font-semibold text-md  text-white">Answers Given</p>
+                <span class="font-semibold text-md text-white">
                     <%= answerCount %>
                 </span>
             </div>

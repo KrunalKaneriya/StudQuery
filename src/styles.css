@@ -22,13 +22,13 @@ div#message {
     .hidden {
         display:none
     }
+
+   
    
 }
 
 @layer utilities {
 
-   
-    
     .bg-gradient {
         background: #FEAC5E;  /* fallback for old browsers */
         background: -webkit-linear-gradient(to right, #4BC0C8, #C779D0, #FEAC5E);  /* Chrome 10-25, Safari 5.1-6 */
@@ -40,6 +40,9 @@ div#message {
         font-family:"Cera Pro"
     }
 
+    .font-biotif {
+        font-family:"Biotif"
+    }
 
     .font-inter {
         font-family:"Inter"
@@ -56,4 +59,11 @@ div#message {
     .font-jost {
         font-family:"Jost";
     }
+    .font-sofia {
+        font-family: 'Sofia Pro', sans-serif;
+    }
+    .font-segoe {
+        font-family:"Segoe UI"
+    }
+   
 }

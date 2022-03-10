@@ -53,9 +53,20 @@ module.exports.renderSignUpForm = (req,res) => {
 module.exports.sendSignUpInfo = async (req,res) => {
      const {username,alias,email,age,password,studyingIn,description,city} = req.body;
      const userHash = await crypt.hash(password,12);
+     
      const user = new User({
          username,alias,email,age,userHash,description,studyingIn,city
      });
+
+     if(req.file) {
+          const {path,filename} = req.file;
+          const image = {
+               url:path,
+               filename
+          }
+          user.image = image
+     }
+     
 	await user.save();
      res.redirect("/login");
 };

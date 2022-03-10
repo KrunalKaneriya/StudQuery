@@ -21,6 +21,7 @@ module.exports.renderUserProfilePage = async (req, res) => {
 
 module.exports.editUser = async (req, res) => {
      const { id } = req.params;
+	 console.log(req.file);
      const user = await User.findByIdAndUpdate(id, { ...req.body.user });
      res.redirect(`/user/${id}`);
 }
@@ -44,8 +45,8 @@ module.exports.getSavedQuestions = async(req,res) => {
 		res.redirect(redirectUrl);
 	} else {
 		const {userid} = userSession;
-		const data = await User.findById(userid).populate("savedQuestions");
-		res.render("savedQuestions",{userSession,questions:data.savedQuestions})
+		const data = await User.findById(userid).populate({path:"savedQuestions" , populate:{path:"user"}});
+		res.render("savedQuestions",{userSession,data:data.savedQuestions})
 	}
 }
 
@@ -61,6 +62,7 @@ module.exports.createdQuestions = async (req,res) => {
 	} else {
 		const user = await User.findById(userSession.userid);
 		const result =await User.findById(userSession.userid).populate("questions");
+
 		res.render("myQuestions",{userSession,result:result.questions,user});
 	}
 };

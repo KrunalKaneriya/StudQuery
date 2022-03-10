@@ -39,6 +39,10 @@ const QuestionSchema = new Schema({
     answers:[{
         type:Schema.Types.ObjectId,
         ref:"Answer"
+    }],
+    images:[{
+        url:String,
+        filename:String
     }]
 },{timestamps:true})
 
