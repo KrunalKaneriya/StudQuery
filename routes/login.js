@@ -33,6 +33,7 @@ const requestLogin = catchAsync(async (req, res, next) => {
 		req.session.username = user.username; //Create a session and add username to it.
 		req.session.userid = user._id; //Add user id into the session
 		req.session.isLoggedIn = true; //Add isLogged in to the session
+		req.session.imageUrl = user.image.url; //Setting the profile picture image url in the session.
 
 		if (result) {
 			return next();

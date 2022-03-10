@@ -207,7 +207,7 @@ module.exports.renderNewQuestionForm = async (req, res) => {
 	res.render("question", { user, userSession });
 };
 
-module.exports.createQuestion = async (req, res) => {
+module.exports.createQuestion = async (req, res ,next) => {
 	const userSession = req.session;
 	const { id } = req.params;
 	const user = await User.findById(userSession.userid);
@@ -219,10 +219,22 @@ module.exports.createQuestion = async (req, res) => {
 	const { questionTitle, questionDescription, tags } = req.body;
 	const tagsArray = tags.split(" ");
 
+	if(req.files) { //We are checking that if there are files like images in the request object passed
+		imagesArray = req.files.map(image => { //If there is then for each image we create a new array and assign the all images array to imagesArray
+			return { 
+				url:image.path, //Assigning the url as image passed path 
+				filename:image.filename //Assigning the filename as image passed filename
+			} //Now returning the object to add it into question database
+		})
+	}
+
+	console.log(req.files);
+
 	const question = new Question({
 		questionTitle,
 		questionDescription,
 		tags: tagsArray,
+		images:imagesArray
 	});
 
 	user.questions.push(question);

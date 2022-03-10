@@ -1,30 +1,30 @@
 <% layout("../layout/adminBoilerplate.ejs") %>
 
 <div class="container w-[92%] shadow-sm float-right">
-    <h1 class="text-3xl mt-10 font-sofia ml-2">Welcome Admin</h1>
+    <h1 class="text-3xl mt-10 font-segoe ml-2">Welcome Admin</h1>
 
-    <h2 class="text-xl mt-5 font-sofia ml-3">Dashboard</h2>
+    <h2 class="text-xl mt-5 font-segoe ml-3">Dashboard</h2>
 
         <div class="flex flex-wrap text-center container stats mt-5 p-2 gap-5">
             <div class="w-[40%] h-36 bg-blue-300 hover:bg-blue-500 hover:text-white shadow-blue-500 hover:shadow-xl shadow-md duration-300 transition-all  ease-linear rounded-lg hover:scale-105  hover:-translate-y-1">
-                <h2 class="text-xl font-sans mt-8 hover:blur-none">Total Questions</h2>
-                <h2 class="text-xl font-sans mt-5"><%= questionCount %> </h2>
+                <h2 class="text-xl font-segoe mt-8 hover:blur-none">Total Questions</h2>
+                <h2 class="text-xl font-segoe mt-5"><%= questionCount %> </h2>
             </div>
             <div class="w-[40%] h-36 bg-amber-300 hover:bg-amber-500 hover:text-white shadow-amber-500 shadow-md hover:shadow-xl  transition-all  ease-linear rounded-xl hover:scale-105  hover:-translate-y-1">
-                 <h2 class="text-xl font-sans mt-8 hover:blur-none">Total Answers</h2>
-                 <h2 class="text-xl font-sans mt-5"><%= answerCount %> </h2>
+                 <h2 class="text-xl font-segoe mt-8 hover:blur-none">Total Answers</h2>
+                 <h2 class="text-xl font-segoe mt-5"><%= answerCount %> </h2>
                 </div>
             <div class="w-[40%] h-36 bg-gray-300 rounded-xl hover:bg-gray-500 hover:text-white shadow-gray-500   hover:shadow-xl shadow-md  transition-all  ease-linear hover:scale-105  hover:-translate-y-1"> 
-                <h2 class="text-xl font-sans mt-8">Total Users</h2>
-                <h2 class="text-xl font-sans mt-5"><%= userCount %> </h2>
+                <h2 class="text-xl font-segoe mt-8">Total Users</h2>
+                <h2 class="text-xl font-segoe mt-5"><%= userCount %> </h2>
             </div>
             <div class="w-[40%] h-36 bg-red-300 rounded-xl hover:bg-red-500 hover:text-white shadow-red-500 hover:shadow-xl shadow-md transition-all  ease-linear hover:scale-105  hover:-translate-y-1"> 
-                <h2 class="text-xl font-sans mt-8">Total Reported Questions</h2>
-                <h2 class="text-xl font-sans mt-5"><%= reportedQuestionsCount %> </h2>
+                <h2 class="text-xl font-segoe mt-8">Total Reported Questions</h2>
+                <h2 class="text-xl font-segoe mt-5"><%= reportedQuestionsCount %> </h2>
             </div>
             <div class="w-[40%] h-36 bg-fuchsia-300 rounded-xl hover:bg-fuchsia-500 hover:text-white shadow-fuchsia-500 hover:shadow-xl shadow-md transition-all  ease-linear hover:scale-105  hover:-translate-y-1"> 
-                <h2 class="text-xl font-sans mt-8">Total Reported Answers</h2>
-                <h2 class="text-xl font-sans mt-5"><%= reportedAnswersCount %> </h2>
+                <h2 class="text-xl font-segoe mt-8">Total Reported Answers</h2>
+                <h2 class="text-xl font-segoe mt-5"><%= reportedAnswersCount %> </h2>
             </div>
         </div>
 </div>

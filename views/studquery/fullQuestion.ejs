@@ -2,213 +2,203 @@
 <%- include("../partials/sidebar") %>
 <%- include("../partials/flash") %>
 
-<!-- *Checks That the Question User is Equals to the User which is logged in -->
-<% if(question.user.equals(userSession.userid)) { %>
-<div id="questionOptions" class="container w-48 mt-10 float-right mr-12 text-white text-center">
-	<div class="bg-[#7C98B3] p-2 rounded-xl">
-		<% if(userSession.userid) { %>
-		<a href="/question/new">Ask A Question </a>
-		<% } else { %>
-		<a href="/login">To Ask Questions Login!!</a>
-		<% } %>
-	</div>
-	<div class="bg-yellow-300 p-2 rounded-xl mt-5 text-gray-700">
-		<a href="/question/<%=question._id%>/edit">Edit Question</a>
-	</div>
-	<div class="mt-5 bg-red-500 p-2 rounded-xl">
-		<form action="/question/<%=question._id%>?_method=DELETE" method="post">
-			<button type="submit">Delete Question</button>
-		</form>
-	</div>
-</div>
-<% } %>
-<!-- *Section End -->
-
-<div class="container w-[65%] mx-auto my-5" id="home">
-	<div id="post" class="mb-10 rounded-2xl p-4">
-		<div id="questionWrapper">
-
-			<%- include("../partials/votes") %> 
-
-			<div id="question" class="ml-20">
-				<div class="w-full">
-					<p class="font-sofia text-lg font-semibold inline-block mt-2 text-gray-600 max-w-[98%]">
-						<%= question.questionTitle %>
-						<a class="ml-2 text-sm font-sofia text-blue-500" href="/user/<%= question.user._id %>">By <%= question.user.username %> </a>
-					</p>
-					<br>
-					<p class="mt-2 text-sm text-gray-500 font-sofia">Created At:  <%= question.createdAt %> </p>
-
-				</div>
-
-				<div id="viewer" class="pb-3 pt-1 px-0.5 rounded-xl">
-					<%- question.questionDescription %>
-				</div>
-				<!-- <p id="questionDescription" class=" text-gray-500 font-sofia font-normal leading-8  rounded-md mt-4 mb-6">
-					<%#= question.questionDescription %>
-				</p> -->
-
-				<div class="tags space-x-2 mt-3 ">
-					<% question.tags.forEach(el=> { %>
-					<span class="font-sofia bg-violet-200 p-2 rounded-xl text-slate-600">
-						<%= el %>
-					</span>
-					<% }) %>
-				</div>
+<div class="container w-[70%] my-7 ml-[20%]">
+	<div class="question-wrapper flex flex-row  py-5 rounded-xl shadow-sm">
+		<section class="profile-picture flex flex-col mx-5 h-full items-center justify-center mt-3 flex-wrap gap-y-6">
+			<div class="image">
+				<% if(question.user.image) { %>
+				<img src="<%= question.user.image ? `${question.user.image.url}` : "" %> " alt=""
+					class="w-14 h-14 rounded-full">
+				<% } else { %>
+				<div class="w-14 h-14 rounded-full bg-gray-200"></div>
+				<% } %>
 			</div>
-
-			<div class="toggle-wrap mt-3">
-				<div id="additional" class="py-4 ml-20">
-					<span class="font-medium mr-10 text-blue-500 cursor-pointer reply-btn">Reply</span>
-					<form action="/report/question/<%= question._id %>" method="post" class="mr-72 inline-block">
-
-						<div id="report-button-wrapper" class="font-sofia">
-							<button type="button" class="font-medium text-rose-500" id="report-open-btn">Report</button>
-
-							<div class="fixed hidden inset-0 bg-gray-600 bg-opacity-80 h-full w-full z-10" id="report-modal">
-								<div class="relative top-40 mx-auto p-5 border w-96 shadow-lg rounded-lg bg-white">
-									<div class="mt-2">
-										<div class="mx-auto flex items-center justify-start rounded-full">
-											<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
-											</svg>
-											<h2 class="ml-5 text-lg leading-5 font-medium text-gray-700">Report Question</h2>
-										</div>
-
-										<div class="px-4 mt-2 ml-7">
-											<p class="text-base text-gray-600">Are you sure yo want to report this question?</p>
-										</div>
-
-										<div class="space-x-6 px-4 ml-7 mt-7">
-
-											<button type="submit" class="p-3 rounded-md bg-red-500 text-white " id="report-btn">Report Question</button>
-											<button type="button" class="p-3 rounded border border-gray-400" id="report-cancel-btn">Cancel</button>
-										</div>
-									</div>
-								</div>
-							</div>
-
-						</div>
-
-					</form>
-
-
-				
-
-					<script>
-						let date = document.querySelectorAll(".dateValue");
-						date.forEach(function(e) {
-							let date = new Date(e.textContent);
-							date.toLocaleTimeString('en-US',{"hour12:":"true"})
-							e.innerHTML = (`Created at:${date.getDate()}/${date.getMonth()}/${date.getFullYear()} ${date.getUTCHours()}:${date.getUTCMinutes()}`)
-
-						})
-					</script>
-				</div>
-				<div class="ml-20 answer-container">
-					<form action="/question/<%=question._id%>/answer" method="post" autocomplete="off" id="answerForm">
-						<div id="editor">
-							
-						</div>
-						<input type="hidden" name="answerDescription" class="answerField">
-						<!-- <input type="text" name="answerDescription" id="ans" class="w-full rounded-xl ring-2 ring-gray-300 border-none focus:ring-2 focus:ring-teal-400 focus:outline-none focus:border-none" /> -->
-						<button type="submit" class="p-2 my-3 bg-fuchsia-200 rounded-2xl text-fuchsia-600 drop-shadow-lg border-2 border-pink-300">Add Answer</button>
-					</form>
-				</div>
-			</div>
-		</div>
-
-		<% if(typeof answers=='object' && answers && answers.length) { %> <!-- Display Answer Heading When Answer Length is > 0-->
-		<div id="answerTitle" class="mt-4 border-t border-gray-200 min-h-max">
-			<h4 class="text-xl pt-4 mb-5 ml-20 font-sofia text-gray-600">Answers</h4>
-		</div>
-
-		<% for(let answer of answers) {%> <!-- *Loop Over all the answers -->
-
-		<div class="answerContainer">
-			<div class="profile rounded-full ml-20 w-10 h-10 float-left bg-[#EEE2DF]"></div>
-			<div id="user-information" class="inline-block p-2 ml-3 rounded-xl">
-				<a class="p-2 text-blue-600/80 font-semibold font-sofia" href="/user/<%= answer.user._id %>">
-					<%=answer.user.username %> <!--Print the Answer Username -->
-				</a>
-			</div>
-
-			<div class="pb-5">
-
-				<div class="py-1 px-0.5 rounded-xl ml-36 pl-1 text-gray-500/95 leading-7 text-xl answerViewer">
-					<%- answer.answerDescription %>
-				</div>
-
-			</div>
-
-			<!-- *Answer Votes Section -->
-			<section class="ml-36 flex flex-row pb-5">
-				<form action="/question/<%= question._id %>/answer/<%= answer._id%>/voteinc?_method=PUT" method="post" class="answerUpForm hover:scale-125 transition-all">
+			<div class="h-full">
+				<form action="/question/<%=question._id%>/vote/inc?fullQuestion=true&&_method=PUT" method="post" class="upForm hover:scale-125 transition-all">
 					<button type="submit" id="post-inc">
-						<svg class="cursor-pointer" width="20" height="20" viewBox="0 0 90 108" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<svg class="cursor-pointer" width="70" height="20" viewBox="0 0 90 108" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<path class="post-inc-path" id="Arrow 1" d="M49.2426 2.57276C46.8995 0.229614 43.1005 0.229614 40.7574 2.57276L2.57359 40.7565C0.230446 43.0997 0.230446 46.8987 2.57359 49.2418C4.91674 51.585 8.71573 51.585 11.0589 49.2418L45 15.3007L78.9411 49.2418C81.2843 51.585 85.0833 51.585 87.4264 49.2418C89.7696 46.8987 89.7696 43.0997 87.4264 40.7565L49.2426 2.57276ZM51 107.094L51 6.8154H39L39 107.094H51Z" fill="#9643FF" />
 						</svg>
 					</button>
-					<input type="hidden" name="answerId" value="<%=answer._id%>" />
-					<input type="hidden" name="questionId" value="<%=question._id %>">
+			
+					<input type="hidden" name="questionId" value="<%=question._id %>" />
 				</form>
 
-				<span id="votesCount" class="mx-5 font-medium inline-block text-gray-500 text-center"><%= answer.votes %></span>
+				<span id="" class="w-full text-center text-xl inline-block text-gray-500 votes font-sofia"><%= question.votes %> </span>
 
-				<form action="/question/<%= question._id %>/answer/<%= answer._id%>/votedec?_method=PUT" method="post" class="answerDownForm hover:scale-125 transition-all">
+				<form action="/question/<%=question._id%>/vote/dec?fullQuestion=true&&_method=PUT" method="post" class="downForm hover:scale-125 transition-all mt-1">
 					<button type="submit" id="post-dec">
-						<svg class="cursor-pointer" width="20" height="20" viewBox="0 0 90 107" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<svg class="cursor-pointer " width="70" height="20" viewBox="0 0 90 107" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<path id="Arrow 2" d="M40.7574 105.191C43.1005 107.534 46.8995 107.534 49.2426 105.191L87.4264 67.0071C89.7696 64.664 89.7696 60.865 87.4264 58.5219C85.0833 56.1787 81.2843 56.1787 78.9411 58.5219L45 92.463L11.0589 58.5219C8.71573 56.1787 4.91674 56.1787 2.57359 58.5219C0.230447 60.865 0.230447 64.664 2.57359 67.0071L40.7574 105.191ZM39 0.669922L39 100.948H51L51 0.669922L39 0.669922Z" fill="#E16A6A" />
 						</svg>
 					</button>
-					<input type="hidden" name="answerId" value="<%=answer._id%>" />
-					<input type="hidden" name="questionId" value="<%=question._id %>">
+					<input type="hidden" name="questionId" value="<%=question._id%>" />
 				</form>
 
-				<!-- Answer Report Section -->
-				<form action="/report/question/<%= question._id %>/answer/<%= answer._id %>" method="post" class="ml-10 text-white">
+				<div class="saveQuestion mx-auto w-full mt-5">
 
+					<% if(userSession && userSession.userid) {  %>
+					<form action="/user/<%= userSession.userid %>/question/<%= question._id %>/savedQuestions" method="post">
+						<button type="submit">
+							<svg xmlns="http://www.w3.org/2000/svg" class=" hover:scale-150 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="70" height="25">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="0" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" fill="#23C197" />
+							</svg>
+						</button>
+					</form>
+					<% } %>
+			
+				</div>
+
+			</div>
+
+			
+		</section>
+
+		<section class="question-body flex flex-col w-full">
+			<p class="font-sofia font-light text-[#AAAABC] text-xs">Asked: <%= question.createdAt %> </p>
+
+			<h2 class="text-xl font-sofia font-semibold text-[#464555] my-2"><%= question.questionTitle %></h2>
+			<h4 class="text-[#AAAABC] font-sofia font-light text-sm">By <%= question.user.username %> </h4>
+
+			<% if(question.images && question.images.length>0) { %>
+			<div class="swiper w-full my-5 rounded-xl">
+				<div class="swiper-wrapper">
+					<% for(let img of question.images) { %>
+					<div class="swiper-slide flex justify-center align-center" data-swiper-autoplay="5000">
+						<img src="<%= img.url %>" alt="">
+					</div>
+					<% } %>
+				</div>
+				<div class="swiper-button-prev text-gray-600 !important"></div>
+				<div class="swiper-button-next"></div>
+			</div>
+			<% } %>
+
+			<div id="viewer" class="pb-3 text-[#464555ce] pt-1 px-0.5 rounded-xl font-sofia leading-7 w-full">
+				<%- question.questionDescription %>
+			</div>
+
+			<div class="flex flex-row w-[94%] flex-wrap gap-4 my-2">
+				<% question.tags.forEach(el=> { %>
+				<div class="tag-wrapper px-2 py-1 bg-[#EEEDED] rounded-lg">
+					<p><a href="/explore/<%= el %>" class="text-[#AAA4BC] font-semibold "><%= el %></a></p>
+				</div>
+				<% }) %>
+			</div>
+
+			<div class="question-options flex flex-row gap-x-10 mt-3">
+				<p class="text-[#7485F2] font-sofia font-light "><%= question.answers.length %> Answers</p>
+				<p class="font-sofia font-light text-[#00AAC6]"><a href="/question/<%=question._id%>/edit">Edit Question</a></p>
+				<div class="font-sofia  font-light">
+					<form action="/question/<%=question._id%>?_method=DELETE" method="post">
+						<button type="submit" class=" font-sofia font-light text-[#EE5C67]">Delete Question</button>
+					</form>
+				</div>
+				<div>
+					<form action="/report/question/<%= question._id %>" method="post">
+						<button class="text-[#AB8A0D] font-sofia font-light ">Report Question</button>
+					</form>
+				</div>
+				
+
+			</div>
+		</section>
+
+	</div>
+
+	<div class="answer-title flex flex-row w-full justify-start">
+		<% if(typeof answers=='object' && answers && answers.length) { %>
+		<!-- Display Answer Heading When Answer Length is > 0-->
+		<div id="answerTitle" class="mt-4 mx-5">
+			<h4 class="pt-4 mb-5 font-sofia text-[#464555]">Answers <%= question.answers.length %> </h4>
+		</div>
+		<% } %>
+	</div>
+
+
+	<% if(typeof answers=='object' && answers && answers.length) {%>
+	<% for(let answer of answers) { %>
+	<div class="answer-wrapper py-5 rounded-xl shadow-sm flex flex-row">
+
+		<section class="profile-picture flex flex-row mx-5">
+			<div class="image">
+				<% if(answer.user.image) { %>
+				<img src="<%= answer.user.image ? `${answer.user.image.url}` : "" %> " alt=""
+					class="w-14 h-14 rounded-full">
+				<% } else { %>
+				<div class="w-14 h-14 rounded-full bg-gray-200"></div>
+				<% } %>
+			</div>
+		</section>
+
+		<section class="answer-body flex flex-col w-full">
+			<p class="font-sofia font-light text-[#AAAABC] text-xs">Asked: <%= answer.createdAt %> </p>
+
+			<h2 class="text-xl font-sofia font-semibold text-[#464555] my-2"> <%- answer.user.username %> </h2>
+
+			<div class="answerViewer">
+				<%- answer.answerDescription %>
+			</div>
+
+			<% if(answer.user._id == userSession.userid) { %>
+			<div class="question-options flex flex-row gap-x-14 mt-2">
+				<form action="/question/<%= question._id %>/answer/<%=answer._id%>/edit" method="get">
+					<div class="text-[#00B8FF] font-sofia font-light" >
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-left mt-1 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+						</svg>
+						<button type="submit" class="font-sofia font-light">Edit</button>
+					</div>
+				</form>
+
+				<form action="/report/question/<%= question._id %>/answer/<%= answer._id %>" method="post" class="">
 					<div id="report-button-wrapper" class="">
-						<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 float-left mr-1" fill="none" viewBox="0 0 24 24" stroke="#06b6d4">
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-left mt-1.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="#56B7B4">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
 						</svg>
-						<button type="submit" class=" font-medium text-cyan-500">Report</button>
-					</div>
-					
-					
+						<button type="submit" class=" font-sofia font-light text-[#56B7B4]">Report</button>
+					</div>	
 				</form>
 
-				<!-- *Bottom Side Options of Edit Delete and Report -->
-				<% if(answer.user._id == userSession.userid) { %>
-				<div id="answer-options" class="flex pl-10 text-gray-400/95 gap-12">
-					<form action="/question/<%= question._id %>/answer/<%=answer._id%>/edit" method="get">
-						<div class="hover:text-amber-500">
-							<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 float-left mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-							</svg>
-							<button type="submit" class="hover:text-amber-500">Edit</button>
-						</div>
-					</form>
-					<form action="/question/<%=question._id%>/answer/<%=answer._id%>?_method=DELETE" method="post">
-						<div class="hover:text-red-500">
-							<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 float-left mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-							</svg>
-							<button type="submit">Delete</button>
-						</div>
-					</form>
-					
-				</div>
-				<% } %>
-				<!-- *Bottom Side Options Section End -->
-			</section>
-			<!-- *Answer Votes Section End -->
 
-			<% } %> <% } %>
-		</div>
+				<form action="/question/<%=question._id%>/answer/<%=answer._id%>?_method=DELETE" method="post">
+					<div class="text-[#EE5C67] font-sofia font-light">
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-left mt-1 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+						</svg>
+						<button type="submit" class="font-sofia font-light">Delete</button>
+					</div>
+				</form>
+			</div>
+			<% } %> 
+
+			
+				
+		</section>
+
+
 	</div>
+	<% } %>
+	<% } %>
+
+	<% if(userSession.isLoggedIn) { %> 
+	<div class="create-answer flex flex-col w-full">
+		<h2 class="mt-4 mx-5 font-sofia text-[#464555]">Create Answer</h2>
+		<form action="/question/<%=question._id%>/answer" method="post" autocomplete="off" class="" id="answerForm">
+			<div id="editor" class="mx-5 mt-4"></div>
+			<input type="hidden" name="answerDescription" class="answerField">
+			<button type="submit" class="py-1 px-2 font-sofia bg-[#464555] text-[#F9F8FF] rounded-lg my-2 mx-5">Add Answer</button>
+		</form>
+	</div>
+	<% } %> 
+
+	
+
+	
+
 </div>
 
+<!-- 
 <script>
 	let reportmodal = document.getElementById("report-modal");
 
@@ -218,46 +208,57 @@
 
 	let reportCancelBtn = document.getElementById("report-cancel-btn");
 
-	reportOpenBtn.addEventListener("click",function() {
+	reportOpenBtn.addEventListener("click", function () {
 		reportmodal.classList.remove("hidden");
 	})
 
-	reportCancelBtn.addEventListener("click",function() {
+	reportCancelBtn.addEventListener("click", function () {
 		reportmodal.classList.add("hidden");
 	})
-</script>
+</script> -->
 
-<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+
 
 <script>
-	
-	const editor = new toastui.Editor({
-		el:document.querySelector("#editor"),
-		initialEditType:"wysiwyg",
-		previewStyle:'vertical',
-		height:'500px'
-	});
-
-	const viewer = toastui.Editor.factory({
-        el: document.querySelector('#viewer'),
-		viewer:true
-      });
-
 
 	const answerViewer = document.querySelectorAll(".answerViewer");
 
-	answerViewer.forEach(function(e) {
+	const viewer = toastui.Editor.factory({
+		el: document.querySelector('#viewer'),
+		viewer: true
+	});
+
+	answerViewer.forEach(function (e) {
 		toastui.Editor.factory({
-			el:e,
-			viewer:true
+			el: e,
+			viewer: true
 		})
 	})
+	const swiper = new Swiper(".swiper", {
+		direction: "horizontal",
+		navigation: {
+			nextEl: ".swiper-button-next",
+			prevEl: ".swiper-button-prev"
+		},
+		scrollbar: {
+			el: '.swiper-scrollbar',
+		},
+		autoHeight: true,
+		autoplay: {
+			delay: 5000
+		},
+		pauseOnMouseEnter: true
+	});
 
-	  $("#answerForm").submit(function(e) {
-		  let data = editor.getHTML();
-		  $(".answerField").val(data);
-	  })
+	const editor = new toastui.Editor({
+		el: document.querySelector("#editor"),
+		initialEditType: "wysiwyg",
+		previewStyle: 'vertical',
+		height: '300px'
+	});
 
+	$("#answerForm").submit(function (e) {
+		let data = editor.getHTML();
+		$(".answerField").val(data);
+	})
 </script>
-
-<!-- <script src="/js/userPage.js"></script> -->

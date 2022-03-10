@@ -2,7 +2,7 @@
 
     <div class="container mt-10 w-[90%] mr-2 float-right mb-10">
         <header>
-            <h1 class="font-semibold text-2xl font-sofia ml-10 ">View Question</h1>
+            <h1 class="font-semibold text-2xl font-segoe ml-10 ">View Question</h1>
             <h3 class="mt-5 font-semibold text-xl ml-10">View the full Question of the User</h3>
         </header>
 
@@ -18,7 +18,7 @@
             </div>
 
             <div id="question" class="ml-32 mt-5 ">
-                <p class="text-xl text-gray-700 font-sans pl-2 pt-3">
+                <p class="text-xl text-gray-700 font-segoe pl-2 pt-3">
                     <%= question.questionTitle %>
                 </p>
 
@@ -45,7 +45,7 @@
 
             <% if(question.answers && question.answers.length>0) {%> 
             <div id="separator" class="h-0.5  rounded-xl bg-orange-200/80 my-3 ml-32"></div>
-            <h3 class="text-xl text-gray-500 font-sofia ml-32">Answers</h3>
+            <h3 class="text-xl text-gray-500 font-segoe ml-32">Answers</h3>
 
             <% for(let answer of question.answers) { %> 
 
@@ -54,13 +54,13 @@
                 <div class="answerContainer">
                     <div class="profile rounded-full mt-5 w-10 h-10 float-left bg-blue-200"></div>
                     <div class="rounded-xl ml-3 p-2 mt-4 inline-block text-gray-700">
-                        <span class="font-medium font-sofia ">
+                        <span class="font-medium font-segoe ">
                             <%= answer.user.username %>
                         </span>
                     </div>
 
                     <div class="answerViewer ml-14 pl-1 text-gray-600 leading-7">
-                        <!-- <p class="font-sofia leading-7 pl-1 text-gray-600"> -->
+                        <!-- <p class="font-segoe leading-7 pl-1 text-gray-600"> -->
                             <%- answer.answerDescription %>
                         <!-- </p> -->
                     </div>

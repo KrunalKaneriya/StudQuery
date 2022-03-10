@@ -2,8 +2,8 @@
 
 <div class="container min-h-screen mt-10 w-[92%] float-right">
     <header>
-        <h1 class="text-3xl font-sofia ml-5">Reported Questions</h1>
-        <h3 class="text-xl font-sofia mt-5 ml-5">View or manage reported questions of users</h3>
+        <h1 class="text-3xl font-segoe ml-5">Reported Questions</h1>
+        <h3 class="text-xl font-segoe mt-5 ml-5">View or manage reported questions of users</h3>
     </header>
 
     <section class="reportModal hidden">
@@ -17,7 +17,7 @@
                         <svg class="mx-auto mb-4 w-16 h-16 text-gray-400 dark:text-gray-200" fill="#FC4F4F" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     </div>
 
-                    <h1 class="text-xl font-sofia font-medium">Are You sure you want to Delete the Question?</h1>
+                    <h1 class="text-xl font-segoe font-medium">Are You sure you want to Delete the Question?</h1>
 
                     <div class="flex justify-evenly mt-8 mb-8">
                         <button class="p-4 text-white bg-red-500 hover:bg-red-700 rounded-lg">Delete Question</button>
@@ -35,14 +35,14 @@
             <table class="table-auto w-full">
                 <thead class="bg-gray-50 border-b-2 border-gray-200">
                     <tr>
-                        <th class="p-3 text-sm font-semibold font-sofia tracking-wide text-left">Question Title</th>
-                        <th class="p-3 text-sm font-semibold font-sofia tracking-wide text-left">Owner</th>
-                        <th class="p-3 text-sm font-semibold font-sofia tracking-wide text-left">Created at</th>
-                        <th class="p-3 text-sm font-semibold font-sofia tracking-wide text-left">Updated at</th>
-                        <th class="p-3 w-10 text-sm font-sofia  font-semibold tracking-wide text-left">Answers</th>
-                        <th class="p-3 w-10 text-sm font-sofia font-semibold tracking-wide text-left">Votes</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-sofia">View Conversation</th>
-                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-sofia">Delete</th>
+                        <th class="p-3 text-sm font-semibold font-segoe tracking-wide text-left">Question Title</th>
+                        <th class="p-3 text-sm font-semibold font-segoe tracking-wide text-left">Owner</th>
+                        <th class="p-3 text-sm font-semibold font-segoe tracking-wide text-left">Created at</th>
+                        <th class="p-3 text-sm font-semibold font-segoe tracking-wide text-left">Updated at</th>
+                        <th class="p-3 w-10 text-sm font-segoe  font-semibold tracking-wide text-left">Answers</th>
+                        <th class="p-3 w-10 text-sm font-segoe font-semibold tracking-wide text-left">Votes</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-segoe">View Conversation</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-left font-segoe">Delete</th>
                     </tr>
                 </thead>
 
@@ -50,15 +50,15 @@
 
                     <% for(let question of reportedQuestions) { %> 
                         <tr>
-                            <td class="p-3 text-sm text-gray-700 font-inter"><%= question.reportedQuestion.questionTitle %> </td>
-                            <td class="p-3 text-sm text-gray-700 font-inter"><%= question.reportedQuestion.user.username %> </td>
-                            <td class="p-3 text-sm text-gray-700 dateValue font-inter"><%= question.reportedQuestion.createdAt %> </td>
-                            <td class="p-3 text-sm text-gray-700 dateValue font-inter"><%= question.reportedQuestion.updatedAt %> </td>
-                            <td class="p-3 text-sm text-gray-700 font-inter"><%= question.reportedQuestion.answers.length %> </td>
-                            <td class="p-3 text-sm text-gray-700 font-inter"><%= question.reportedQuestion.votes %> </td>
+                            <td class="p-3 text-sm text-gray-700 font-segoe"><%= question.reportedQuestion.questionTitle %> </td>
+                            <td class="p-3 text-sm text-gray-700 font-segoe"><%= question.reportedQuestion.user.username %> </td>
+                            <td class="p-3 text-sm text-gray-700 dateValue font-segoe"><%= question.reportedQuestion.createdAt %> </td>
+                            <td class="p-3 text-sm text-gray-700 dateValue font-segoe"><%= question.reportedQuestion.updatedAt %> </td>
+                            <td class="p-3 text-sm text-gray-700 font-segoe"><%= question.reportedQuestion.answers.length %> </td>
+                            <td class="p-3 text-sm text-gray-700 font-segoe"><%= question.reportedQuestion.votes %> </td>
                             <td class="p-3 text-sm text-gray-700">
                                 <form method="get" action="/admin/question/<%= question.reportedQuestion._id%>" class="">
-                                    <button class="p-3 w-28 bg-[#d9f5db] hover:bg-[#65C18C] hover:text-white rounded-xl cursor-pointer font-semibold font-inter">View</button>
+                                    <button class="p-3 w-28 bg-[#d9f5db] hover:bg-[#65C18C] hover:text-white rounded-xl cursor-pointer font-semibold font-segoe">View</button>
                                 </form>
                             </td>
     

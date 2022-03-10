@@ -6,6 +6,9 @@ const Answers = require("../models/answer");
 const catchAsync = require("../utils/catchAsync");
 const ExpressError = require("../utils/ExpressError");
 const {stripHtml} = require("string-strip-html");
+const multer = require("multer"); //Package Required to parse Images
+const {storage} = require("../cloudinary/index");
+const upload = multer({storage}); //This is the storage of the Images
 
 /*******************
  * VALIDATION SCHEMA *
@@ -18,10 +21,10 @@ const { questionValidator } = require("../models/validationSchema");
 
 const questionController = require("../controllers/user/questions");
 
-
 router.get("/question/new", catchAsync(questionController.renderNewQuestionForm) );
 
-router.post("/question/new", catchAsync(questionController.createQuestion) );
+//When we hit the route we will be passing the parsed Images Information and calling createQuestion function
+router.post("/question/new",upload.array("images"),catchAsync(questionController.createQuestion) );
 
 router.get("/question/search", catchAsync(questionController.searchQuestion) );
 
@@ -30,7 +33,7 @@ router.get("/question/:questionId", catchAsync(questionController.viewQuestion) 
 //*Update Route of Question
 router.get("/question/:questionId/edit", catchAsync(questionController.renderEditQuestionForm) );
 
-router.put("/question/:questionId/edit", questionValidator, catchAsync(questionController.updateQuestion) );
+router.put("/question/:questionId/edit", catchAsync(questionController.updateQuestion) );
 
 //*Delete Route of Question
 router.delete("/question/:questionId", catchAsync(questionController.deleteQuestion) );
