@@ -6,6 +6,7 @@ const Answers = require("../../models/answer");
 const catchAsync = require("../../utils/catchAsync");
 const ExpressError = require("../../utils/ExpressError");
 const {stripHtml} = require("string-strip-html");
+const { cloudinary } = require("../../cloudinary");
 
 module.exports.viewQuestion = async (req, res) => {
 	const userSession = req.session;
@@ -36,14 +37,39 @@ module.exports.updateQuestion = async (req, res) => {
 	const userSession = req.session;
 	const { questionId } = req.params;
 	const { questionTitle, questionDescription, tags } = req.body;
-	const snippet = stripHtml(questionDescription.substr(0,430)).result;
+	const snippet = stripHtml(questionDescription.substring(0,430)).result;
 	const tagsArray = tags.split(" "); //This Function takes string of words separated by space and returns array
+
 	const question = await Question.findByIdAndUpdate(questionId, {
 		questionTitle,
 		questionDescription,
 		tags: tagsArray,
-		snippet
+		snippet,
 	});
+
+	//Checking if there are images uploaded.
+	if(req.files.length>0) { //We are checking that if there are files like images in the request object passed
+		const uploadImagesArray = req.files.map(image => { //If there is then for each image we create a new array and assign the all images array to imagesArray
+			return { 
+				url:image.path, //Assigning the url as image passed path 
+				filename:image.filename //Assigning the filename as image passed filename
+			} //Now returning the object to add it into question database
+		})
+		question.images.push(...uploadImagesArray);
+	}
+	
+	await question.save();
+
+	// When a image is checked in editQuestion the its url is added in deleteImages and it is sended via form
+	if(req.body.deleteImages) {
+		//Updating the Question By Pulling the element from images array where the filename is == to filename in deleteImages Array
+		
+		//After deleting the images from database loop over the filenames and call the uploader.destroy to delete the images by passing the filename to the cloud.
+		for(let filename of req.body.deleteImages){
+			await cloudinary.uploader.destroy(filename,{invalidate:true,resource_type:"image",type:"upload"});
+		}
+		await question.updateOne({ $pull: {images: {filename: { $in: req.body.deleteImages }}}});
+	}
 	req.flash("edit", "Updated Your Question.");
 	res.redirect(`/question/${questionId}`);
 };
@@ -220,15 +246,13 @@ module.exports.createQuestion = async (req, res ,next) => {
 	const tagsArray = tags.split(" ");
 
 	if(req.files) { //We are checking that if there are files like images in the request object passed
-		imagesArray = req.files.map(image => { //If there is then for each image we create a new array and assign the all images array to imagesArray
+		var imagesArray = req.files.map(image => { //If there is then for each image we create a new array and assign the all images array to imagesArray
 			return { 
 				url:image.path, //Assigning the url as image passed path 
 				filename:image.filename //Assigning the filename as image passed filename
 			} //Now returning the object to add it into question database
 		})
 	}
-
-	console.log(req.files);
 
 	const question = new Question({
 		questionTitle,
@@ -256,5 +280,5 @@ module.exports.searchQuestion = async (req, res) => {
 		.populate("answers")
 		.populate("user");
 	let count = result.length;
-	res.render("searchResults", { result, userSession, count });
+	res.render("tags", { tag:search, tagResult:result, userSession });
 };

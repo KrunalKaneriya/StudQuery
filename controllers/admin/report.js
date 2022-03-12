@@ -27,6 +27,7 @@ module.exports.adminAddReportedQuestion = async (req, res) => {
 	const { isLoggedIn } = userSession;
 
 	const { questionId } = req.params;
+	const {isFullQuestion} = req.query;
 	if (!isLoggedIn) {
 		req.flash('error', 'You need to login to report Question');
 	} else {
@@ -38,14 +39,28 @@ module.exports.adminAddReportedQuestion = async (req, res) => {
 		if (isQuestionReported) {
 			req.flash('error', 'This Question is already reported to our Servers');
 		} else {
-			const question = await Question.findById(questionId);
+			const question = await Question.findById(questionId).populate("user");
+			const user = question.user;
 			const ques = new ReportedQuestion({});
 			ques.reportedQuestion = question;
+			const notification = {
+				message:"Your Question is Reported and is Under Review By Our Servers.",
+				questionId
+			}
+			user.notifications.push(notification);
 			await ques.save();
+			await user.save();
 			req.flash('success', 'This question is reported to our Servers!');
+
 		}
 	}
-	res.redirect(`/question/${questionId}`);
+
+	if(isFullQuestion) {
+		res.redirect(`/question/${questionId}`);
+	} else {
+		res.redirect("/");
+	}
+	
 };
 
 module.exports.addReportedAnswer = async (req, res) => {

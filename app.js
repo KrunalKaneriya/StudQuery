@@ -1,7 +1,7 @@
 if(process.env.NODE_ENV !== "production") { //We are checking if the value of NODE_ENV is not production
 	//Then we need to include the dotenv package and call config function and the config function will bring
 	//all the enviroment variables set in .env file in the project
-	require("dotenv").config();	
+	require("dotenv").config();
 }
 const express = require('express');
 const mongoose = require('mongoose');
@@ -19,7 +19,7 @@ app.set('views', path.join(__dirname, 'views/studquery'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
-app.use(methodOverride('_method'));
+app.use(methodOverride("_method"));
 
 app.use(
 	session({

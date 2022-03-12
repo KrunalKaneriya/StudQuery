@@ -12,6 +12,8 @@ const userController = require("../controllers/user/users");
 
 router.get("/user/notLoggedIn",catchAsync(userController.renderUserError));
 
+router.get("/user/getNotifications",catchAsync(userController.getNotifications));
+
 router.get("/user/:id",catchAsync(userController.renderUserProfilePage));
 
 router.put("/user/:id",catchAsync(userController.editUser));

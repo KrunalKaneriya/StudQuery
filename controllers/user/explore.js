@@ -29,3 +29,4 @@ module.exports.viewParticularTopic = async (req,res) => {
      const tagResult = await Question.find({tags: { $in : [tag]}}).populate("user").populate("answers");
      res.render("tags",{tag,tagResult,userSession});  
  };
+

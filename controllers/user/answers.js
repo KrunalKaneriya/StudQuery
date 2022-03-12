@@ -5,8 +5,13 @@ const Question = require("../../models/question");
 const Answer = require("../../models/answer");
 const catchAsync = require("../../utils/catchAsync");
 const ExpressError = require("../../utils/ExpressError");
+const multer = require("multer");
+const {storage,cloudinary} = require("../../cloudinary/index");
+const upload = multer({storage});
+
 
 module.exports.createAnswer = async (req, res) => {
+
      const { questionId } = req.params;
      const userSession = req.session;
      const { isLoggedIn, userid } = userSession;
@@ -14,8 +19,17 @@ module.exports.createAnswer = async (req, res) => {
           const question = await Question.findById(questionId);
           const user = await User.findById(userid);
           const {answerDescription} = req.body;
+          if(req.files) {
+               var answerImages = req.files.map(image => {
+                    return {
+                         url:image.path,
+                         filename:image.filename
+                    }
+               })
+          }
           const answer = new Answer({
-               answerDescription
+               answerDescription,
+               images:answerImages
           });
           answer.question = question;
           answer.user = user;
@@ -32,6 +46,7 @@ module.exports.createAnswer = async (req, res) => {
           req.flash("error", "You are Not Logged In. Cannot Post Answer");
           res.redirect(`/question/${questionId}`);
      }
+
 };
 
 module.exports.renderEditAnswerForm = async (req, res) => {
@@ -43,12 +58,34 @@ module.exports.renderEditAnswerForm = async (req, res) => {
 };
 
 module.exports.editAnswer = async (req, res) => {
-     const { answerId } = req.params;
-     const answer = await Answer.findById(answerId).populate("user", "username").populate("question", "questionTitle questionDescription");
-     const question = answer.question;
-     await Answer.findByIdAndUpdate(answerId, { ...req.body });
+     const { questionId,answerId } = req.params;
+     const {answerDescription} = req.body;
+     // const answer = await Answer.findById(answerId).populate("user", "username").populate("question", "questionTitle questionDescription");
+     // const question = answer.question;
+     const answer = await Answer.findByIdAndUpdate(answerId, { answerDescription });
+     
+     if(req.files.length>0) {
+          const uploadImagesArray = req.files.map(img => {
+               return {
+                         url:img.path,
+                         filename:img.filename
+               }
+          })
+          //Before Pushing Images to the Answer we need to spread the url and filename otherwise the uploadImagesArray will be an array
+          //not a object and it will create error.
+          answer.images.push(...uploadImagesArray);
+     }
+     await answer.save();
+    
+      if(req.body.deleteImages) {
+          for(let filename of req.body.deleteImages) {
+               await cloudinary.uploader.destroy(filename,{invalidate:true,resource_type:"image",type:"upload"});
+          }
+          await answer.updateOne({$pull : { images : {filename : {$in:req.body.deleteImages}} }});
+     }
+
      req.flash("edit", "Answer is Edited...");
-     res.redirect(`/question/${answer.question._id}`);
+     res.redirect(`/question/${questionId}`);
 };
 
 module.exports.deleteAnswer = async (req, res) => {
@@ -98,13 +135,12 @@ module.exports.answerVoteInc = async (req, res) => {
           }
 
           await answer.save();
-
-          res.json({votes:answer.votes});
+          res.json({ votes:answer.votes });
+          
 
           // if(req.query.fullQuestion) {
-
-              // req.flash("success","You liked the question.");
-              // res.redirect(`/question/${questionId}`);
+          //     req.flash("success","You liked the question.");
+          //     res.redirect(`/question/${questionId}`);
           // } else {
           //     req.flash("success","You liked the question.");
           //     res.redirect("/");
@@ -162,9 +198,7 @@ module.exports.answerVoteDec = async (req, res) => {
           }
 
           await answer.save();
-
-          res.json({votes:answer.votes});
-
+          res.json({ votes:answer.votes });
           // if(req.query.fullQuestion) {
               // req.flash("success","You disliked the question.");
               // res.redirect(`/question/${questionId}`);

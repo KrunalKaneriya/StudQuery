@@ -20,9 +20,7 @@ const UserSchema = new Schema({
         required:true,
         default:"Email Address Not Specified"
     },
-    age:Number,
     description:String,
-    studyingIn:String,
     questions:[{
         type:Schema.Types.ObjectId,
         ref:"Question"
@@ -39,7 +37,14 @@ const UserSchema = new Schema({
         url:String,
         filename:String
     },
-    city:String,
+    country:String,
+    notifications:[{
+        message:String,
+        questionId:{
+            type:Schema.Types.ObjectId,
+            ref:"Question"
+        }
+    }],
     lastLoggedIn:{
         type:Date
     },

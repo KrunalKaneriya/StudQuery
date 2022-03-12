@@ -8,6 +8,7 @@ const ReportedQuestions = require("../../models/reportedQuestions");
 
 const adminUsersController = require("../../controllers/admin/users");
 
+
 router.get("/admin/users",catchAsync(adminUsersController.renderAdminUsersPage));
 
 router.delete("/admin/users/:userid",catchAsync(adminUsersController.adminDeleteUser));

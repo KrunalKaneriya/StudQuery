@@ -7,7 +7,7 @@ const catchAsync = require("../utils/catchAsync");
 const ExpressError = require("../utils/ExpressError");
 const {stripHtml} = require("string-strip-html");
 const multer = require("multer"); //Package Required to parse Images
-const {storage} = require("../cloudinary/index");
+const {storage,cloudinary} = require("../cloudinary/index");
 const upload = multer({storage}); //This is the storage of the Images
 
 /*******************
@@ -33,7 +33,7 @@ router.get("/question/:questionId", catchAsync(questionController.viewQuestion) 
 //*Update Route of Question
 router.get("/question/:questionId/edit", catchAsync(questionController.renderEditQuestionForm) );
 
-router.put("/question/:questionId/edit", catchAsync(questionController.updateQuestion) );
+router.put("/question/:questionId/edit",upload.array("uploadImages"),catchAsync(questionController.updateQuestion) );
 
 //*Delete Route of Question
 router.delete("/question/:questionId", catchAsync(questionController.deleteQuestion) );

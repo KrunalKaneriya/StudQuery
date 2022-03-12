@@ -19,6 +19,19 @@ module.exports.renderUserProfilePage = async (req, res) => {
      res.render("user", { user, questions, userSession, questionCount, answerCount });
 };
 
+module.exports.getNotifications = async (req,res) => {
+	const userSession = req.session;
+	const {userid,isLoggedIn} = userSession;
+
+	if(isLoggedIn) {
+		const user = await User.findById(userid);
+		const notifications = user.notifications;
+		res.json({notifications});
+	} else {
+		// req.flash("error","Log in first to view the notifications")
+	}
+}
+
 module.exports.editUser = async (req, res) => {
      const { id } = req.params;
 	 console.log(req.file);
