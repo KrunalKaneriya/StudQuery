@@ -23,6 +23,7 @@ module.exports.adminGetReportedAnswers = async (req, res) => {
 };
 
 module.exports.adminAddReportedQuestion = async (req, res) => {
+	console.log(req.originalUrl);
 	const userSession = req.session;
 	const { isLoggedIn } = userSession;
 
@@ -54,12 +55,9 @@ module.exports.adminAddReportedQuestion = async (req, res) => {
 
 		}
 	}
+	res.redirect('back');
 
-	if(isFullQuestion) {
-		res.redirect(`/question/${questionId}`);
-	} else {
-		res.redirect("/");
-	}
+	
 	
 };
 
@@ -87,7 +85,7 @@ module.exports.addReportedAnswer = async (req, res) => {
 		}
 	}
 
-	res.redirect(`/question/${questionId}`);
+	res.redirect('back');
 };
 
 module.exports.deleteReportedQuestion = async (req, res) => {

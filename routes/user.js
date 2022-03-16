@@ -14,6 +14,14 @@ router.get("/user/notLoggedIn",catchAsync(userController.renderUserError));
 
 router.get("/user/getNotifications",catchAsync(userController.getNotifications));
 
+router.get("/user/:id/follow",catchAsync(userController.followUser));
+
+router.get("/user/:id/unfollow",catchAsync(userController.unfollowUser));
+
+router.get("/user/:id/getFollowedUsers",catchAsync(userController.getFollowedUsers));//TODO
+
+router.get("/user/:id/getFollowedUsersQuestions",catchAsync(userController.getFollowedUsersQuestions));//TODO
+
 router.get("/user/:id",catchAsync(userController.renderUserProfilePage));
 
 router.put("/user/:id",catchAsync(userController.editUser));

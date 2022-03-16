@@ -41,10 +41,10 @@ module.exports.createAnswer = async (req, res) => {
           user.save();
 
           req.flash("success", "Your Answer is Added Successfully...");
-          res.redirect(`/question/${questionId}`);
+          return res.back();
      } else {
           req.flash("error", "You are Not Logged In. Cannot Post Answer");
-          res.redirect(`/question/${questionId}`);
+          return res.back();
      }
 
 };
@@ -85,7 +85,7 @@ module.exports.editAnswer = async (req, res) => {
      }
 
      req.flash("edit", "Answer is Edited...");
-     res.redirect(`/question/${questionId}`);
+     return res.redirect(`/question/${questionId}`);   
 };
 
 module.exports.deleteAnswer = async (req, res) => {
@@ -100,7 +100,7 @@ module.exports.deleteAnswer = async (req, res) => {
      const deletedAnswer = await Answer.findByIdAndDelete(answerId);
 
      req.flash("success", "Deleted Answer Successfully...");
-     res.redirect(`/question/${questionId}`);
+     return res.back();
 };
 
 module.exports.answerVoteInc = async (req, res) => {
@@ -176,8 +176,7 @@ module.exports.answerVoteDec = async (req, res) => {
 
      if (!isLoggedIn) {
           req.flash("error", "To vote you need to login first.");
-          const redirectUrl = req.session.redirectUrl || '/';
-          res.redirect(redirectUrl);
+          return res.back();
      } else {
           const answer = await Answer.findById(answerId);
           const downVote = await Answer.exists({ _id: answerId, downVotes:userid });

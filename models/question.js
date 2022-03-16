@@ -43,7 +43,11 @@ const QuestionSchema = new Schema({
     images:[{
         url:String,
         filename:String
-    }]
+    }],
+    isClosed:{
+        type:Boolean,
+        default:false
+    }
 },{timestamps:true})
 
 //Before saving the questionDescription strip the html tags and save the questionDescription in snippet

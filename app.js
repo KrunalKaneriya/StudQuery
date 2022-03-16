@@ -3,7 +3,7 @@ if(process.env.NODE_ENV !== "production") { //We are checking if the value of NO
 	//all the enviroment variables set in .env file in the project
 	require("dotenv").config();
 }
-const express = require('express');
+const express = require("express");
 const mongoose = require('mongoose');
 const path = require('path');
 const app = express();
@@ -11,7 +11,8 @@ const session = require('express-session');
 const methodOverride = require('method-override');
 const flash = require('connect-flash');
 const ejsMate = require('ejs-mate');
-const joi = require('joi');
+const joi = require("joi");
+const back = require("express-back");
 
 app.set('view engine', 'ejs');
 app.engine('ejs', ejsMate); //Setting The Engine To EjsMate So we can use Partials And Layouts
@@ -32,6 +33,7 @@ app.use(
 		}
 	})
 );
+app.use(back());
 
 app.use(flash());
 

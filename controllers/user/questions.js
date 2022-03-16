@@ -23,14 +23,26 @@ module.exports.viewQuestion = async (req, res) => {
 
 module.exports.renderEditQuestionForm = async (req, res) => {
 	const userSession = req.session;
+	const {isLoggedIn,userid} = userSession;
 	const { questionId } = req.params;
-	const question = await Question.findById(questionId)
-		.populate("user")
-		.populate({ path: "answers", populate: { path: "user" } });
+	if(!isLoggedIn) {
+		req.flash("error","You need to login to edit this Question");
+		res.redirect(`/question/${questionId}`);
+	} else {
+		const question = await Question.findById(questionId)
+			.populate("user")
+			.populate({ path: "answers", populate: { path: "user" } });
 
-	//When we are retrieving tags from questions replace , with space from each element and pass to ejs file
-	let tagsArray = question.tags.toString().replaceAll(",", " ");
-	res.render("editQuestion", { question, userSession, tagsArray });
+		if(question.user._id == userid) {
+			//When we are retrieving tags from questions replace , with space from each element and pass to ejs file
+			let tagsArray = question.tags.toString().replaceAll(",", " ");
+			res.render("editQuestion", { question, userSession, tagsArray });
+		} else {
+			req.flash("error","You are not the owner of this question.");
+			res.redirect(`/question/${questionId}`);
+		}
+	}
+	
 };
 
 module.exports.updateQuestion = async (req, res) => {
@@ -74,40 +86,80 @@ module.exports.updateQuestion = async (req, res) => {
 	res.redirect(`/question/${questionId}`);
 };
 
+module.exports.closeQuestion = async(req,res) => {
+	const userSession = req.session;
+	const {isLoggedIn,userid} = userSession;
+	const {questionId} = req.params;
+
+	const question = await Question.findById(questionId).populate("user");
+
+	if(isLoggedIn && question.user._id==userid) {
+		question.isClosed = true;
+		await question.save();
+		req.flash("success","This Question is now Closed");
+		res.redirect(`/question/${questionId}`);
+	} else {
+		req.flash("error","You cannot close this question");
+		res.redirect(`/question/${questionId}`);
+	}
+}
+
+module.exports.openQuestion = async(req,res) => {
+	const userSession = req.session;
+	const {isLoggedIn,userid} = userSession;
+	const {questionId} = req.params;
+
+	const question = await Question.findById(questionId).populate("user");
+
+	if(isLoggedIn && question.user._id==userid) {
+		question.isClosed = false;
+		await question.save();
+		req.flash("success","This Question is now Opened");
+		res.redirect(`/question/${questionId}`);
+	} else {
+		req.flash("error","You cannot Open this question");
+		res.redirect(`/question/${questionId}`);
+	}
+}
+
 module.exports.deleteQuestion = async (req, res) => {
-	const {isPersonalQuestion} = req.query;
 	const userSession = req.session;
 	const redirectUrl = req.session.redirectUrl || '/';
-	const { userid } = userSession;
+	const { userid,isLoggedIn } = userSession;
 	const { questionId } = req.params;
 	const question = await Question.findById(questionId).populate("answers");
 
-	//Remove the Question from database
-	await Question.findByIdAndDelete(questionId);
-
-	//Delete Single Question From the User Schema By Using Pull and Questionid
-	await User.findByIdAndUpdate(userid, { $pull: { questions: questionId } });
-
-	//Pull the answers from User which id == question.answers.id
-	await User.findByIdAndUpdate(userid, { $pull: { answers: { $in: question.answers } } });
-
-
-	//search For _id of the Answer and remove all the answers of question which has id in question.answers Database
-	//*Its like _id is the searching parameter and $in will find the id in question.answers and if a _id is found in question.answers then it is removed
-	await Answers.deleteMany({
-		_id: {
-			$in: [question.answers]
-		},
-	});
-
-	//Delete Answers in User.answers array
-
-	req.flash("success", "Deleted the question successfully.");
-
-	if(isPersonalQuestion) {
-		res.redirect("/user/personal/questions");
+	if(!isLoggedIn) {
+		req.flash("error","You need to login.");
+		res.redirect(`/question/${questionId}`);
 	} else {
-		res.redirect("/");
+			if(question.user._id == userid) {
+					//Remove the Question from database
+				await Question.findByIdAndDelete(questionId);
+
+				//Delete Single Question From the User Schema By Using Pull and Questionid
+				await User.findByIdAndUpdate(userid, { $pull: { questions: questionId } });
+
+				//Pull the answers from User which id == question.answers.id
+				await User.findByIdAndUpdate(userid, { $pull: { answers: { $in: question.answers } } });
+
+
+				//search For _id of the Answer and remove all the answers of question which has id in question.answers Database
+				//*Its like _id is the searching parameter and $in will find the id in question.answers and if a _id is found in question.answers then it is removed
+				await Answers.deleteMany({
+					_id: {
+						$in: [question.answers]
+					},
+				});
+
+				//Delete Answers in User.answers array
+
+				req.flash("success", "Deleted the question successfully.");
+				res.redirect(`/question/${questionId}`);
+		} else {
+			req.flash("error","You cannot delete this question.");
+			res.redirect(`/question/${questionId}`);
+		}
 	}
 };
 

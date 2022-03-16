@@ -51,11 +51,11 @@ module.exports.renderSignUpForm = (req,res) => {
 };
 
 module.exports.sendSignUpInfo = async (req,res) => {
-     const {username,alias,email,age,password,studyingIn,description,city} = req.body;
+     const {username,alias,email,password,description,country} = req.body;
      const userHash = await crypt.hash(password,12);
      
      const user = new User({
-         username,alias,email,age,userHash,description,studyingIn,city
+         username,alias,email,userHash,description,country
      });
 
      if(req.file) {

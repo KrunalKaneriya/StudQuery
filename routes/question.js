@@ -30,6 +30,10 @@ router.get("/question/search", catchAsync(questionController.searchQuestion) );
 
 router.get("/question/:questionId", catchAsync(questionController.viewQuestion) );
 
+router.get("/question/:questionId/closeQuestion",catchAsync(questionController.closeQuestion));
+
+router.get("/question/:questionId/openQuestion",catchAsync(questionController.openQuestion));
+
 //*Update Route of Question
 router.get("/question/:questionId/edit", catchAsync(questionController.renderEditQuestionForm) );
 

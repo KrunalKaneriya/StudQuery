@@ -16,3 +16,19 @@ module.exports.renderHomePage = async (req,res) => {
      req.session.redirectUrl = req.originalUrl;
      res.render("home",{posts,newUsers,userSession});
 };
+
+module.exports.filterQuestions = async (req,res) => {
+     const {createdAt,votes} = req.query;
+     const userSession = req.session;
+     const newUsers = await User.find().sort({createdAt:'desc'}).limit(5);
+     if(createdAt) {
+          const posts = await Question.find().populate("answers").populate("user").sort({createdAt:createdAt})
+          res.render("home",{posts,newUsers,userSession});
+     } else if(votes) {
+          const posts = await Question.find().populate("answers").populate("user").sort({votes:votes});
+          res.render("home",{posts,newUsers,userSession});
+     }
+
+    
+  
+}

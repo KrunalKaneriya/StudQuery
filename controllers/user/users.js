@@ -10,13 +10,18 @@ const ExpressError = require("../../utils/ExpressError");
 
 module.exports.renderUserProfilePage = async (req, res) => {
      const userSession = req.session;
-
+	 const {userid} = userSession;
      const { id } = req.params;
      const user = await User.findById(id);
+
+	 //Checking if the loggedin User follows the other user of which the profile page is viewed.
+	 const isUserFollowed = await User.exists({_id:userid,followedUsers:id});
+
      const questions = await User.findById(id).populate("questions");
      const questionCount = await User.findById(id).populate("questions").countDocuments();
      const answerCount = await User.findById(id).populate("answers").countDocuments();
-     res.render("user", { user, questions, userSession, questionCount, answerCount });
+	 
+     res.render("user", { user, questions, userSession, questionCount, answerCount,isUserFollowed });
 };
 
 module.exports.getNotifications = async (req,res) => {
@@ -61,6 +66,55 @@ module.exports.getSavedQuestions = async(req,res) => {
 		const data = await User.findById(userid).populate({path:"savedQuestions" , populate:{path:"user"}});
 		res.render("savedQuestions",{userSession,data:data.savedQuestions})
 	}
+}
+
+module.exports.followUser = async(req,res) => {
+	const userSession = req.session;
+	const {isLoggedIn,userid} = userSession;
+	const {id} = req.params;
+		const loggedInUser = await User.findById(userid);
+		const followedUser = await User.findById(id);
+		loggedInUser.followedUsers.push(followedUser);
+		await loggedInUser.save();
+		req.flash("success","You are following this user.");
+		res.redirect(`/user/${id}`);
+}
+
+module.exports.getFollowedUsers = async(req,res) => {
+	const userSession = req.session;
+	const {userid,isLoggedIn} = userSession;
+	const {id} = req.params;
+	if(!isLoggedIn) {
+		req.flash("error","You need to login");
+		const redirectUrl = req.session.redirectUrl || "/";
+		res.redirect(redirectUrl);
+	} else {
+		const users = await User.findById(userid).populate("followedUsers");
+		const followedUsers = users.followedUsers;
+		res.render("followedUsers",{followedUsers,userSession});
+	}
+}
+
+module.exports.getFollowedUsersQuestions = async(req,res) => {
+	const userSession = req.session;
+	const {userid,isLoggedIn} = userSession;
+	const {id} = req.params;
+
+	const users = await User.findById(userid).populate("followedUsers");
+	const questions = await Question.find({user: {$in:users.followedUsers}}).populate("user");
+
+	// const users = await User.findById(userid).populate({path:"followedUsers",populate:{path:"questions",populate:{path:"user"}}});
+	res.render("followedUsersQuestions",{questions,userSession});
+}
+
+module.exports.unfollowUser = async(req,res) => {
+	const userSession = req.session;
+	const {id} = req.params;
+	const {userid} = userSession;
+
+	await User.findByIdAndUpdate(userid,{$pull: {followedUsers:{$in : id}}  });
+	req.flash("success","You are now unfollowed this user.");
+	res.redirect('back');
 }
 
 module.exports.createdQuestions = async (req,res) => {

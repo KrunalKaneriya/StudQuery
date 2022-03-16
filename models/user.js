@@ -48,9 +48,11 @@ const UserSchema = new Schema({
     lastLoggedIn:{
         type:Date
     },
+    followedUsers:[{
+        type:Schema.Types.ObjectId,
+        ref:"User"
+    }]
     
 },{timestamps:true});
-
-
 
 module.exports = mongoose.model("User",UserSchema);

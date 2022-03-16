@@ -7,8 +7,11 @@
 		<section class="profile-picture flex flex-col mx-5 h-full items-center justify-center mt-3 flex-wrap gap-y-6">
 			<div class="image">
 				<% if(question.user.image) { %>
-				<img src="<%= question.user.image ? `${question.user.image.url}` : "" %> " alt=""
-					class="w-14 h-14 rounded-full">
+					<a href="/user/<%= question.user._id %>">
+						<img src="<%= question.user.image ? `${question.user.image.url}` : "" %> " alt=""
+						class="w-14 h-14 rounded-full">
+					</a>
+			
 				<% } else { %>
 				<div class="w-14 h-14 rounded-full bg-gray-200"></div>
 				<% } %>
@@ -62,12 +65,14 @@
 
 				</div>
 
+
+
 			</div>
 
 
 		</section>
 
-		<section class="question-body flex flex-col w-[80%]">
+		<section class="question-body flex flex-col w-[80%] ">
 			<p class="font-sofia font-light text-[#AAAABC] text-xs">Asked: <%= question.createdAt %> </p>
 
 			<h2 class="text-xl font-sofia font-semibold text-[#464555] my-2"><%= question.questionTitle %></h2>
@@ -101,8 +106,10 @@
 
 			<div class="question-options flex flex-row gap-x-10 mt-3">
 				<p class="text-[#7485F2] font-sofia font-light "><%= question.answers.length %> Answers</p>
+				<% if(!question.isClosed) { %> 
 				<p class="font-sofia font-light text-[#00AAC6]"><a href="/question/<%=question._id%>/edit">Edit
 						Question</a></p>
+				<% } %> 
 				<div class="font-sofia  font-light">
 					<form action="/question/<%=question._id%>?_method=DELETE" method="post">
 						<button type="submit" class=" font-sofia font-light text-[#EE5C67]">Delete Question</button>
@@ -113,6 +120,20 @@
 						<button class="text-[#AB8A0D] font-sofia font-light ">Report Question</button>
 					</form>
 				</div>
+
+				<% if(question.isClosed) { %> 
+					<div class="open-question">
+						<form action="/question/<%= question._id %>/openQuestion" method="get">
+							<button class="text-fuchsia-500">Open Question</button>
+						</form>
+					</div>
+				<% } else { %> 
+					<div class="close-question">
+						<form action="/question/<%= question._id %>/closeQuestion" method="get">
+							<button class="text-fuchsia-500">Close Question</button>
+						</form>
+					</div>
+				<% } %> 
 
 
 			</div>
@@ -137,8 +158,10 @@
 		<section class="profile-picture flex flex-col mx-5">
 			<div class="image">
 				<% if(answer.user.image) { %>
-				<img src="<%= answer.user.image ? `${answer.user.image.url}` : "" %> " alt=""
-					class="w-14 h-14 rounded-full">
+					<a href="/user/<%= answer.user._id %>">
+						<img src="<%= answer.user.image ? `${answer.user.image.url}` : "" %> " alt=""
+						class="w-14 h-14 rounded-full">
+					</a>
 				<% } else { %>
 				<div class="w-14 h-14 rounded-full bg-gray-200"></div>
 				<% } %>
@@ -265,7 +288,7 @@
 	<% } %>
 	<% } %>
 
-	<% if(userSession.isLoggedIn) { %>
+	<% if(userSession.isLoggedIn && question.isClosed!=true) { %>
 	<div class="create-answer flex flex-col w-full">
 		<h2 class="mt-4 font-sofia text-[#464555]">Create Answer</h2>
 		<form action="/question/<%=question._id%>/answer" method="post" autocomplete="off" class="" id="answerForm"
