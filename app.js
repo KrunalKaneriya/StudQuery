@@ -30,15 +30,15 @@ const store = MongoStore.create({
 	mongoUrl:  process.env.DB_URL || 'mongodb://127.0.0.1:27017/studquery',
 	touchAfter: 24 * 60 * 60
 });
+
 app.use(
 	session({
 		store,
-		secret: process.env.secret ||'thisissecret',
+		secret: process.env.secret ||'thisisasecret',
 		resave: false,
 		saveUninitialized: false,
 		cookie: {
 			expires: Date.now() * 1000 * 60 * 60 * 24 * 7, //Session Expires After 7 days
-			httpOnly: true
 		}
 	})
 );
