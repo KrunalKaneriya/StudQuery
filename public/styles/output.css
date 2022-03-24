@@ -2610,11 +2610,6 @@ div#message {
   border-color: rgb(64 145 108 / var(--tw-border-opacity));
 }
 
-.hover\:border-blue-400:hover {
-  --tw-border-opacity: 1;
-  border-color: rgb(96 165 250 / var(--tw-border-opacity));
-}
-
 .hover\:border-violet-400:hover {
   --tw-border-opacity: 1;
   border-color: rgb(167 139 250 / var(--tw-border-opacity));
@@ -2640,8 +2635,8 @@ div#message {
   background-color: rgb(243 244 246 / var(--tw-bg-opacity));
 }
 
-.hover\:bg-blue-300\/70:hover {
-  background-color: rgb(147 197 253 / 0.7);
+.hover\:bg-violet-300\/70:hover {
+  background-color: rgb(196 181 253 / 0.7);
 }
 
 .hover\:bg-green-400:hover {
@@ -2712,10 +2707,6 @@ div#message {
 .hover\:bg-indigo-500:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(99 102 241 / var(--tw-bg-opacity));
-}
-
-.hover\:bg-violet-300\/70:hover {
-  background-color: rgb(196 181 253 / 0.7);
 }
 
 .hover\:text-white:hover {
