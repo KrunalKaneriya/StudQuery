@@ -156,7 +156,7 @@
 
 		<section class="profile-picture flex flex-col mx-5">
 			<div class="image">
-				<% if(answer.user.image) { %>
+				<% if(answer.user.image.url) { %>
 					<a href="/user/<%= answer.user._id %>">
 						<img src="<%= answer.user.image ? `${answer.user.image.url}` : "" %> " alt=""
 						class="w-14 h-14 rounded-full">

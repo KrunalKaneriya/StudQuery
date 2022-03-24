@@ -94,7 +94,12 @@ module.exports.deleteAnswer = async (req, res) => {
      const { answerId, questionId } = req.params;
 
      const answer = await Answer.findById(answerId).populate("question");
-
+     if(answer.images.length > 0) {
+          for(let image of answer.images){
+			await cloudinary.uploader.destroy(image.filename,{invalidate:true,resource_type:"image",type:"upload"})
+          }
+     }
+    
      await User.findByIdAndUpdate(userid, { $pull: { answers: answerId } });
      await Question.findByIdAndUpdate(questionId, { $pull: { answers: answerId } });
      const deletedAnswer = await Answer.findByIdAndDelete(answerId);

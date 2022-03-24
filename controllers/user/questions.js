@@ -134,7 +134,7 @@ module.exports.deleteQuestion = async (req, res) => {
 		res.redirect(`/question/${questionId}`);
 	} else {
 			if(question.user._id == userid) {
-					//Remove the Question from database
+				//Remove the Question from database
 				await Question.findByIdAndDelete(questionId);
 
 				//Delete Single Question From the User Schema By Using Pull and Questionid
@@ -143,18 +143,30 @@ module.exports.deleteQuestion = async (req, res) => {
 				//Pull the answers from User which id == question.answers.id
 				await User.findByIdAndUpdate(userid, { $pull: { answers: { $in: question.answers } } });
 
-				
+				//Deleting The Pictures From the Cloud of the Questions
+				if(question.images.length > 0) {
+					for(let image of question.images) {
+						await cloudinary.uploader.destroy(image.filename,{invalidate:true,resource_type:"image",type:"upload"});
+					}
+				}
 
 
 				//search For _id of the Answer and remove all the answers of question which has id in question.answers Database
 				//*Its like _id is the searching parameter and $in will find the id in question.answers and if a _id is found in question.answers then it is removed
 				await Answers.deleteMany({
 					_id: {
-						$in: [question.answers]
+						$in: question.answers._id
 					},
 				});
 
-				//Delete Answers in User.answers array
+				//Deleting the answers images from the Cloud
+				if(question.answers.length > 0) {
+					for(let answer of question.answers) {
+						for(let image of answer.images) {
+							await cloudinary.uploader.destroy(image.filename,{invalidate:true,resource_type:"image",type:"upload"})
+						}
+					}
+				}
 
 				req.flash("success", "Deleted the question successfully.");
 				res.redirect("/");

@@ -49,4 +49,7 @@ router.get('/user/:userid/question/createdQuestions', catchAsync(userController.
 //Post Route to Display User Created Questions with Filter Applied
 router.post('/user/:userid/question/createdQuestions', catchAsync(userController.filterQuestions));
 
+//Get Route to Display all the list of users created.
+router.get("/users",catchAsync(userController.getUsers));
+
 module.exports = router;

@@ -56,10 +56,6 @@ module.exports.deleteAdminSingleQuestion = async (req, res) => {
             await ReportedQuestion.findOneAndDelete({ reportedQuestion: questionId });
         }
        
-        
-
-        
-        
 
         req.flash("success", "Deleted the question successfully.");
         res.redirect("back");

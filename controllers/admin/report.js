@@ -76,13 +76,6 @@ module.exports.addReportedAnswer = async (req, res) => {
 			const answerUser = answer.user;
 			const ans = new ReportedAnswer({});
 			ans.reportedAnswer = answer;
-			if(answerUser._id != userSession.userid) {
-			const notification = {
-				message:"Your Answer is reported and is under Review by our Servers.",
-				answerId
-			}
-			answerUser.notifications.push(notification);
-			}
 			await ans.save();
 			await answerUser.save();
 			req.flash('success', 'This answer is reported to our Servers!');

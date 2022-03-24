@@ -1293,14 +1293,6 @@ select {
   width: 99%;
 }
 
-.w-9 {
-  width: 2.25rem;
-}
-
-.w-80 {
-  width: 20rem;
-}
-
 .min-w-full {
   min-width: 100%;
 }
@@ -2623,6 +2615,11 @@ div#message {
   border-color: rgb(96 165 250 / var(--tw-border-opacity));
 }
 
+.hover\:border-violet-400:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(167 139 250 / var(--tw-border-opacity));
+}
+
 .hover\:bg-\[\#7485F2\]:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(116 133 242 / var(--tw-bg-opacity));
@@ -2715,6 +2712,10 @@ div#message {
 .hover\:bg-indigo-500:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(99 102 241 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-violet-300\/70:hover {
+  background-color: rgb(196 181 253 / 0.7);
 }
 
 .hover\:text-white:hover {

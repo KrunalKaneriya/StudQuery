@@ -203,3 +203,9 @@ module.exports.renderUserError = async(req,res) => {
 	req.flash("error","You need to login to see Questions");
 	res.redirect("/");
 };	
+
+module.exports.getUsers = async(req,res) => {
+	const userSession = req.session;
+	const users = await User.find();
+	res.render("users",{users,userSession});
+}
