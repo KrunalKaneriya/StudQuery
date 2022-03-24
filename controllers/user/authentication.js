@@ -12,6 +12,8 @@ module.exports.renderLoginForm = (req, res) => {
 
 module.exports.loginSuccessful = (req, res) => {
      req.flash("welcome", "Welcome to Studquery");
+     
+     //If there is some url found in session when logging in then go to that url otherwise go to home route
      const redirectUrl = req.session.redirectUrl || '/';
      res.redirect(redirectUrl);
 };
@@ -30,12 +32,14 @@ module.exports.renderSignUpForm = (req,res) => {
 
 module.exports.sendSignUpInfo = async (req,res) => {
      const {username,alias,email,password,description,country} = req.body;
-     const userHash = await crypt.hash(password,12);
+     const userHash = await crypt.hash(password,12); //Create a user hash by hashing password
      
      const user = new User({
          username,alias,email,userHash,description,country
      });
 
+     //If there is profile picture then create a new object of image in which url and filename of image will be stored
+     //and save it to the user.image in database
      if(req.file) {
           const {path,filename} = req.file;
           const image = {

@@ -1,3 +1,5 @@
+//By default all the users input fields and buttons are disabled so create an event in which if button is clicked
+//then it enables all the user input fields and buttons in user profile page
 $(document).ready(function () {
 	$("#edit-button-wrapper").click(function () {
 		$("#edit-button").fadeOut("slow");

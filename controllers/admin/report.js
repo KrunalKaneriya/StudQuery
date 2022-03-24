@@ -119,6 +119,7 @@ module.exports.deleteReportedQuestion = async (req, res) => {
 		}
 	});
 
+	//Delete the Reported answers of the questions if there are found
 	await ReportedAnswer.deleteMany({
 		reportedAnswer : {
 			$in : question.reportedQuestion.answers

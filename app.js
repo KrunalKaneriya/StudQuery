@@ -13,6 +13,7 @@ const flash = require('connect-flash');
 const ejsMate = require('ejs-mate');
 const joi = require("joi");
 const back = require("express-back");
+const mongoSanitize = require("express-mongo-sanitize"); //Package that removes special characters when getting input
 
 app.set('view engine', 'ejs');
 app.engine('ejs', ejsMate); //Setting The Engine To EjsMate So we can use Partials And Layouts
@@ -21,6 +22,7 @@ app.set('views', path.join(__dirname, 'views/studquery'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
+app.use(mongoSanitize());
 
 app.use(
 	session({

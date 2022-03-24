@@ -49,7 +49,7 @@ module.exports.updateQuestion = async (req, res) => {
 	const userSession = req.session;
 	const { questionId } = req.params;
 	const { questionTitle, questionDescription, tags } = req.body;
-	const snippet = stripHtml(questionDescription.substring(0,430)).result;
+	const snippet = stripHtml(questionDescription.substring(0,430)).result; //Create a snippet of the question body 
 	const tagsArray = tags.split(" "); //This Function takes string of words separated by space and returns array
 
 	const question = await Question.findByIdAndUpdate(questionId, {

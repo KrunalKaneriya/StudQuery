@@ -9,6 +9,7 @@ const multer = require("multer");
 const {storage,cloudinary} = require("../../cloudinary/index");
 const upload = multer({storage});
 
+//Function to create a answer
 
 module.exports.createAnswer = async (req, res) => {
 
@@ -19,6 +20,9 @@ module.exports.createAnswer = async (req, res) => {
           const question = await Question.findById(questionId);
           const user = await User.findById(userid);
           const {answerDescription} = req.body;
+
+          //If there are images also sent then loop over all the images and create a new array in which filename and 
+          //url of images will be stored
           if(req.files) {
                var answerImages = req.files.map(image => {
                     return {
@@ -60,10 +64,12 @@ module.exports.renderEditAnswerForm = async (req, res) => {
 module.exports.editAnswer = async (req, res) => {
      const { questionId,answerId } = req.params;
      const {answerDescription} = req.body;
-     // const answer = await Answer.findById(answerId).populate("user", "username").populate("question", "questionTitle questionDescription");
-     // const question = answer.question;
+
+     //Firstly update the answerDescription of the founded Answer
      const answer = await Answer.findByIdAndUpdate(answerId, { answerDescription });
      
+     //Now check if there are images also sent then loop over all the images and create a new array of url and filename of 
+     //images and add it to the answer => images database.
      if(req.files.length>0) {
           const uploadImagesArray = req.files.map(img => {
                return {
@@ -77,10 +83,13 @@ module.exports.editAnswer = async (req, res) => {
      }
      await answer.save();
     
+     //If there is checkbox checked of images to delete then loop over all the filenames of images checked and delete
+     //from cloud and remove the images from database.
       if(req.body.deleteImages) {
           for(let filename of req.body.deleteImages) {
                await cloudinary.uploader.destroy(filename,{invalidate:true,resource_type:"image",type:"upload"});
           }
+          //Remove the images object from answer where the filename is equal to the images checked.
           await answer.updateOne({$pull : { images : {filename : {$in:req.body.deleteImages}} }});
      }
 
@@ -94,15 +103,22 @@ module.exports.deleteAnswer = async (req, res) => {
      const { answerId, questionId } = req.params;
 
      const answer = await Answer.findById(answerId).populate("question");
+
+     //If there are any images found in answers then delete the images from cloud
      if(answer.images.length > 0) {
           for(let image of answer.images){
 			await cloudinary.uploader.destroy(image.filename,{invalidate:true,resource_type:"image",type:"upload"})
           }
      }
     
+     //Remove the answer from the user where answers == answerId
      await User.findByIdAndUpdate(userid, { $pull: { answers: answerId } });
+
+     //Remove the answer from question where answers == answerId
      await Question.findByIdAndUpdate(questionId, { $pull: { answers: answerId } });
-     const deletedAnswer = await Answer.findByIdAndDelete(answerId);
+
+     //Now delete the answer itself from database
+     await Answer.findByIdAndDelete(answerId);
 
      req.flash("success", "Deleted Answer Successfully...");
      return res.back();

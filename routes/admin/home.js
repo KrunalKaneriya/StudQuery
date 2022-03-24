@@ -10,6 +10,7 @@ const Admin = require("../../models/admin");
 const crypt = require("bcrypt");
 const adminIndexController = require("../../controllers/admin/index");
 
+//Middleware function to login for admin
 const adminLogin = catchAsync(async(req,res,next) => {
 	const {username,password} = req.body;
 
@@ -30,12 +31,13 @@ const adminLogin = catchAsync(async(req,res,next) => {
 
 })
 
-
+//Post route to send the login info to function
 router.post("/adminLogin",adminLogin,catchAsync(adminIndexController.sendAdminLogInInfo));
 
+//Get route to logout
 router.get("/adminLogout",adminIndexController.adminLogout);
 
-
+//Get route to render admin home page
 router.get("/admin",catchAsync(adminIndexController.renderAdminHomePage));
 
 module.exports = router;
