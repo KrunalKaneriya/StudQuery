@@ -143,6 +143,8 @@ module.exports.deleteQuestion = async (req, res) => {
 				//Pull the answers from User which id == question.answers.id
 				await User.findByIdAndUpdate(userid, { $pull: { answers: { $in: question.answers } } });
 
+				
+
 
 				//search For _id of the Answer and remove all the answers of question which has id in question.answers Database
 				//*Its like _id is the searching parameter and $in will find the id in question.answers and if a _id is found in question.answers then it is removed
@@ -155,10 +157,10 @@ module.exports.deleteQuestion = async (req, res) => {
 				//Delete Answers in User.answers array
 
 				req.flash("success", "Deleted the question successfully.");
-				res.redirect(`/question/${questionId}`);
+				res.redirect("/");
 		} else {
 			req.flash("error","You cannot delete this question.");
-			res.redirect(`/question/${questionId}`);
+			res.redirect("back");
 		}
 	}
 };
@@ -168,6 +170,7 @@ module.exports.questionVoteInc = async (req, res) => {
 	const { questionId } = req.params;
 	const userSession = req.session;
 	const { userid, isLoggedIn } = userSession;
+	
 
 	if (!isLoggedIn) {
 
@@ -179,7 +182,8 @@ module.exports.questionVoteInc = async (req, res) => {
 		}
 	}
 	else {
-		const question = await Question.findById(questionId);
+		const question = await Question.findById(questionId).populate("user");
+		const user = question.user;
 		const upVote = await Question.exists({ _id: questionId, upVotes: userid });
 
 		if (!upVote) {
@@ -188,7 +192,11 @@ module.exports.questionVoteInc = async (req, res) => {
 		} else {
 			question.upVotes.pull(userid);
 			question.votes -= 1;
+			await User.findByIdAndUpdate(user._id,{$pull : {notifications : {questionId}}});
+			
+			
 		}
+		await user.save();
 
 		const downVote = await Question.exists({ _id: questionId, downVotes: userid });
 
@@ -200,19 +208,6 @@ module.exports.questionVoteInc = async (req, res) => {
 		await question.save();
 
 		res.json({ votes: question.votes });
-
-		// if (req.query.fullQuestion) {
-		// 	req.flash("success", "You liked the question.");
-		// 	res.redirect(`/question/${questionId}`);
-		// } else {
-		// 	req.flash("success", "You liked the question.");
-
-		// 	if(isPersonalQuestion) {
-		// 		res.redirect("/user/personal/questions");
-		// 	} else {
-		// 		res.redirect("/");
-		// 	}
-		// }
 	}
 };
 
@@ -256,23 +251,8 @@ module.exports.questionVoteDec = async (req, res) => {
 
 		await question.save();
 		res.json({ votes: question.votes });
-
-		// if (req.query.fullQuestion) {
-		// 	req.flash("success", "You liked the question.");
-		// 	res.redirect(`/question/${questionId}`);
-		// } else {
-		// 	req.flash("success", "You liked the question.");
-
-		// 	if(isPersonalQuestion) {
-		// 		res.redirect("/user/personal/questions");
-		// 	} else {
-		// 		res.redirect("/");
-		// 	}
-		// }
 	}
 
-	// const question = await Question.findByIdAndUpdate(questionId,{$inc: {votes:-1} },{new:true});
-	// await question.save();
 };
 
 module.exports.renderNewQuestionForm = async (req, res) => {

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const ReportedAnswers = require("./reportedAnswers");
 const Schema = mongoose.Schema;
 
 const ReportedQuestionSchema = new Schema({
@@ -7,5 +8,6 @@ const ReportedQuestionSchema = new Schema({
         ref:"Question"
     }
 },{timestamps:true});
+
 
 module.exports = mongoose.model("ReportedQuestion",ReportedQuestionSchema);

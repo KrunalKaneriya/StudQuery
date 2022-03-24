@@ -39,8 +39,20 @@ module.exports.getNotifications = async (req,res) => {
 
 module.exports.editUser = async (req, res) => {
      const { id } = req.params;
-	 console.log(req.file);
-     const user = await User.findByIdAndUpdate(id, { ...req.body.user });
+	 const {username,alias,email,country,description} = req.body;
+	 const user = await User.findById(id);
+
+	 if(req.file) {
+		const {path,filename} = req.file;
+		const image = {
+			url:path,
+			filename
+		}
+		user.image = image;
+	 }
+
+     await User.findByIdAndUpdate(id, { username,alias,email,country,description });
+	 await user.save();
      res.redirect(`/user/${id}`);
 }
 
@@ -103,7 +115,6 @@ module.exports.getFollowedUsersQuestions = async(req,res) => {
 	const users = await User.findById(userid).populate("followedUsers");
 	const questions = await Question.find({user: {$in:users.followedUsers}}).populate("user");
 
-	// const users = await User.findById(userid).populate({path:"followedUsers",populate:{path:"questions",populate:{path:"user"}}});
 	res.render("followedUsersQuestions",{questions,userSession});
 }
 
@@ -133,6 +144,26 @@ module.exports.createdQuestions = async (req,res) => {
 		res.render("myQuestions",{userSession,result:result.questions,user});
 	}
 };
+
+module.exports.filterQuestions = async(req,res) => {
+	const userSession = req.session;
+	const {userid,isLoggedIn} = userSession;
+	
+
+	if(!isLoggedIn) {
+		req.flash("error","You need to login.");
+		res.redirect('back');
+	} else {
+		const {createdAt,votes} = req.query;
+		if(createdAt) {
+			const result = await Question.find().populate("answers").populate("user").sort({createdAt:createdAt})
+			res.render("myQuestions",{result,userSession});
+	   } else if(votes) {
+			const result = await Question.find().populate("answers").populate("user").sort({votes:votes});
+			res.render("myQuestions",{result,userSession});
+	   }
+	}
+}
 
 module.exports.saveQuestion = async(req,res) => {
 	const userSession = req.session;

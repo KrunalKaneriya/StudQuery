@@ -9,8 +9,10 @@ const exploreController = require("../controllers/user/explore");
 const router = express.Router();
 
 
+//Get Route to Render Explore Tags Page
 router.get("/explore",catchAsync(exploreController.exploreTopics));
 
+//Get Route to Render a Specific Tag
 router.get("/explore/:tag",catchAsync(exploreController.viewParticularTopic));
 
 module.exports = router;

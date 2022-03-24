@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const Question = require("../models/question");
+const Answer = require("../models/answer");
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
@@ -38,13 +40,6 @@ const UserSchema = new Schema({
         filename:String
     },
     country:String,
-    notifications:[{
-        message:String,
-        questionId:{
-            type:Schema.Types.ObjectId,
-            ref:"Question"
-        }
-    }],
     lastLoggedIn:{
         type:Date
     },
@@ -52,7 +47,7 @@ const UserSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:"User"
     }]
-    
 },{timestamps:true});
+
 
 module.exports = mongoose.model("User",UserSchema);

@@ -1,0 +1,15 @@
+<section class="filter mt-10 mb-10 mr-5">
+    <h1 class="font-sofia text-xl text-gray-600 inline-block"><%= posts.length %> Questions</h1>
+    <div class="filter-options inline-flex float-right gap-2">
+        <form action="/?createdAt=desc" method="post">
+            <button class="p-2 border border-gray-200 font-sofia rounded-md hover:bg-gray-600 hover:text-white">Latest</button>
+        </form>
+        <form action="/?createdAt=asc" method="post">
+            <button class="p-2 border border-gray-200 font-sofia rounded-md hover:bg-gray-600 hover:text-white">Oldest</button>
+        </form>
+        <form action="/?votes=desc" method="post">
+            <button class="p-2 border border-gray-200 font-sofia rounded-md hover:bg-gray-600 hover:text-white">Trending</button>
+        </form>
+        
+    </div>
+</section>

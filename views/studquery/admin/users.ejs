@@ -30,7 +30,7 @@
 
                     <% for(let user of users) { %> 
                     <tr>
-                        <td class="p-3 text-sm text-gray-700 font-sofia "><%= user.username %> </td>
+                        <td class="p-3 text-sm text-gray-700 font-sofia underline "><a href="/user/<%= user._id%>"><%= user.username %></a></td>
                         <td class="p-3 text-sm text-gray-700 font-sofia "><%= user.alias %> </td>
                         <td class="p-3 text-sm text-gray-700 font-sofia "><%= user.email %> </td>
                         <td class="p-3 text-sm text-gray-700 font-sofia "><%= user.country %> </td>

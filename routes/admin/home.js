@@ -10,8 +10,6 @@ const Admin = require("../../models/admin");
 const crypt = require("bcrypt");
 const adminIndexController = require("../../controllers/admin/index");
 
-//TODO: To create a separate admin session because when the admin is logged in it also displays that the normal user is also logged in.
-
 const adminLogin = catchAsync(async(req,res,next) => {
 	const {username,password} = req.body;
 

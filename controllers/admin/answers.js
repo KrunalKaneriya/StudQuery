@@ -44,7 +44,7 @@ module.exports.deleteAnswer = async (req, res) => {
 		}
 
 		req.flash('success', 'Deleted the answer Successfully');
-		res.redirect('/report/answers');
+		res.redirect('back');
 	} else {
 		req.flash('error', 'You need to login first to delete answer');
 		res.redirect('/login');

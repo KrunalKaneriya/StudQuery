@@ -41,10 +41,10 @@ module.exports.createAnswer = async (req, res) => {
           user.save();
 
           req.flash("success", "Your Answer is Added Successfully...");
-          return res.back();
+          res.redirect(`/question/${questionId}`);
      } else {
           req.flash("error", "You are Not Logged In. Cannot Post Answer");
-          return res.back();
+          res.redirect(`/question/${questionId}`);
      }
 
 };
@@ -71,8 +71,8 @@ module.exports.editAnswer = async (req, res) => {
                          filename:img.filename
                }
           })
-          //Before Pushing Images to the Answer we need to spread the url and filename otherwise the uploadImagesArray will be an array
-          //not a object and it will create error.
+          
+          //Before Pushing Images to the Answer we need to spread the url and filename otherwise the uploadImagesArray will be an array not a object and it will create error.
           answer.images.push(...uploadImagesArray);
      }
      await answer.save();
@@ -136,15 +136,7 @@ module.exports.answerVoteInc = async (req, res) => {
 
           await answer.save();
           res.json({ votes:answer.votes });
-          
 
-          // if(req.query.fullQuestion) {
-          //     req.flash("success","You liked the question.");
-          //     res.redirect(`/question/${questionId}`);
-          // } else {
-          //     req.flash("success","You liked the question.");
-          //     res.redirect("/");
-          // }
      }
 };
 
@@ -198,15 +190,7 @@ module.exports.answerVoteDec = async (req, res) => {
 
           await answer.save();
           res.json({ votes:answer.votes });
-          // if(req.query.fullQuestion) {
-              // req.flash("success","You disliked the question.");
-              // res.redirect(`/question/${questionId}`);
-          // } else {
-          //     req.flash("success","You disliked the question.");
-          //     res.redirect("/");
-          // }
+         
      }
 
-     // const question = await Question.findByIdAndUpdate(questionId,{$inc: {votes:-1} },{new:true});
-     // await question.save();
 };

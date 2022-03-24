@@ -10,24 +10,25 @@ const {storage,cloudinary} = require("../cloudinary/index");
 const upload = multer({storage}); //This is the storage of the Images
 
 
-/************************************************
- * ROUTE WHICH WILL ADD ANSWER TO A QUESTION. *
- ************************************************/
+//Post Route To Add Answer to Database along with images
 router.post("/question/:questionId/answer",upload.array("answerImages"),catchAsync(answerController.createAnswer));
 
-/*************************************************
- * ROUTE WHICH WILL REDIRECT TO ANSWER EDIT PAGE *
- *************************************************/
+//Get Route to Render Edit Answer Page
 router.get("/question/:questionId/answer/:answerid/edit",catchAsync(answerController.renderEditAnswerForm) );
 
+//Put or Update Route to update the answer and save new updated answer in database along with images uploaded
 router.put("/question/:questionId/answer/:answerId",upload.array("uploadImages"),catchAsync(answerController.editAnswer) );
 
+//Get Route to increase answer vote
 router.get("/question/:questionId/answer/:answerId/voteinc",answerController.answerVoteInc );
 
+//Get Route to decrease answer vote
 router.get("/question/:questionId/answer/:answerId/votedec",answerController.answerVoteDec);
 
+//Post Route to send the answer to add answer to reported answers
 router.post("/question/:questionId/answer/:answerId/report",catchAsync(answerController.reportAnswer));
 
+//Delete Route to delete the answer from database
 router.delete("/question/:questionId/answer/:answerId",catchAsync(answerController.deleteAnswer) );
 
 module.exports = router;

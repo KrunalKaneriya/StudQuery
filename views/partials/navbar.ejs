@@ -1,7 +1,7 @@
 <nav class="container flex flex-wrap flex-col h-20">
     <section class=" w-[60%] flex flex-row justify-between">
         <div id="logo" class="">
-            <a href="/">
+            <a href="<%= userSession.username=="admin" ? "/admin" : "/" %>">
                 <img src="/images/logo.png" alt="" class="w-14 h-10 ml-10 inline-block">
                 <p class="list-none inline-block py-5 font-sofia font-light text-[#7485F2]">StudQuery</p>
             </a>
@@ -20,20 +20,35 @@
             </form>
         </div>
 
-       
+
     </section>
 
-   
+
+
+
+
 
     <section class="w-[30%] flex flex-row justify-around">
 
-        <p class=" text-[#7485F2] hover:bg-[#7485F2] hover:text-white rounded-md cursor-pointer my-3 py-2 px-2 transition-all duration-300"><a class="font-sofia font-light " href="/">Home</a></p>
 
-        <p class="text-[#7485F2] hover:bg-[#7485F2] hover:text-white rounded-md cursor-pointer my-3 py-2 px-2 transition-all duration-300"> <a class="font-sofia font-light" href=<%=userSession.isLoggedIn ? "/logout" : "/login" %> ><%= userSession.isLoggedIn ? "Log Out" : "Log In" %>
+
+
+
+
+        <p
+            class=" text-[#7485F2] hover:bg-[#7485F2] hover:text-white rounded-md cursor-pointer my-3 py-2 px-2 transition-all duration-300">
+            <a class="font-sofia font-light " href="<%= userSession.username=="admin" ? "/admin" : "/" %>">Home</a>
+        </p>
+
+        <p
+            class="text-[#7485F2] hover:bg-[#7485F2] hover:text-white rounded-md cursor-pointer my-3 py-2 px-2 transition-all duration-300">
+            <a class="font-sofia font-light" href=<%=userSession.isLoggedIn ? "/logout" : "/login" %>><%=
+                    userSession.isLoggedIn ? "Log Out" : "Log In" %>
             </a>
         </p>
 
-        <p class="text-[#7485F2] hover:bg-[#7485F2] hover:text-white rounded-md cursor-pointer my-3 py-2 px-2 transition-all duration-300 ">
+        <p
+            class="text-[#7485F2] hover:bg-[#7485F2] hover:text-white rounded-md cursor-pointer my-3 py-2 px-2 transition-all duration-300 ">
             <a href="/signup" class="font-sofia font-light">Sign Up</a>
         </p>
 
@@ -42,24 +57,25 @@
 
     <section class="flex flex-row my-3">
 
-            <% if(userSession.isLoggedIn) { %> 
-                <div class="image">
-                    <% if(userSession.imageUrl) {  %>
-                        <a href="/user/<%= userSession.userid %>">
-                            <img src="<%= userSession.imageUrl %> " alt=""
-                            class="w-10 h-10 rounded-full">
-                        </a>
+        <% if(userSession.isLoggedIn) { %>
+            <div class="image">
+                <% if(userSession.imageUrl ) { %>
+                    <a href="/user/<%= userSession.userid %>">
+                        <img src="<%= userSession.imageUrl %> " alt="" class="w-10 h-10 rounded-full">
+                    </a>
                     <% } else { %>
                         <a href="/user/<%= userSession.userid %>">
-                         <div class="w-10 h-10 rounded-full bg-gray-200"></div>
+                            <div class="w-10 h-10 rounded-full bg-gray-200"></div>
                         </a>
-                    <% } %>
-                </div>
-            <% } else { %> 
+                        <% } %>
+            </div>
+            <% } else { %>
                 <div class="w-10 h-10 rounded-full bg-gray-200"></div>
-            <% } %> 
+                <% } %>
 
     </section>
+
+
 
 
 </nav>

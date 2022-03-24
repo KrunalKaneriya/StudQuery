@@ -9,8 +9,10 @@ const {stripHtml} = require("string-strip-html")
 
 const answersController = require("../../controllers/admin/answers");
 
+//Get Route to Display All Answers
 router.get("/admin/answers",catchAsync(answersController.getAdminAnswers));
 
+//Delete Route to Delete an Answer from Database
 router.delete("/admin/answer/:answerId",catchAsync (answersController.deleteAnswer));
 
 module.exports = router;

@@ -7,7 +7,7 @@
 
     <div class="container mt-10 ml-14 w-[50%]" id="profile">
         <div id="profile-pic-name">
-            <% if(user.image) { %>
+            <% if(user.image && user.image.url) { %>
             <img src="<%= user.image.url %>" class="w-60 h-40" alt="">
             <% } else { %>
             <div id="profile-pic" class="rounded-full w-40 h-40 bg-violet-200 mx-auto"></div>
@@ -18,19 +18,19 @@
             </div>
 
 
-            <% if(userSession.isLoggedIn) { %> 
+            <% if(userSession.isLoggedIn && userSession.username != "admin") { %> 
+
             <div class="follow text-center font-sofia text-[#464555] font-semibold text-xl mt-10 bg-[#BEBFF7] p-2 rounded-xl">
-                
 
                     <% if(isUserFollowed) { %> 
                         <form action="/user/<%= user._id %>/unfollow" method="get">
                     <% } else { %> 
                         <form action="/user/<%= user._id %>/follow" method="get">
                     <% } %> 
-                    <button><%= isUserFollowed ? "Unfollow" : "Follow Me" %></button>
-                
+                            <button><%= isUserFollowed ? "Unfollow" : "Follow Me" %></button>
+                        </form>
                
-                </form>
+                
             </div>
             <% } %> 
 
@@ -53,10 +53,13 @@
                 <!-- Delete User Form -->
                 <% if(userSession.isLoggedIn && (userSession.userid == user._id)) { %>
 
+              
+
                 <form action="/user/<%= user._id %>?_method=DELETE" method="post">
+
                     <div id="delete-button-wrapper" class="font-sofia">
                         <div
-                            class="bg-orange-300 shadow-md shadow-orange-200/80 inline-block float-right mr-28 rounded-xl p-3 pl-10 relative mb-5 cursor-pointer">
+                            class="bg-orange-300 shadow-md shadow-orange-200/80 inline-block float-right mr-10 rounded-xl p-3 pl-10 relative mb-5 cursor-pointer">
 
                             <button type="button" id="open-btn">
                                 <span class="material-icons right-[76%] absolute">
@@ -104,10 +107,10 @@
                     </div>
                 </form>
 
-                <form action="/user/<%= user._id %>?_method=PUT" method="post" autocomplete="off">
+                <form action="/user/<%= user._id %>?_method=PUT" method="post" autocomplete="off" enctype="multipart/form-data" id="userUpdateForm">
 
                     <div id="edit-button-wrapper" class="font-sofia">
-                        <div class="bg-yellow-300 shadow-md shadow-yellow-200/80 inline-block float-right mr-40 rounded-xl p-3 pl-10 relative mb-5 cursor-pointer"
+                        <div class="bg-yellow-300 shadow-md shadow-yellow-200/80 inline-block float-right mr-20 rounded-xl p-3 pl-10 relative mb-5 cursor-pointer"
                             id="edit-button">
 
                             <span class="material-icons absolute right-[75%]">
@@ -119,19 +122,23 @@
                         </div>
                     </div>
 
-                    <% } %>
+                    <!-- Change Profile Picture Input Button -->
+                    <div class="change-profile-btn bg-transparent text-white font-sofia rounded-xl inline-block relative left-12">
+                        <input type="file" name="profile-picture" id="profile-pic-btn" placeholder="Change Profile" class="profile-picture-file w-40 text-sm bg-gray-500 p-2 rounded-xl disabled:bg-gray-200" disabled>
+                    </div>
 
-                    <!-- <input type="file" name="image" id="image" class="absolute left-16 ml-1 top-[55%]"> -->
+
+                    <% } %>
 
                     <div id="form" class="container flex flex-wrap gap-5 justify-around py-1 text-gray-900 mt-5">
                         <div class="container w-1/3">
                             <label for="username" class="text-[#464555]">Username</label>
-                            <input type="text" name="user[username]" id="username"
+                            <input type="text" name="username" id="username"
                                 class="  rounded-md mb-5 mt-1 w-60 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 disabled:text-gray-400 disabled:border-gray-300 disabled:border-2 text-[#464555] border-2 border-gray-300"
                                 value="<%= user.username %>" disabled>
 
                             <label for="alias" class="text-[#464555]">Alias</label>
-                            <input type="text" name="user[alias]" id="alias"
+                            <input type="text" name="alias" id="alias"
                                 class="  text-[#464555] placeholder:text-gray-400 rounded-md mb-5 mt-1 w-60 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 disabled:text-gray-400  border-2 border-gray-300"
                                 value="<%= user.alias %>" disabled>
 
@@ -143,13 +150,13 @@
 
                         <div id="" class="container w-1/3">
                             <label for="email" class="text-[#464555]">Email</label>
-                            <input type="email" name="user[email]" id="email"
+                            <input type="email" name="email" id="email"
                                 class=" border-2 border-gray-300 rounded-md mb-5 mt-1 w-60 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 disabled:text-gray-400 text-[#464555]"
                                 value="<%= user.email %>" disabled>
 
                             <label for="city" class="text-[#464555]">Country</label>
                             <br>
-                            <input type="text" name="user[country]" id="city"
+                            <input type="text" name="country" id="city"
                                 class="border-2 border-gray-300 rounded-md mb-5 mt-1 w-60 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 disabled:text-gray-400 text-[#464555]"
                                 value="<%= user.country %>" disabled>
 
@@ -159,7 +166,7 @@
 
                         <div class="container w-full">
                             <label for="description" class="text-[#464555]">Description</label>
-                            <textarea name="user[description]" id="description" cols="100" rows="7"
+                            <textarea name="description" id="description" cols="100" rows="7"
                                 class="border-2 border-gray-300 rounded-md mb-5 mt-1 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 disabled:text-gray-400 text-[#464555]"
                                 disabled><%= user.description %></textarea>
                         </div>
@@ -203,7 +210,7 @@
             <p class="text-md font-sofia text-white">Created At</p>
             <span class="text-white" id="userdate">
                 <%= user.createdAt %> 
-            </span>
+            </span> 
         </div>
 
         <script>

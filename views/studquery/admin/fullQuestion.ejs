@@ -1,96 +1,265 @@
 <% layout("../layout/adminBoilerplate.ejs") %>
 
-    <div class="container mt-10 w-[95%] mr-2 mx-auto mb-10">
-        <header>
-            <h1 class="font-semibold text-2xl font-sofia ml-10 ">View Question</h1>
-            <h3 class="mt-5 font-semibold text-xl ml-10">View the full Question of the User</h3>
-        </header>
+<div class="container mt-10 w-[95%] mr-2 mx-auto mb-10">
+    <header>
+        <h1 class="font-semibold text-2xl font-sofia ml-10 ">View Question</h1>
+        <h3 class="mt-5 font-semibold text-xl ml-10">View the full Question of the User</h3>
+    </header>
 
 
-        <section class="mt-5 ml-10 w-[80%]">
+    <section class="mt-5 ml-10 w-[80%]">
 
-            <div class="w-[10%] pt-4 float-left">
-                <p class="text-white bg-[#00B25C] text-center rounded-md p-2 mb-5">Votes: <%= question.votes %>
-                </p>
-                <p class=" text-[#dee2e6]  bg-[#6c757d] text-center rounded-md p-2">Answers: <%= question.answers.length %>
-                </p>
-                
-            </div>
+        <div class="w-[10%] pt-4 float-left">
+            <p class="text-white bg-[#00B25C] text-center rounded-md p-2 mb-5">Votes: <%= question.votes %>
+            </p>
+            <p class=" text-[#dee2e6]  bg-[#6c757d] text-center rounded-md p-2">Answers: <%= question.answers.length %>
+            </p>
 
-            <div id="question" class="ml-32 mt-5 ">
-                <p class="text-xl text-gray-700 font-sofia pl-2 pt-3">
-                    <%= question.questionTitle %>
-                </p>
+        </div>
 
-                <div id="viewer" class="text-gray-600 pl-2 pt-4">
-                    <%- question.questionDescription %>
+        <div class="question-wrapper flex flex-row  py-5 rounded-xl shadow-sm">
+            <section
+                class="profile-picture flex flex-col mx-5 h-full items-center justify-center mt-3 flex-wrap gap-y-6">
+                <div class="image">
+                    <% if(question.user.image.url) { %>
+                    <a href="/user/<%= question.user._id %>">
+                        <img src="<%= question.user.image ? `${question.user.image.url}` : "" %> " alt=""
+                            class="w-14 h-14 rounded-full">
+                    </a>
 
-                </div>
-            
-            </div>
-
-            <div class="tags ml-32 my-5">
-                <% for(let tag of question.tags) { %>
-                    <p class="mt-2 ml-2 p-2 drop-shadow-md bg-violet-200 rounded-lg w-fit inline-block">
-                        <%= tag %>
-                    </p>
+                    <% } else { %>
+                    <div class="w-14 h-14 rounded-full bg-gray-200"></div>
                     <% } %>
-            </div>
-
-            <div class="username mt-4 ml-32 pl-2">
-                <p class="text-white rounded-xl p-2 bg-[#737EEE] w-fit font-medium drop-shadow-md">
-                    Created By:<%= question.user.username %>
-                </p>
-            </div>
-
-            <% if(question.answers && question.answers.length>0) {%> 
-            <div id="separator" class="h-0.5  rounded-xl bg-orange-200/80 my-3 ml-32"></div>
-            <h3 class="text-xl text-gray-500 font-sofia ml-32">Answers</h3>
-
-            <% for(let answer of question.answers) { %> 
-
-            <div class="answer w-[87%] float-right ml-10">
-
-                <div class="answerContainer">
-                    <div class="profile rounded-full mt-5 w-10 h-10 float-left bg-blue-200"></div>
-                    <div class="rounded-xl ml-3 p-2 mt-4 inline-block text-gray-700">
-                        <span class="font-medium font-sofia ">
-                            <%= answer.user.username %>
-                        </span>
-                    </div>
-
-                    <div class="answerViewer ml-14 pl-1 text-gray-600 leading-7">
-                        <!-- <p class="font-sofia leading-7 pl-1 text-gray-600"> -->
-                            <%- answer.answerDescription %>
-                        <!-- </p> -->
-                    </div>
-                    
-                    <p class="p-2 mt-2 ml-14  text-white bg-[#00B25C] w-fit rounded-md">Votes: <%= answer.votes %> </p>
                 </div>
-            </div>
+                <div class="h-full">
+                    <div
+                        class="upForm hover:scale-125 transition-all">
+                        <button type="submit" id="post-inc">
+                            <svg class="cursor-pointer" width="70" height="20" viewBox="0 0 90 108" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path class="post-inc-path" id="Arrow 1"
+                                    d="M49.2426 2.57276C46.8995 0.229614 43.1005 0.229614 40.7574 2.57276L2.57359 40.7565C0.230446 43.0997 0.230446 46.8987 2.57359 49.2418C4.91674 51.585 8.71573 51.585 11.0589 49.2418L45 15.3007L78.9411 49.2418C81.2843 51.585 85.0833 51.585 87.4264 49.2418C89.7696 46.8987 89.7696 43.0997 87.4264 40.7565L49.2426 2.57276ZM51 107.094L51 6.8154H39L39 107.094H51Z"
+                                    fill="#9643FF" />
+                            </svg>
+                        </button>
 
-            <% } %> 
-            <% } %> 
+                        <input type="hidden" name="questionId" value="<%=question._id %>" />
+                    </div>
 
-        </section>
+                    <span id=""
+                        class="w-full text-center text-xl inline-block text-gray-500 votes font-sofia"><%= question.votes %>
+                    </span>
 
-    </div>
+                    <div
+                        class="downForm hover:scale-125 transition-all mt-1">
+                            <svg class="cursor-pointer " width="70" height="20" viewBox="0 0 90 107" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path id="Arrow 2"
+                                    d="M40.7574 105.191C43.1005 107.534 46.8995 107.534 49.2426 105.191L87.4264 67.0071C89.7696 64.664 89.7696 60.865 87.4264 58.5219C85.0833 56.1787 81.2843 56.1787 78.9411 58.5219L45 92.463L11.0589 58.5219C8.71573 56.1787 4.91674 56.1787 2.57359 58.5219C0.230447 60.865 0.230447 64.664 2.57359 67.0071L40.7574 105.191ZM39 0.669922L39 100.948H51L51 0.669922L39 0.669922Z"
+                                    fill="#E16A6A" />
+                            </svg>
+                        <input type="hidden" name="questionId" value="<%=question._id%>" />
+                        </div>
 
-    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+                </div>
 
-    <script>
-        const viewer = toastui.Editor.factory({
-            el:document.querySelector("#viewer"),
-            viewer:true
+            </section>
+
+            <section class="question-body flex flex-col w-[80%] ">
+                <p class="font-sofia font-light text-[#AAAABC] text-xs">Asked: <%= question.createdAt %> </p>
+
+                <h2 class="text-xl font-sofia font-semibold text-[#464555] my-2"><%= question.questionTitle %></h2>
+                <h4 class="text-[#AAAABC] font-sofia font-light text-sm">By <%= question.user.username %> </h4>
+
+                <% if(question.images && question.images.length>0) { %>
+                <div class="swiper w-full my-5 rounded-xl">
+                    <div class="swiper-wrapper">
+                        <% for(let img of question.images) { %>
+                        <div class="swiper-slide flex justify-center" data-swiper-autoplay="5000">
+                            <img src="<%= img.url %>" class="rounded-xl" alt="">
+                        </div>
+                        <% } %>
+                    </div>
+                    <div class="swiper-button-prev text-gray-600 !important"></div>
+                    <div class="swiper-button-next"></div>
+                </div>
+                <% } %>
+
+                <div id="viewer" class="pb-3 text-[#464555ce] pt-1 px-0.5 rounded-xl font-sofia leading-7 w-full">
+                    <%- question.questionDescription %>
+                </div>
+
+                <div class="flex flex-row w-[94%] flex-wrap gap-4 my-2">
+                    <% question.tags.forEach(el=> { %>
+                    <div class="tag-wrapper px-2 py-1 bg-[#EEEDED] rounded-lg">
+                        <p><a href="/explore/<%= el %>" class="text-[#AAA4BC] font-semibold "><%= el %></a></p>
+                    </div>
+                    <% }) %>
+                </div>
+
+
+                <div class="answer-title flex flex-row w-full justify-start">
+                    <% if(typeof question.answers=='object' && question.answers) { %>
+                    <!-- Display Answer Heading When Answer Length is > 0-->
+                    <div id="answerTitle" class="mt-4 mx-5">
+                        <h4 class="pt-4 mb-5 font-sofia text-[#464555]">Answers <%= question.answers.length %> </h4>
+                    </div>
+                    <% } %>
+                </div>
+
+                <% if(typeof question.answers=='object' && question.answers) {%>
+                <% for(let answer of question.answers) { %>
+                <div class="answer-wrapper py-5 rounded-xl shadow-sm flex">
+
+                    <section class="profile-picture flex flex-col mx-5">
+                        <div class="image">
+                            <% if(answer.user.image.url) { %>
+                            <a href="/user/<%= answer.user._id %>">
+                                <img src="<%= answer.user.image ? `${answer.user.image.url}` : "" %> " alt=""
+                                    class="w-14 h-14 rounded-full">
+                            </a>
+                            <% } else { %>
+                            <div class="w-14 h-14 rounded-full bg-gray-200"></div>
+                            <% } %>
+                        </div>
+                    </section>
+
+                    <section class="answer-body flex flex-col w-[80%]">
+                        <p class="font-sofia font-light text-[#AAAABC] text-xs">Asked: <%= answer.createdAt %> </p>
+
+                        <h2 class="text-xl font-sofia font-semibold text-[#464555] my-2"> <%- answer.user.username %>
+                        </h2>
+                        <section>
+                            <% if(answer.images && answer.images.length) { %>
+                            <div class="swiper my-4 rounded-xl w-full">
+                                <div class="swiper-wrapper ">
+                                    <% for(let img of answer.images) { %>
+                                    <div class="swiper-slide flex justify-center" data-swiper-autoplay="5000">
+                                        <img src="<%= img.url %>" class="rounded-xl" alt="">
+                                    </div>
+                                    <% } %>
+                                </div>
+                                <div class="swiper-button-prev text-gray-600 !important"></div>
+                                <div class="swiper-button-next"></div>
+                            </div>
+                            <% } %>
+                        </section>
+                        <div class="answerViewer">
+                            <%- answer.answerDescription %>
+                        </div>
+
+                        <section class="answer-votes flex">
+                            <div class="answerUpForm hover:scale-125 transition-all mt-2">
+                                <button type="submit" id="post-inc">
+                                    <svg class="cursor-pointer" width="70" height="20" viewBox="0 0 90 108" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path class="post-inc-path" id="Arrow 1"
+                                            d="M49.2426 2.57276C46.8995 0.229614 43.1005 0.229614 40.7574 2.57276L2.57359 40.7565C0.230446 43.0997 0.230446 46.8987 2.57359 49.2418C4.91674 51.585 8.71573 51.585 11.0589 49.2418L45 15.3007L78.9411 49.2418C81.2843 51.585 85.0833 51.585 87.4264 49.2418C89.7696 46.8987 89.7696 43.0997 87.4264 40.7565L49.2426 2.57276ZM51 107.094L51 6.8154H39L39 107.094H51Z"
+                                            fill="#9643FF" />
+                                    </svg>
+                                </button>
+
+                                <input type="hidden" name="questionId" value="<%=question._id %>" />
+                                <input type="hidden" name="answerId" value="<%= answer._id%>">
+                            </div>
+
+                            <span id="" class=" text-gray-500 votes font-sofia mt-2"><%= answer.votes %></span>
+
+                            <div
+                                action="/question/<%=question._id%>/answer/<%= answer._id %>/votedec?fullQuestion=true"
+                                method="get" class="answerDownForm hover:scale-125 transition-all mt-2">
+                                <button type="submit" id="post-dec">
+                                    <svg class="cursor-pointer " width="70" height="20" viewBox="0 0 90 107" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path id="Arrow 2"
+                                            d="M40.7574 105.191C43.1005 107.534 46.8995 107.534 49.2426 105.191L87.4264 67.0071C89.7696 64.664 89.7696 60.865 87.4264 58.5219C85.0833 56.1787 81.2843 56.1787 78.9411 58.5219L45 92.463L11.0589 58.5219C8.71573 56.1787 4.91674 56.1787 2.57359 58.5219C0.230447 60.865 0.230447 64.664 2.57359 67.0071L40.7574 105.191ZM39 0.669922L39 100.948H51L51 0.669922L39 0.669922Z"
+                                            fill="#E16A6A" />
+                                    </svg>
+                                </button>
+                                <input type="hidden" name="questionId" value="<%=question._id%>" />
+                                <input type="hidden" name="answerId" value="<%= answer._id%>">
+                            </div>
+
+                            <div class="answer-options">
+                                <div class="question-options flex flex-row gap-x-14 mt-2 ml-7">
+                                   
+                                    <% if(answer.user._id == userSession.userid) { %>
+
+                                    <div>
+                                        <div class="text-[#00B8FF] font-sofia font-light">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-left mt-1 mr-1"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                            </svg>
+                                            <button type="submit" class="font-sofia font-light">Edit</button>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <div >
+                                        <div class="text-[#EE5C67] font-sofia font-light">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 float-left mt-1 mr-1"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                            <button type="submit" class="font-sofia font-light">Delete</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% } %>
+                            </div>
+
+                        </section>
+
+                    </section>
+
+                </div>
+                <% } %>
+                <% } %>
+            </section>
+
+
+
+        </div>
+
+
+    </section>
+
+</div>
+
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+
+<script>
+    const viewer = toastui.Editor.factory({
+        el: document.querySelector("#viewer"),
+        viewer: true
+    })
+
+    const answerViewers = document.querySelectorAll(".answerViewer");
+
+    answerViewers.forEach(function (e) {
+        toastui.Editor.factory({
+            el: e,
+            viewer: true
         })
-
-        const answerViewers = document.querySelectorAll(".answerViewer");
-
-        answerViewers.forEach(function(e) {
-            toastui.Editor.factory({
-                el:e,
-                viewer:true
-            })
-        })
-
-    </script>
+    })
+    const swiper = new Swiper(".swiper", {
+		direction: "horizontal",
+		navigation: {
+			nextEl: ".swiper-button-next",
+			prevEl: ".swiper-button-prev"
+		},
+		scrollbar: {
+			el: '.swiper-scrollbar',
+		},
+		autoHeight: true,
+		autoplay: {
+			delay: 5000
+		},
+		pauseOnMouseEnter: true
+	});
+</script>

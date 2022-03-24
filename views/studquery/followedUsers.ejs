@@ -10,9 +10,13 @@
            <section class="w-full">
                 <% for(let user of followedUsers) { %> 
                     <div class="my-6 flex items-center gap-10">
-                        <div class="ml-20 w-[30%]">
+                        <div class="ml-20 w-[30%] relative">
+                            <% if(user.image.url) { %> 
                             <img src="<%= user.image.url %>" alt="" class="w-14 h-14 rounded-full inline-block">
-                            <h1 class="font-sofia text-gray-600 inline-block"><%= user.username %>[<%= user.alias %>]</h1>
+                            <% } else { %>
+                                <div class="w-14 h-14 rounded-full bg-gray-200 inline-block"></div>
+                            <% } %> 
+                            <h1 class="font-sofia text-gray-600 inline-block absolute top-5 ml-5"><%= user.username %>[<%= user.alias %>]</h1>
                         </div>
                         <div class="unfollow-btn">
                             <form action="/user/<%= user._id %>/unfollow" method="get">
