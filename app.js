@@ -85,8 +85,10 @@ const report = require('./routes/admin/report');
 /*************************************
  * CONNECTING TO DATABASE AND SERVER *
  *************************************/
-app.listen(3000, () => {
-	console.log('Started Server At Port 3000');
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+	console.log(`Started Server At Port ${port}`);
 });
 
 mongoose
