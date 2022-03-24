@@ -30,7 +30,7 @@ const store = MongoStore.create({
 	mongoUrl:  process.env.DB_URL || 'mongodb://127.0.0.1:27017/studquery',
 	touchAfter: 24 * 60 * 60
 });
-
+app.set('trust proxy', 1);
 app.use(
 	session({
 		store,
