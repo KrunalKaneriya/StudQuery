@@ -8,8 +8,9 @@ module.exports.adminGetReportedQuestions = async (req, res) => {
 	const userSession = req.session;
 	const reportedQuestions = await ReportedQuestion.find().populate({
 		path: 'reportedQuestion',
-		populate: { path: 'user' }
-	});
+		populate: { path: 'user answers' }
+	})
+
 	res.render('admin/reportedQuestions', { userSession, reportedQuestions });
 };
 
@@ -27,6 +28,7 @@ module.exports.adminAddReportedQuestion = async (req, res) => {
 	const { isLoggedIn } = userSession;
 
 	const { questionId } = req.params;
+	const {isFullQuestion} = req.query;
 	if (!isLoggedIn) {
 		req.flash('error', 'You need to login to report Question');
 	} else {
@@ -38,14 +40,20 @@ module.exports.adminAddReportedQuestion = async (req, res) => {
 		if (isQuestionReported) {
 			req.flash('error', 'This Question is already reported to our Servers');
 		} else {
-			const question = await Question.findById(questionId);
+			const question = await Question.findById(questionId).populate("user");
+			const user = question.user;
 			const ques = new ReportedQuestion({});
 			ques.reportedQuestion = question;
 			await ques.save();
+			await user.save();
 			req.flash('success', 'This question is reported to our Servers!');
+
 		}
 	}
-	res.redirect(`/question/${questionId}`);
+	res.redirect('back');
+
+	
+	
 };
 
 module.exports.addReportedAnswer = async (req, res) => {
@@ -64,15 +72,17 @@ module.exports.addReportedAnswer = async (req, res) => {
 		if (isAnswerReported) {
 			req.flash('error', 'This answer is already reported to our Servers!');
 		} else {
-			const answer = await Answer.findById(answerId);
+			const answer = await Answer.findById(answerId).populate("user");
+			const answerUser = answer.user;
 			const ans = new ReportedAnswer({});
 			ans.reportedAnswer = answer;
 			await ans.save();
+			await answerUser.save();
 			req.flash('success', 'This answer is reported to our Servers!');
 		}
 	}
 
-	res.redirect(`/question/${questionId}`);
+	res.redirect('back');
 };
 
 module.exports.deleteReportedQuestion = async (req, res) => {
@@ -83,14 +93,14 @@ module.exports.deleteReportedQuestion = async (req, res) => {
 	//Find the Reported Question And Populate User Details
 	const question = await ReportedQuestion.findById(questionId).populate({
 		path: 'reportedQuestion',
-		populate: { path: 'user' }
+		populate: { path: 'user answers' }
 	});
 
 	//Remove the Reported Question
 	await ReportedQuestion.findByIdAndDelete(questionId);
 
-	//Remove The Original Question
-	await Question.findByIdAndDelete(question.reportedQuestion._id);
+	 //Remove The Original Question
+	 await Question.findByIdAndDelete(question.reportedQuestion._id);
 
 	//Now remove the Question from the userid
 	await User.findByIdAndUpdate(question.reportedQuestion.user._id, {
@@ -108,6 +118,13 @@ module.exports.deleteReportedQuestion = async (req, res) => {
 			$in: question.reportedQuestion.answers
 		}
 	});
+
+	//Delete the Reported answers of the questions if there are found
+	await ReportedAnswer.deleteMany({
+		reportedAnswer : {
+			$in : question.reportedQuestion.answers
+		}
+	})
 
 	req.flash('success', 'The Question is deleted successfully..');
 	res.redirect('/report');

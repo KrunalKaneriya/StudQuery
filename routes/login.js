@@ -7,8 +7,6 @@ const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
 const authenticateController = require('../controllers/user/authentication');
 
-//TODO: Separate the Login Route of Admin and create it in admin route folder
-
 /*******************
  * VALIDATION SCHEMA *
  *******************/
@@ -34,7 +32,6 @@ const requestLogin = catchAsync(async (req, res, next) => {
 		req.session.userid = user._id; //Add user id into the session
 		req.session.isLoggedIn = true; //Add isLogged in to the session
 		req.session.imageUrl = user.image.url; //Setting the profile picture image url in the session.
-
 		if (result) {
 			return next();
 		}

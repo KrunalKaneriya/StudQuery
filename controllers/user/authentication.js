@@ -12,32 +12,12 @@ module.exports.renderLoginForm = (req, res) => {
 
 module.exports.loginSuccessful = (req, res) => {
      req.flash("welcome", "Welcome to Studquery");
+     
+     //If there is some url found in session when logging in then go to that url otherwise go to home route
      const redirectUrl = req.session.redirectUrl || '/';
      res.redirect(redirectUrl);
 };
 
-// module.exports.sendLoginInfo = async (req, res, next) => {
-// 	const { username, password } = req.body; //Fetching Username And Password From Browser
-	
-// 	const user = await User.findOne({ $or: [{ username }, { email: username }] }); //Finding The Username Or Email in DB
-// 	if (user) {
-// 		//Checking if the User is founded
-// 		const result = await crypt.compare(password, user.userHash); //Decrypt The password from the db of user
-// 		const { _id: id } = user; //Take the id from the user founded in the db
-
-// 		//Find The Logged in User and run Update Query to Update the lastLoggedIn To Latest Time
-// 		await User.findByIdAndUpdate(id, { $set: { lastLoggedIn: new Date() } });
-
-// 		req.session.username = user.username; //Create a session and add username to it.
-// 		req.session.userid = user._id; //Add user id into the session
-// 		req.session.isLoggedIn = true; //Add isLogged in to the session
-
-// 		if (result) {
-// 			return next();
-// 		}
-// 	}
-// 	throw new ExpressError(404, "Username Or Password is Incorrect!");
-// };
 module.exports.logout =  (req, res) => {
 	if (req.session.isLoggedIn) {
 		req.session.destroy(() => {
@@ -51,13 +31,15 @@ module.exports.renderSignUpForm = (req,res) => {
 };
 
 module.exports.sendSignUpInfo = async (req,res) => {
-     const {username,alias,email,age,password,studyingIn,description,city} = req.body;
-     const userHash = await crypt.hash(password,12);
+     const {username,alias,email,password,description,country} = req.body;
+     const userHash = await crypt.hash(password,12); //Create a user hash by hashing password
      
      const user = new User({
-         username,alias,email,age,userHash,description,studyingIn,city
+         username,alias,email,userHash,description,country
      });
 
+     //If there is profile picture then create a new object of image in which url and filename of image will be stored
+     //and save it to the user.image in database
      if(req.file) {
           const {path,filename} = req.file;
           const image = {

@@ -65,5 +65,36 @@ div#message {
     .font-segoe {
         font-family:"Segoe UI"
     }
+
+    .profile-picture-file {
+        color: transparent;
+    }
+
+    .profile-picture-file::-webkit-file-upload-button {
+        visibility: hidden;
+      }
+
+    .profile-picture-file::before {
+        content:"Select Profile Picture";
+        color:white;
+        display:inline-block;
+        padding: 5px 8px;
+        outline: none;
+        white-space: nowrap;
+        -webkit-user-select: none;
+        cursor: pointer;
+        font-family:"Sofia Pro"
+    }
+
+    .profile-picture-file:hover::before {
+        border-color: black;
+      }
+      .profile-picture-file:active {
+        outline: 0;
+      }
+      .profile-picture-file:active::before {
+        background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9); 
+      }
+      
    
 }

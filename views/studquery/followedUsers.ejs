@@ -1,0 +1,45 @@
+<% layout("../layout/boilerplate") %>
+
+<%- include("../partials/sidebar") %>
+
+<div class="container mx-auto my-4" id="home">
+
+    <h1 class="font-sofia text-xl text-gray-600 my-10">Followed Users</h1>
+
+    <div id="usersList" class="w-full ">
+           <section class="w-full">
+                <% for(let user of followedUsers) { %> 
+                    <div class="my-6 flex items-center gap-10">
+                        <div class="ml-20 w-[30%] relative">
+                            <% if(user.image.url) { %> 
+                            <img src="<%= user.image.url %>" alt="" class="w-14 h-14 rounded-full inline-block">
+                            <% } else { %>
+                                <div class="w-14 h-14 rounded-full bg-gray-200 inline-block"></div>
+                            <% } %> 
+                            <h1 class="font-sofia text-gray-600 inline-block absolute top-5 ml-5"><%= user.username %>[<%= user.alias %>]</h1>
+                        </div>
+                        <div class="unfollow-btn">
+                            <form action="/user/<%= user._id %>/unfollow" method="get">
+                                <button class="p-2 font-sofia bg-[#1EC198] text-white rounded-xl">Unfollow</button>
+                            </form>
+                        </div>
+                        <div class="view-user-btn">
+                            <form action="/user/<%= user._id %>" method="get">
+                                <button class="p-2 font-sofia bg-[#00ABCA] text-white rounded-xl">
+                                    View Profile
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="question-count">
+                            <p class="p-2 rounded-xl font-sofia bg-[#EE5C67] text-white">Questions: <%= user.questions.length%></p>
+                        </div>
+
+                        <div class="answer-count">
+                            <p class="p-2 rounded-xl font-sofia bg-[#5068D0] text-white">Answers: <%= user.answers.length%></p>
+                        </div>
+                    </div>
+                <% } %> 
+           </section>
+    </div>
+</div>

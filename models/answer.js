@@ -19,6 +19,10 @@ const AnswerSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:"User"
     }],
+    images:[{
+        url:String,
+        filename:String
+    }],
     question:{
         type:Schema.Types.ObjectId,
         ref:"Question"

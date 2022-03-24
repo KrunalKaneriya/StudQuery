@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const Question = require("../models/question");
+const Answer = require("../models/answer");
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
@@ -20,9 +22,7 @@ const UserSchema = new Schema({
         required:true,
         default:"Email Address Not Specified"
     },
-    age:Number,
     description:String,
-    studyingIn:String,
     questions:[{
         type:Schema.Types.ObjectId,
         ref:"Question"
@@ -39,13 +39,15 @@ const UserSchema = new Schema({
         url:String,
         filename:String
     },
-    city:String,
+    country:String,
     lastLoggedIn:{
         type:Date
     },
-    
+    followedUsers:[{
+        type:Schema.Types.ObjectId,
+        ref:"User"
+    }]
 },{timestamps:true});
-
 
 
 module.exports = mongoose.model("User",UserSchema);

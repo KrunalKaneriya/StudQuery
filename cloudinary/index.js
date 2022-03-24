@@ -13,12 +13,11 @@ const storage = new CloudinaryStorage({
     cloudinary,
     params:{
         folder:"StudQuery",
-        allowedFormats:["jpeg","png",'jpg'],
-        width:300,
-        height:300,
-        gravity:"face",
-        crop:"thumb",
-        zoom:"0.75"
+        allowedFormats:["png",'jpg'],
+        width:600,
+        height:400,
+        crop:"fit",
+        quality:50
     }
 });
 

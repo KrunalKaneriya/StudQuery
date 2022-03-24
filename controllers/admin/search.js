@@ -19,10 +19,11 @@ module.exports.renderAdminSearchForm = (req,res) => {
 module.exports.searchAdminData = async(req,res) => {
      const userSession = req.session;
  
-     const {searchData,users,questions,answers} = req.query;
+     const {searchData,users,questions,answers} = req.query; //Take the search from the user
  
  
-         const foundedUsers = await User.find({username: new RegExp(searchData, "i") });
+     //Search if the user searching word is found in user questions and in answers and pass to the search file
+         const foundedUsers = await User.find({username: new RegExp(searchData, "i") }); 
          const foundedQuestions = await Question.find({questionTitle: new RegExp(searchData, "i")}).populate("user");
          const foundedAnswers = await Answer.find({answerDescription: new RegExp(searchData, "i")}).populate("user");
  

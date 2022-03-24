@@ -14,10 +14,10 @@ const indexController = require("../controllers/user/index");
  * THIS ROUTE WILL BE DISPLAYED FIRST WHEN THE USER LOGS IN.HOME PAGE *
  **********************************************************************/
 
+//Get Route to Render Home Page or Index Page
 router.get("/",catchAsync(indexController.renderHomePage));
 
-router.post("/",(req,res) => {
-    res.send(req.body)
-})
+//Post Route to Render Home Page with Filters Applied
+router.post("/",catchAsync(indexController.filterQuestions));
 
 module.exports = router;

@@ -6,6 +6,7 @@ const Answers = require("../../models/answer");
 const catchAsync = require("../../utils/catchAsync");
 const ExpressError = require("../../utils/ExpressError");
 const {stripHtml} = require("string-strip-html");
+const { cloudinary } = require("../../cloudinary");
 
 module.exports.viewQuestion = async (req, res) => {
 	const userSession = req.session;
@@ -22,66 +23,157 @@ module.exports.viewQuestion = async (req, res) => {
 
 module.exports.renderEditQuestionForm = async (req, res) => {
 	const userSession = req.session;
+	const {isLoggedIn,userid} = userSession;
 	const { questionId } = req.params;
-	const question = await Question.findById(questionId)
-		.populate("user")
-		.populate({ path: "answers", populate: { path: "user" } });
+	if(!isLoggedIn) {
+		req.flash("error","You need to login to edit this Question");
+		res.redirect(`/question/${questionId}`);
+	} else {
+		const question = await Question.findById(questionId)
+			.populate("user")
+			.populate({ path: "answers", populate: { path: "user" } });
 
-	//When we are retrieving tags from questions replace , with space from each element and pass to ejs file
-	let tagsArray = question.tags.toString().replaceAll(",", " ");
-	res.render("editQuestion", { question, userSession, tagsArray });
+		if(question.user._id == userid) {
+			//When we are retrieving tags from questions replace , with space from each element and pass to ejs file
+			let tagsArray = question.tags.toString().replaceAll(",", " ");
+			res.render("editQuestion", { question, userSession, tagsArray });
+		} else {
+			req.flash("error","You are not the owner of this question.");
+			res.redirect(`/question/${questionId}`);
+		}
+	}
+	
 };
 
 module.exports.updateQuestion = async (req, res) => {
 	const userSession = req.session;
 	const { questionId } = req.params;
 	const { questionTitle, questionDescription, tags } = req.body;
-	const snippet = stripHtml(questionDescription.substr(0,430)).result;
+	const snippet = stripHtml(questionDescription.substring(0,430)).result; //Create a snippet of the question body 
 	const tagsArray = tags.split(" "); //This Function takes string of words separated by space and returns array
+
 	const question = await Question.findByIdAndUpdate(questionId, {
 		questionTitle,
 		questionDescription,
 		tags: tagsArray,
-		snippet
+		snippet,
 	});
+
+	//Checking if there are images uploaded.
+	if(req.files.length>0) { //We are checking that if there are files like images in the request object passed
+		const uploadImagesArray = req.files.map(image => { //If there is then for each image we create a new array and assign the all images array to imagesArray
+			return { 
+				url:image.path, //Assigning the url as image passed path 
+				filename:image.filename //Assigning the filename as image passed filename
+			} //Now returning the object to add it into question database
+		})
+		question.images.push(...uploadImagesArray);
+	}
+	
+	await question.save();
+
+	// When a image is checked in editQuestion the its url is added in deleteImages and it is sended via form
+	if(req.body.deleteImages) {
+		//Updating the Question By Pulling the element from images array where the filename is == to filename in deleteImages Array
+		
+		//After deleting the images from database loop over the filenames and call the uploader.destroy to delete the images by passing the filename to the cloud.
+		for(let filename of req.body.deleteImages){
+			await cloudinary.uploader.destroy(filename,{invalidate:true,resource_type:"image",type:"upload"});
+		}
+		await question.updateOne({ $pull: {images: {filename: { $in: req.body.deleteImages }}}});
+	}
 	req.flash("edit", "Updated Your Question.");
 	res.redirect(`/question/${questionId}`);
 };
 
+module.exports.closeQuestion = async(req,res) => {
+	const userSession = req.session;
+	const {isLoggedIn,userid} = userSession;
+	const {questionId} = req.params;
+
+	const question = await Question.findById(questionId).populate("user");
+
+	if(isLoggedIn && question.user._id==userid) {
+		question.isClosed = true;
+		await question.save();
+		req.flash("success","This Question is now Closed");
+		res.redirect(`/question/${questionId}`);
+	} else {
+		req.flash("error","You cannot close this question");
+		res.redirect(`/question/${questionId}`);
+	}
+}
+
+module.exports.openQuestion = async(req,res) => {
+	const userSession = req.session;
+	const {isLoggedIn,userid} = userSession;
+	const {questionId} = req.params;
+
+	const question = await Question.findById(questionId).populate("user");
+
+	if(isLoggedIn && question.user._id==userid) {
+		question.isClosed = false;
+		await question.save();
+		req.flash("success","This Question is now Opened");
+		res.redirect(`/question/${questionId}`);
+	} else {
+		req.flash("error","You cannot Open this question");
+		res.redirect(`/question/${questionId}`);
+	}
+}
+
 module.exports.deleteQuestion = async (req, res) => {
-	const {isPersonalQuestion} = req.query;
 	const userSession = req.session;
 	const redirectUrl = req.session.redirectUrl || '/';
-	const { userid } = userSession;
+	const { userid,isLoggedIn } = userSession;
 	const { questionId } = req.params;
 	const question = await Question.findById(questionId).populate("answers");
 
-	//Remove the Question from database
-	await Question.findByIdAndDelete(questionId);
-
-	//Delete Single Question From the User Schema By Using Pull and Questionid
-	await User.findByIdAndUpdate(userid, { $pull: { questions: questionId } });
-
-	//Pull the answers from User which id == question.answers.id
-	await User.findByIdAndUpdate(userid, { $pull: { answers: { $in: question.answers } } });
-
-
-	//search For _id of the Answer and remove all the answers of question which has id in question.answers Database
-	//*Its like _id is the searching parameter and $in will find the id in question.answers and if a _id is found in question.answers then it is removed
-	await Answers.deleteMany({
-		_id: {
-			$in: [question.answers]
-		},
-	});
-
-	//Delete Answers in User.answers array
-
-	req.flash("success", "Deleted the question successfully.");
-
-	if(isPersonalQuestion) {
-		res.redirect("/user/personal/questions");
+	if(!isLoggedIn) {
+		req.flash("error","You need to login.");
+		res.redirect(`/question/${questionId}`);
 	} else {
-		res.redirect("/");
+			if(question.user._id == userid) {
+				//Remove the Question from database
+				await Question.findByIdAndDelete(questionId);
+
+				//Delete Single Question From the User Schema By Using Pull and Questionid
+				await User.findByIdAndUpdate(userid, { $pull: { questions: questionId } });
+
+				//Pull the answers from User which id == question.answers.id
+				await User.findByIdAndUpdate(userid, { $pull: { answers: { $in: question.answers } } });
+
+				//Deleting The Pictures From the Cloud of the Questions
+				if(question.images.length > 0) {
+					for(let image of question.images) {
+						await cloudinary.uploader.destroy(image.filename,{invalidate:true,resource_type:"image",type:"upload"});
+					}
+				}
+
+
+				//search For _id of the Answer and remove all the answers of question which has id in question.answers Database
+				//*Its like _id is the searching parameter and $in will find the id in question.answers and if a _id is found in question.answers then it is removed
+				await Answers.deleteMany({
+					_id: {
+						$in: question.answers._id
+					},
+				});
+
+				//Deleting the answers images from the Cloud
+				if(question.answers.length > 0) {
+					for(let answer of question.answers) {
+						for(let image of answer.images) {
+							await cloudinary.uploader.destroy(image.filename,{invalidate:true,resource_type:"image",type:"upload"})
+						}
+					}
+				}
+
+				req.flash("success", "Deleted the question successfully.");
+				res.redirect("/");
+		} else {
+			req.flash("error","You cannot delete this question.");
+			res.redirect("back");
+		}
 	}
 };
 
@@ -90,6 +182,7 @@ module.exports.questionVoteInc = async (req, res) => {
 	const { questionId } = req.params;
 	const userSession = req.session;
 	const { userid, isLoggedIn } = userSession;
+	
 
 	if (!isLoggedIn) {
 
@@ -101,7 +194,8 @@ module.exports.questionVoteInc = async (req, res) => {
 		}
 	}
 	else {
-		const question = await Question.findById(questionId);
+		const question = await Question.findById(questionId).populate("user");
+		const user = question.user;
 		const upVote = await Question.exists({ _id: questionId, upVotes: userid });
 
 		if (!upVote) {
@@ -110,7 +204,11 @@ module.exports.questionVoteInc = async (req, res) => {
 		} else {
 			question.upVotes.pull(userid);
 			question.votes -= 1;
+			await User.findByIdAndUpdate(user._id,{$pull : {notifications : {questionId}}});
+			
+			
 		}
+		await user.save();
 
 		const downVote = await Question.exists({ _id: questionId, downVotes: userid });
 
@@ -122,19 +220,6 @@ module.exports.questionVoteInc = async (req, res) => {
 		await question.save();
 
 		res.json({ votes: question.votes });
-
-		// if (req.query.fullQuestion) {
-		// 	req.flash("success", "You liked the question.");
-		// 	res.redirect(`/question/${questionId}`);
-		// } else {
-		// 	req.flash("success", "You liked the question.");
-
-		// 	if(isPersonalQuestion) {
-		// 		res.redirect("/user/personal/questions");
-		// 	} else {
-		// 		res.redirect("/");
-		// 	}
-		// }
 	}
 };
 
@@ -178,23 +263,8 @@ module.exports.questionVoteDec = async (req, res) => {
 
 		await question.save();
 		res.json({ votes: question.votes });
-
-		// if (req.query.fullQuestion) {
-		// 	req.flash("success", "You liked the question.");
-		// 	res.redirect(`/question/${questionId}`);
-		// } else {
-		// 	req.flash("success", "You liked the question.");
-
-		// 	if(isPersonalQuestion) {
-		// 		res.redirect("/user/personal/questions");
-		// 	} else {
-		// 		res.redirect("/");
-		// 	}
-		// }
 	}
 
-	// const question = await Question.findByIdAndUpdate(questionId,{$inc: {votes:-1} },{new:true});
-	// await question.save();
 };
 
 module.exports.renderNewQuestionForm = async (req, res) => {
@@ -220,15 +290,13 @@ module.exports.createQuestion = async (req, res ,next) => {
 	const tagsArray = tags.split(" ");
 
 	if(req.files) { //We are checking that if there are files like images in the request object passed
-		imagesArray = req.files.map(image => { //If there is then for each image we create a new array and assign the all images array to imagesArray
+		var imagesArray = req.files.map(image => { //If there is then for each image we create a new array and assign the all images array to imagesArray
 			return { 
 				url:image.path, //Assigning the url as image passed path 
 				filename:image.filename //Assigning the filename as image passed filename
 			} //Now returning the object to add it into question database
 		})
 	}
-
-	console.log(req.files);
 
 	const question = new Question({
 		questionTitle,
@@ -256,5 +324,5 @@ module.exports.searchQuestion = async (req, res) => {
 		.populate("answers")
 		.populate("user");
 	let count = result.length;
-	res.render("searchResults", { result, userSession, count });
+	res.render("tags", { tag:search, tagResult:result, userSession });
 };

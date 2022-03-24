@@ -1,7 +1,8 @@
-if(process.env.NODE_ENV !== "production") { //We are checking if the value of NODE_ENV is not production
+if (process.env.NODE_ENV !== 'production') {
+	//We are checking if the value of NODE_ENV is not production
 	//Then we need to include the dotenv package and call config function and the config function will bring
 	//all the enviroment variables set in .env file in the project
-	require("dotenv").config();	
+	require('dotenv').config();
 }
 const express = require('express');
 const mongoose = require('mongoose');
@@ -12,6 +13,9 @@ const methodOverride = require('method-override');
 const flash = require('connect-flash');
 const ejsMate = require('ejs-mate');
 const joi = require('joi');
+const back = require('express-back');
+const mongoSanitize = require('express-mongo-sanitize'); //Package that removes special characters when getting input
+const MongoStore = require('connect-mongo');
 
 app.set('view engine', 'ejs');
 app.engine('ejs', ejsMate); //Setting The Engine To EjsMate So we can use Partials And Layouts
@@ -20,10 +24,16 @@ app.set('views', path.join(__dirname, 'views/studquery'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
+app.use(mongoSanitize());
 
+const store = MongoStore.create({
+	mongoUrl:  process.env.DB_URL || 'mongodb://127.0.0.1:27017/studquery',
+	touchAfter: 24 * 60 * 60
+});
 app.use(
 	session({
-		secret: 'thisissecret',
+		store,
+		secret: process.env.secret ||'thisissecret',
 		resave: false,
 		saveUninitialized: false,
 		cookie: {
@@ -32,7 +42,7 @@ app.use(
 		}
 	})
 );
-
+app.use(back());
 app.use(flash());
 
 /*******************************************************************
@@ -80,7 +90,7 @@ app.listen(3000, () => {
 });
 
 mongoose
-	.connect('mongodb://127.0.0.1:27017/studquery')
+	.connect(process.env.DB_URL)
 	.then(() => {
 		console.log('Mongodb Connected');
 	})
@@ -146,7 +156,6 @@ app.use(adminUsers);
  * USING ADMIN QUESTIONS ROUTE *
  *******************************/
 app.use(adminQuestions);
-
 
 /*****************************
  * USING ADMIN ANSWERS ROUTE *

@@ -1,193 +1,235 @@
-<% layout("../layout/boilerplate") %> <!--*All The Contents Of this File Will be Passed To This Layout File-->
+<% layout("../layout/boilerplate") %>
+<!--*All The Contents Of this File Will be Passed To This Layout File-->
 
-    <div id="main-container" class="flex gap-20 py-4 font-sofia">
+<div id="main-container" class="flex gap-20 py-4 font-sofia">
 
-         
 
-        <div class="container mt-10 ml-14 w-[50%]" id="profile">
-            <div id="profile-pic-name">
-                <% if(user.image) { %>
-                    <img src="<%= user.image.url %>" class="w-60 h-40" alt="">
-                <% } else { %>
-                    <div id="profile-pic" class="rounded-full w-40 h-40 bg-violet-200 mx-auto"></div>
 
-                <% } %> 
-                <div id="name">
-                    <h1 class="mt-3 text-2xl font-semibold text-[#464555] font-sofia text-center"><%= user.username %> </h1>
-                </div>
+    <div class="container mt-10 ml-14 w-[50%]" id="profile">
+        <div id="profile-pic-name">
+            <% if(user.image && user.image.url) { %>
+            <img src="<%= user.image.url %>" class="w-60 h-40" alt="">
+            <% } else { %>
+            <div id="profile-pic" class="rounded-full w-40 h-40 bg-violet-200 mx-auto"></div>
+
+            <% } %>
+            <div id="name">
+                <h1 class="mt-3 text-2xl font-semibold text-[#464555] font-sofia text-center"><%= user.username %> </h1>
             </div>
-        </div>
 
-        <div id="details" class="container w-[50%] inline-block mt-10">
-            <div id="profile-text">
-                <h1 class="text-3xl font-sofia font-bold text-[#464555c7]">Profile</h1>
-                <div id="personal-info-disclaimer" class="mt-6">
-                    <h2 class="text-xl font-sofia font-semibold text-[#8C8DB9]">Personal Information</h2>
-                    <h3 class="font-sofia font-light mt-1 text-[#AAAABC]">Don't worry, your information will be kept in
-                        safe and we
-                        will not share this info with anyone outside Studquery web application.</h3>
-                </div>
 
-                <div id="inputs" class="mt-4 text-slate-600 ">
+            <% if(userSession.isLoggedIn && userSession.username != "admin") { %> 
 
-                    <!-- Delete User Form -->
-                    <% if(userSession.isLoggedIn && (userSession.userid == user._id)) { %> 
+            <div class="follow text-center font-sofia text-[#464555] font-semibold text-xl mt-10 bg-[#BEBFF7] p-2 rounded-xl">
 
-                    <form action="/user/<%= user._id %>?_method=DELETE" method="post" >
-                        <div id="delete-button-wrapper" class="font-sofia">
-                            <div class="bg-orange-300 shadow-md shadow-orange-200/80 inline-block float-right mr-28 rounded-xl p-3 pl-10 relative mb-5 cursor-pointer">
-
-                                <button type = "button" id="open-btn">
-                                    <span class="material-icons right-[76%] absolute">
-                                        delete
-                                    </span>
-                                    <span>
-                                        Delete User
-                                    </span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="fixed hidden inset-0 bg-gray-600 bg-opacity-80 h-full w-full z-10" id="my-modal">
-                            <div class="relative top-40 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-                                <div class="mt-2">
-                                    <div class="mx-auto flex items-center justify-start rounded-full">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                        </svg>
-                                        <h2 class=" ml-5 text-lg leading-5 font-medium text-gray-700">Delete Account</h2>
-                                    </div>
-                                    
-                                    <div class="px-4 mt-2 ml-7">
-                                        <p class="text-base text-gray-600">Are you sure you want to delete your account? All of your data will be permanently removed from our servers forever. This action cannot be undone.</p>
-                                    </div>
+                    <% if(isUserFollowed) { %> 
+                        <form action="/user/<%= user._id %>/unfollow" method="get">
+                    <% } else { %> 
+                        <form action="/user/<%= user._id %>/follow" method="get">
+                    <% } %> 
+                            <button><%= isUserFollowed ? "Unfollow" : "Follow Me" %></button>
+                        </form>
+               
                 
-                                    <div class="space-x-6 px-4 ml-7 mt-7">
-                                        
-                                        <button type="submit" class="p-3 rounded-md bg-red-600 text-white" id="delete-btn"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                          </svg>Delete Account</button>
-                                        <button type="button" class="p-3 rounded-md border border-gray-400" id="cancel-btn">Cancel</button>
-                                    </div>
+            </div>
+            <% } %> 
+
+            
+        </div>
+    </div>
+
+    <div id="details" class="container w-[50%] inline-block mt-10">
+        <div id="profile-text">
+            <h1 class="text-3xl font-sofia font-bold text-[#464555]">Profile</h1>
+            <div id="personal-info-disclaimer" class="mt-6">
+                <h2 class="text-xl font-sofia font-semibold text-[#464555]">Personal Information</h2>
+                <h3 class="font-sofia font-light mt-1 text-[#464555bd]">Don't worry, your information will be kept in
+                    safe and we
+                    will not share this info with anyone outside Studquery web application.</h3>
+            </div>
+
+            <div id="inputs" class="mt-4 text-slate-600 ">
+
+                <!-- Delete User Form -->
+                <% if(userSession.isLoggedIn && (userSession.userid == user._id)) { %>
+
+              
+
+                <form action="/user/<%= user._id %>?_method=DELETE" method="post">
+
+                    <div id="delete-button-wrapper" class="font-sofia">
+                        <div
+                            class="bg-orange-300 shadow-md shadow-orange-200/80 inline-block float-right mr-10 rounded-xl p-3 pl-10 relative mb-5 cursor-pointer">
+
+                            <button type="button" id="open-btn">
+                                <span class="material-icons right-[76%] absolute">
+                                    delete
+                                </span>
+                                <span>
+                                    Delete User
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="fixed hidden inset-0 bg-gray-600 bg-opacity-80 h-full w-full z-10" id="my-modal">
+                        <div class="relative top-40 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+                            <div class="mt-2">
+                                <div class="mx-auto flex items-center justify-start rounded-full">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                    </svg>
+                                    <h2 class=" ml-5 text-lg leading-5 font-medium text-gray-700">Delete Account</h2>
+                                </div>
+
+                                <div class="px-4 mt-2 ml-7">
+                                    <p class="text-base text-gray-600">Are you sure you want to delete your account? All
+                                        of your data will be permanently removed from our servers forever. This action
+                                        cannot be undone.</p>
+                                </div>
+
+                                <div class="space-x-6 px-4 ml-7 mt-7">
+
+                                    <button type="submit" class="p-3 rounded-md bg-red-600 text-white"
+                                        id="delete-btn"><svg xmlns="http://www.w3.org/2000/svg"
+                                            class="h-6 w-6 inline-block mr-2" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>Delete Account</button>
+                                    <button type="button" class="p-3 rounded-md border border-gray-300"
+                                        id="cancel-btn">Cancel</button>
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
+                </form>
 
-                    <form action="/user/<%= user._id %>?_method=PUT" method="post" autocomplete="off">
+                <form action="/user/<%= user._id %>?_method=PUT" method="post" autocomplete="off" enctype="multipart/form-data" id="userUpdateForm">
 
-                        <div id="edit-button-wrapper" class="font-sofia">
-                            <div class="bg-yellow-300 shadow-md shadow-yellow-200/80 inline-block float-right mr-40 rounded-xl p-3 pl-10 relative mb-5 cursor-pointer"
-                                id="edit-button">
+                    <div id="edit-button-wrapper" class="font-sofia">
+                        <div class="bg-yellow-300 shadow-md shadow-yellow-200/80 inline-block float-right mr-20 rounded-xl p-3 pl-10 relative mb-5 cursor-pointer"
+                            id="edit-button">
 
-                                <span class="material-icons absolute right-[75%]">
-                                    mode_edit
-                                </span>
-                                <span class="">
-                                    Edit Details
-                                </span>
-                            </div>
+                            <span class="material-icons absolute right-[75%]">
+                                mode_edit
+                            </span>
+                            <span class="">
+                                Edit Details
+                            </span>
                         </div>
+                    </div>
 
-                    <% } %> 
-
-                    <!-- <input type="file" name="image" id="image" class="absolute left-16 ml-1 top-[55%]"> -->
-
-                        <div id="form" class="container flex flex-wrap gap-5 justify-around py-1 text-gray-900 mt-5">
-                            <div class="container w-1/3">
-                                <label for="username" class="text-[#56B7B4]">Username</label>
-                                <input type="text" name="user[username]" id="username"
-                                    class="  rounded-md mb-5 mt-1 w-60 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 disabled:text-[#7485f296] disabled:border-[#F8F8FF] disabled:border-2 text-[#7485F2] border border-[#E6F4F1]"
-                                    value="<%= user.username %>" disabled>
-
-                                <label for="alias" class="text-[#56B7B4]">Alias</label>
-                                <input type="text" name="user[alias]" id="alias"
-                                    class="  text-[#7485F2] placeholder:text-[#7485F2] rounded-md mb-5 mt-1 w-60 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 disabled:text-[#7485f296]  disabled:border-[#F8F8FF] disabled:border-2 border border-[#E6F4F1]"
-                                    value="<%= user.alias %>" disabled>
-
-                                <br>
-                                <label for="email" class="text-[#56B7B4]">Email</label>
-                                <input type="email" name="user[email]" id="email"
-                                    class=" border border-[#E6F4F1] rounded-md mb-5 mt-1 w-60 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 disabled:text-[#7485f296] disabled:border-[#F8F8FF] disabled:border-2 text-[#7485F2] border border-[#E6F4F1]"
-                                    value="<%= user.email %>" disabled>
+                    <!-- Change Profile Picture Input Button -->
+                    <div class="change-profile-btn bg-transparent text-white font-sofia rounded-xl inline-block relative left-12">
+                        <input type="file" name="profile-picture" id="profile-pic-btn" placeholder="Change Profile" class="profile-picture-file w-40 text-sm bg-gray-500 p-2 rounded-xl disabled:bg-gray-200" disabled>
+                    </div>
 
 
-                            </div>
+                    <% } %>
 
-                            <div id="" class="container w-1/3">
-                                <label for="age" class="text-[#56B7B4]">Age</label>
-                                <br>
-                                <input type="number" name="user[age]" id="age"
-                                    class="border border-[#E6F4F1] rounded-md mb-5 mt-1 w-60 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 disabled:text-[#7485f296] disabled:border-[#F8F8FF] text-[#7485F2] disabled:border-2"
-                                    value="<%= user.age %>" disabled>
-                                <br>
-                                <label for="city" class="text-[#56B7B4]">City</label>
-                                <br>
-                                <input type="text" name="user[city]" id="city"
-                                    class="border border-[#E6F4F1] rounded-md mb-5 mt-1 w-60 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 disabled:text-[#7485f296] disabled:border-[#F8F8FF] text-[#7485F2] disabled:border-2"
-                                    value="<%= user.city %>" disabled>
+                    <div id="form" class="container flex flex-wrap gap-5 justify-around py-1 text-gray-900 mt-5">
+                        <div class="container w-1/3">
+                            <label for="username" class="text-[#464555]">Username</label>
+                            <input type="text" name="username" id="username"
+                                class="  rounded-md mb-5 mt-1 w-60 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 disabled:text-gray-400 disabled:border-gray-300 disabled:border-2 text-[#464555] border-2 border-gray-300"
+                                value="<%= user.username %>" disabled>
 
-                                <br>
-                                <label for="studyingin" class="text-[#56B7B4]">Studying In</label>
-                                <br>
-                                <input type="text" name="user[studyingin]" id="studyingin"
-                                    class=" rounded-md mb-1 mt-1 w-60 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 disabled:text-[#7485f296] disabled:border-[#F8F8FF] text-[#7485F2] disabled:border-2 border border-[#E6F4F1]"
-                                    value="<%=user.studyingIn%>" disabled>
-                            </div>
+                            <label for="alias" class="text-[#464555]">Alias</label>
+                            <input type="text" name="alias" id="alias"
+                                class="  text-[#464555] placeholder:text-gray-400 rounded-md mb-5 mt-1 w-60 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 disabled:text-gray-400  border-2 border-gray-300"
+                                value="<%= user.alias %>" disabled>
 
-                            <div class="container w-full">
-                                <label for="description" class="text-[#56B7B4]">Description</label>
-                                <textarea name="user[description]" id="description" cols="100" rows="7"
-                                    class="border border-[#E6F4F1] rounded-md mb-5 mt-1 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 disabled:text-[#7485f296] disabled:border-[#F8F8FF] text-[#7485F2] disabled:border-2"
-                                    disabled><%= user.description %></textarea>
-                            </div>
+                            <br>
+
 
 
                         </div>
 
-                        <div class="buttons">
-                            <button type="submit"
-                                class="bg-green-600 font-sofia p-3 rounded-2xl text-white shadow-lg shadow-green-400/80 mr-5 font-semibold text-md">Save
-                                Changes</button>
-                            <button type="reset"
-                                class="text-white p-3 font-sofia rounded-2xl bg-red-700 text-md font-semibold shadow-lg shadow-red-400/80">Reset
-                                Fields</button>
+                        <div id="" class="container w-1/3">
+                            <label for="email" class="text-[#464555]">Email</label>
+                            <input type="email" name="email" id="email"
+                                class=" border-2 border-gray-300 rounded-md mb-5 mt-1 w-60 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 disabled:text-gray-400 text-[#464555]"
+                                value="<%= user.email %>" disabled>
+
+                            <label for="city" class="text-[#464555]">Country</label>
+                            <br>
+                            <input type="text" name="country" id="city"
+                                class="border-2 border-gray-300 rounded-md mb-5 mt-1 w-60 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 disabled:text-gray-400 text-[#464555]"
+                                value="<%= user.country %>" disabled>
+
+                            <br>
+
                         </div>
-                    </form>
-                </div>
+
+                        <div class="container w-full">
+                            <label for="description" class="text-[#464555]">Description</label>
+                            <textarea name="description" id="description" cols="100" rows="7"
+                                class="border-2 border-gray-300 rounded-md mb-5 mt-1 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 disabled:text-gray-400 text-[#464555]"
+                                disabled><%= user.description %></textarea>
+                        </div>
+
+
+                    </div>
+
+                    <div class="buttons">
+                        <button type="submit"
+                            class="bg-green-600 font-sofia p-3 rounded-2xl text-white shadow-lg shadow-green-400/80 mr-5 font-semibold text-md">Save
+                            Changes</button>
+                        <button type="reset"
+                            class="text-white p-3 font-sofia rounded-2xl bg-red-700 text-md font-semibold shadow-lg shadow-red-400/80">Reset
+                            Fields</button>
+                    </div>
+                </form>
             </div>
         </div>
+    </div>
 
-        <!--Delete Confirmation Box -->
-       
+    <!--Delete Confirmation Box -->
 
-        <div id="stats" class="container">
 
-            <div class="w-[70%] text-center mt-10 bg-[#464555] rounded-3xl py-2">
-                <p class="font-semibold text-md text-white">Question Asked</p>
-                <span class="font-semibold text-md text-white">
-                    <%= questionCount %>
-                </span>
-            </div>
+    <div id="stats" class="container">
 
-            <div class="w-[70%] text-center mt-10 bg-[#C0A975] rounded-3xl py-2">
-                <p class="font-semibold text-md  text-white">Answers Given</p>
-                <span class="font-semibold text-md text-white">
-                    <%= answerCount %>
-                </span>
-            </div>
-
-            
-           
+        <div class="w-[70%] text-center mt-10 bg-[#464555] rounded-3xl py-2">
+            <p class="font-semibold text-md text-white">Question Asked</p>
+            <span class="font-semibold text-md text-white">
+                <%= questionCount %>
+            </span>
         </div>
+
+        <div class="w-[70%] text-center mt-10 bg-[#C0A975] rounded-3xl py-2">
+            <p class="font-semibold text-md  text-white">Answers Given</p>
+            <span class="font-semibold text-md text-white">
+                <%= answerCount %>
+            </span>
+        </div>
+
+        <div class="w-[70%] text-center my-10 rounded-3xl py-2 bg-[#9C58AA]">
+            <p class="text-md font-sofia text-white">Created At</p>
+            <span class="text-white" id="userdate">
+                <%= user.createdAt %> 
+            </span> 
+        </div>
+
+        <script>
+            let date = document.querySelector("#userdate");
+            let createdAt = new Date(date.textContent);
+            date.innerText = createdAt.toDateString();
+        </script>
 
 
 
     </div>
 
-    <hr>
 
-    <br><br>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="/js/userPage.js"></script>
+</div>
+
+<hr>
+
+<br><br>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="/js/userPage.js"></script>

@@ -1,3 +1,5 @@
+//By default all the users input fields and buttons are disabled so create an event in which if button is clicked
+//then it enables all the user input fields and buttons in user profile page
 $(document).ready(function () {
 	$("#edit-button-wrapper").click(function () {
 		$("#edit-button").fadeOut("slow");
@@ -5,10 +7,9 @@ $(document).ready(function () {
 		$("#username").prop("disabled", false);
 		$("#alias").prop("disabled", false);
 		$("#email").prop("disabled", false);
-		$("#age").prop("disabled", false);
-		$("#city").prop("disabled", false);
-		$("#studyingin").prop("disabled", false);
+		$("#country").prop("disabled", false);
 		$("#description").prop("disabled", false);
+		$("#profile-pic-btn").prop("disabled",false);
 	});
 });
 

@@ -5,8 +5,14 @@ const Question = require("../../models/question");
 const Answer = require("../../models/answer");
 const catchAsync = require("../../utils/catchAsync");
 const ExpressError = require("../../utils/ExpressError");
+const multer = require("multer");
+const {storage,cloudinary} = require("../../cloudinary/index");
+const upload = multer({storage});
+
+//Function to create a answer
 
 module.exports.createAnswer = async (req, res) => {
+
      const { questionId } = req.params;
      const userSession = req.session;
      const { isLoggedIn, userid } = userSession;
@@ -14,8 +20,20 @@ module.exports.createAnswer = async (req, res) => {
           const question = await Question.findById(questionId);
           const user = await User.findById(userid);
           const {answerDescription} = req.body;
+
+          //If there are images also sent then loop over all the images and create a new array in which filename and 
+          //url of images will be stored
+          if(req.files) {
+               var answerImages = req.files.map(image => {
+                    return {
+                         url:image.path,
+                         filename:image.filename
+                    }
+               })
+          }
           const answer = new Answer({
-               answerDescription
+               answerDescription,
+               images:answerImages
           });
           answer.question = question;
           answer.user = user;
@@ -32,6 +50,7 @@ module.exports.createAnswer = async (req, res) => {
           req.flash("error", "You are Not Logged In. Cannot Post Answer");
           res.redirect(`/question/${questionId}`);
      }
+
 };
 
 module.exports.renderEditAnswerForm = async (req, res) => {
@@ -43,12 +62,39 @@ module.exports.renderEditAnswerForm = async (req, res) => {
 };
 
 module.exports.editAnswer = async (req, res) => {
-     const { answerId } = req.params;
-     const answer = await Answer.findById(answerId).populate("user", "username").populate("question", "questionTitle questionDescription");
-     const question = answer.question;
-     await Answer.findByIdAndUpdate(answerId, { ...req.body });
+     const { questionId,answerId } = req.params;
+     const {answerDescription} = req.body;
+
+     //Firstly update the answerDescription of the founded Answer
+     const answer = await Answer.findByIdAndUpdate(answerId, { answerDescription });
+     
+     //Now check if there are images also sent then loop over all the images and create a new array of url and filename of 
+     //images and add it to the answer => images database.
+     if(req.files.length>0) {
+          const uploadImagesArray = req.files.map(img => {
+               return {
+                         url:img.path,
+                         filename:img.filename
+               }
+          })
+          
+          //Before Pushing Images to the Answer we need to spread the url and filename otherwise the uploadImagesArray will be an array not a object and it will create error.
+          answer.images.push(...uploadImagesArray);
+     }
+     await answer.save();
+    
+     //If there is checkbox checked of images to delete then loop over all the filenames of images checked and delete
+     //from cloud and remove the images from database.
+      if(req.body.deleteImages) {
+          for(let filename of req.body.deleteImages) {
+               await cloudinary.uploader.destroy(filename,{invalidate:true,resource_type:"image",type:"upload"});
+          }
+          //Remove the images object from answer where the filename is equal to the images checked.
+          await answer.updateOne({$pull : { images : {filename : {$in:req.body.deleteImages}} }});
+     }
+
      req.flash("edit", "Answer is Edited...");
-     res.redirect(`/question/${answer.question._id}`);
+     return res.redirect(`/question/${questionId}`);   
 };
 
 module.exports.deleteAnswer = async (req, res) => {
@@ -58,12 +104,24 @@ module.exports.deleteAnswer = async (req, res) => {
 
      const answer = await Answer.findById(answerId).populate("question");
 
+     //If there are any images found in answers then delete the images from cloud
+     if(answer.images.length > 0) {
+          for(let image of answer.images){
+			await cloudinary.uploader.destroy(image.filename,{invalidate:true,resource_type:"image",type:"upload"})
+          }
+     }
+    
+     //Remove the answer from the user where answers == answerId
      await User.findByIdAndUpdate(userid, { $pull: { answers: answerId } });
+
+     //Remove the answer from question where answers == answerId
      await Question.findByIdAndUpdate(questionId, { $pull: { answers: answerId } });
-     const deletedAnswer = await Answer.findByIdAndDelete(answerId);
+
+     //Now delete the answer itself from database
+     await Answer.findByIdAndDelete(answerId);
 
      req.flash("success", "Deleted Answer Successfully...");
-     res.redirect(`/question/${questionId}`);
+     return res.back();
 };
 
 module.exports.answerVoteInc = async (req, res) => {
@@ -98,17 +156,8 @@ module.exports.answerVoteInc = async (req, res) => {
           }
 
           await answer.save();
+          res.json({ votes:answer.votes });
 
-          res.json({votes:answer.votes});
-
-          // if(req.query.fullQuestion) {
-
-              // req.flash("success","You liked the question.");
-              // res.redirect(`/question/${questionId}`);
-          // } else {
-          //     req.flash("success","You liked the question.");
-          //     res.redirect("/");
-          // }
      }
 };
 
@@ -140,8 +189,7 @@ module.exports.answerVoteDec = async (req, res) => {
 
      if (!isLoggedIn) {
           req.flash("error", "To vote you need to login first.");
-          const redirectUrl = req.session.redirectUrl || '/';
-          res.redirect(redirectUrl);
+          return res.back();
      } else {
           const answer = await Answer.findById(answerId);
           const downVote = await Answer.exists({ _id: answerId, downVotes:userid });
@@ -162,18 +210,8 @@ module.exports.answerVoteDec = async (req, res) => {
           }
 
           await answer.save();
-
-          res.json({votes:answer.votes});
-
-          // if(req.query.fullQuestion) {
-              // req.flash("success","You disliked the question.");
-              // res.redirect(`/question/${questionId}`);
-          // } else {
-          //     req.flash("success","You disliked the question.");
-          //     res.redirect("/");
-          // }
+          res.json({ votes:answer.votes });
+         
      }
 
-     // const question = await Question.findByIdAndUpdate(questionId,{$inc: {votes:-1} },{new:true});
-     // await question.save();
 };

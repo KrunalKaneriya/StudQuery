@@ -10,19 +10,49 @@ const ExpressError = require("../../utils/ExpressError");
 
 module.exports.renderUserProfilePage = async (req, res) => {
      const userSession = req.session;
-
+	 const {userid} = userSession;
      const { id } = req.params;
      const user = await User.findById(id);
+
+	 //Checking if the loggedin User follows the other user of which the profile page is viewed.
+	 const isUserFollowed = await User.exists({_id:userid,followedUsers:id});
+
      const questions = await User.findById(id).populate("questions");
      const questionCount = await User.findById(id).populate("questions").countDocuments();
      const answerCount = await User.findById(id).populate("answers").countDocuments();
-     res.render("user", { user, questions, userSession, questionCount, answerCount });
+	 
+     res.render("user", { user, questions, userSession, questionCount, answerCount,isUserFollowed });
 };
+
+module.exports.getNotifications = async (req,res) => {
+	const userSession = req.session;
+	const {userid,isLoggedIn} = userSession;
+
+	if(isLoggedIn) {
+		const user = await User.findById(userid);
+		const notifications = user.notifications;
+		res.json({notifications});
+	} else {
+		// req.flash("error","Log in first to view the notifications")
+	}
+}
 
 module.exports.editUser = async (req, res) => {
      const { id } = req.params;
-	 console.log(req.file);
-     const user = await User.findByIdAndUpdate(id, { ...req.body.user });
+	 const {username,alias,email,country,description} = req.body;
+	 const user = await User.findById(id);
+
+	 if(req.file) {
+		const {path,filename} = req.file;
+		const image = {
+			url:path,
+			filename
+		}
+		user.image = image;
+	 }
+
+     await User.findByIdAndUpdate(id, { username,alias,email,country,description });
+	 await user.save();
      res.redirect(`/user/${id}`);
 }
 
@@ -50,6 +80,54 @@ module.exports.getSavedQuestions = async(req,res) => {
 	}
 }
 
+module.exports.followUser = async(req,res) => {
+	const userSession = req.session;
+	const {isLoggedIn,userid} = userSession;
+	const {id} = req.params;
+		const loggedInUser = await User.findById(userid);
+		const followedUser = await User.findById(id);
+		loggedInUser.followedUsers.push(followedUser);
+		await loggedInUser.save();
+		req.flash("success","You are following this user.");
+		res.redirect(`/user/${id}`);
+}
+
+module.exports.getFollowedUsers = async(req,res) => {
+	const userSession = req.session;
+	const {userid,isLoggedIn} = userSession;
+	const {id} = req.params;
+	if(!isLoggedIn) {
+		req.flash("error","You need to login");
+		const redirectUrl = req.session.redirectUrl || "/";
+		res.redirect(redirectUrl);
+	} else {
+		const users = await User.findById(userid).populate("followedUsers");
+		const followedUsers = users.followedUsers;
+		res.render("followedUsers",{followedUsers,userSession});
+	}
+}
+
+module.exports.getFollowedUsersQuestions = async(req,res) => {
+	const userSession = req.session;
+	const {userid,isLoggedIn} = userSession;
+	const {id} = req.params;
+
+	const users = await User.findById(userid).populate("followedUsers");
+	const questions = await Question.find({user: {$in:users.followedUsers}}).populate("user");
+
+	res.render("followedUsersQuestions",{questions,userSession});
+}
+
+module.exports.unfollowUser = async(req,res) => {
+	const userSession = req.session;
+	const {id} = req.params;
+	const {userid} = userSession;
+
+	await User.findByIdAndUpdate(userid,{$pull: {followedUsers:{$in : id}}  });
+	req.flash("success","You are now unfollowed this user.");
+	res.redirect('back');
+}
+
 module.exports.createdQuestions = async (req,res) => {
 	
 	const userSession = req.session;
@@ -66,6 +144,26 @@ module.exports.createdQuestions = async (req,res) => {
 		res.render("myQuestions",{userSession,result:result.questions,user});
 	}
 };
+
+module.exports.filterQuestions = async(req,res) => {
+	const userSession = req.session;
+	const {userid,isLoggedIn} = userSession;
+	
+
+	if(!isLoggedIn) {
+		req.flash("error","You need to login.");
+		res.redirect('back');
+	} else {
+		const {createdAt,votes} = req.query;
+		if(createdAt) {
+			const result = await Question.find().populate("answers").populate("user").sort({createdAt:createdAt})
+			res.render("myQuestions",{result,userSession});
+	   } else if(votes) {
+			const result = await Question.find().populate("answers").populate("user").sort({votes:votes});
+			res.render("myQuestions",{result,userSession});
+	   }
+	}
+}
 
 module.exports.saveQuestion = async(req,res) => {
 	const userSession = req.session;
@@ -105,3 +203,9 @@ module.exports.renderUserError = async(req,res) => {
 	req.flash("error","You need to login to see Questions");
 	res.redirect("/");
 };	
+
+module.exports.getUsers = async(req,res) => {
+	const userSession = req.session;
+	const users = await User.find();
+	res.render("users",{users,userSession});
+}
