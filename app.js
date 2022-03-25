@@ -34,6 +34,7 @@ const store = MongoStore.create({
 app.set('trust proxy',true);
 app.use(
 	session({
+		store,
 		secret: process.env.secret ||'thisissecret',
 		resave: false,
 		saveUninitialized: false,
