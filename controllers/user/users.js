@@ -18,9 +18,10 @@ module.exports.renderUserProfilePage = async (req, res) => {
 	 const isUserFollowed = await User.exists({_id:userid,followedUsers:id});
 
      const questions = await User.findById(id).populate("questions");
-     const questionCount = await User.findById(id).populate("questions").countDocuments();
-     const answerCount = await User.findById(id).populate("answers").countDocuments();
-	 
+    //  const questionCount = await User.findById(id,{questions}).countDocuments({questions});
+	const questionCount = questions.questions.length;
+     const answerCount = questions.answers.length
+
      res.render("user", { user, questions, userSession, questionCount, answerCount,isUserFollowed });
 };
 
@@ -49,6 +50,7 @@ module.exports.editUser = async (req, res) => {
 			filename
 		}
 		user.image = image;
+		req.session.imageUrl = path; //Updating User Image url
 	 }
 
      await User.findByIdAndUpdate(id, { username,alias,email,country,description });
