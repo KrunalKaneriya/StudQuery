@@ -6,7 +6,7 @@
 
 <div class="container  w-48 mt-10 float-right mr-12  font-medium">
 
-	<div class="bg-[#56B7B4] p-2 text-white hover:bg-[#8C8DB9] transition-all duration-200 text-center rounded-xl">
+	<div class="bg-[#00A5FF] p-2 text-white hover:bg-[#938DFF] transition-all duration-200 text-center rounded-xl">
 		<% if(userSession.userid) { %>
 		<a href="/question/new">Ask A Question </a>
 		<% } else { %>
@@ -16,7 +16,7 @@
 
 
 	<div class="my-10">
-		<p class="font-sofia mb-2 bg-[#BC68F3] rounded-md text-white p-2">New Users</p>
+		<p class="mb-2 bg-[#E1F5F3] text-[#3A908E] rounded-md drop-shadow-sm font-sofia p-2">New Users</p>
 
 		<% for(let user of newUsers) { %>
 
@@ -230,13 +230,14 @@
 			</div>
 			<div class="question-options flex flex-row gap-x-14 mt-3">
 				<p class="text-[#7485F2] <%= post.isClosed ? "text-white" : "text-[#7485F2]" %>  font-sofia font-light">
-					<%= post.answers.length %> Answers</p>
+					<svg class="inline-block mx-2" xmlns="http://www.w3.org/2000/svg" height="21px" viewBox="0 0 24 24" width="21px" fill="#7485F2"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M15 4v7H5.17l-.59.59-.58.58V4h11m1-2H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zm5 4h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1z"/></svg><%= post.answers.length %> Answers</p>
 				<% if(!post.isClosed) { %>
-				<p><a class="font-sofia text-[#00A97B] font-light" href="/question/<%= post._id %>">Add Answer</a></p>
+				<p><a class="font-sofia text-[#00A97B] font-light" href="/question/<%= post._id %>"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px" fill="#00A97B" class="inline-block mx-2"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>Add Answer</a></p>
 				<% } %>
 				<form action="/report/question/<%= post._id %>" method="post">
 					<button
-						class=" font-sofia font-light <%= post.isClosed ? "text-white" : "text-[#EE5C67]" %>">Report</button>
+						class=" font-sofia font-light <%= post.isClosed ? "text-white" : "text-[#EE5C67]" %>">
+						<svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px" fill="#EE5C67" class="inline-block mx-2"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M15.73 3H8.27L3 8.27v7.46L8.27 21h7.46L21 15.73V8.27L15.73 3zM19 14.9L14.9 19H9.1L5 14.9V9.1L9.1 5h5.8L19 9.1v5.8z"/><circle cx="12" cy="16" r="1"/><path d="M11 7h2v7h-2z"/></svg>Report</button>
 				</form>
 				<% if(post.isClosed) { %>
 				<p class="text-white font-sofia font-light">This Question is Closed</p>

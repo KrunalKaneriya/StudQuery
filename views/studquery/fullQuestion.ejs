@@ -103,33 +103,33 @@
 				<% }) %>
 			</div>
 
-			<div class="question-options flex flex-row gap-x-10 mt-3">
-				<p class="text-[#7485F2] font-sofia font-light "><%= question.answers.length %> Answers</p>
+			<div class="question-options flex flex-row justify-evenly mt-7">
+				<p class="text-[#7485F2] font-sofia font-light text-sm"><svg class="inline-block mx-2" xmlns="http://www.w3.org/2000/svg" height="21px" viewBox="0 0 24 24" width="21px" fill="#7485F2"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M15 4v7H5.17l-.59.59-.58.58V4h11m1-2H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zm5 4h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1z"/></svg><%= question.answers.length %> Answers</p>
 				<% if(!question.isClosed) { %> 
-				<p class="font-sofia font-light text-[#00AAC6]"><a href="/question/<%=question._id%>/edit">Edit
+				<p class="font-sofia text-[#00AAC6] text-sm font-light"><a href="/question/<%=question._id%>/edit"><svg xmlns="http://www.w3.org/2000/svg" height="21px" viewBox="0 0 24 24" width="21px" fill="#00AAC6" class="inline-block mx-2"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M14.06 9.02l.92.92L5.92 19H5v-.92l9.06-9.06M17.66 3c-.25 0-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29zm-3.6 3.19L3 17.25V21h3.75L17.81 9.94l-3.75-3.75z"/></svg>Edit
 						Question</a></p>
 				<% } %> 
-				<div class="font-sofia  font-light">
+				<div class="font-sofia text-sm">
 					<form action="/question/<%=question._id%>?_method=DELETE" method="post">
-						<button type="submit" class=" font-sofia font-light text-[#EE5C67]">Delete Question</button>
+						<button type="submit" class=" font-sofia text-[#EE5C67] font-light text-sm"><svg xmlns="http://www.w3.org/2000/svg" height="21px" viewBox="0 0 24 24" width="21px" fill="#EE5C67" class="inline-block mx-2"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z"/></svg>Delete Question</button>
 					</form>
 				</div>
-				<div>
+				<div class="font-sofia text-sm">
 					<form action="/report/question/<%= question._id %>?isFullQuestion=true" method="post">
-						<button class="text-[#AB8A0D] font-sofia font-light ">Report Question</button>
+						<button class="text-[#AB8A0D] font-sofia text-sm font-light"><svg xmlns="http://www.w3.org/2000/svg" height="21px" viewBox="0 0 24 24" width="21px" fill="#AB8A0D" class="inline-block mx-2"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M15.73 3H8.27L3 8.27v7.46L8.27 21h7.46L21 15.73V8.27L15.73 3zM19 14.9L14.9 19H9.1L5 14.9V9.1L9.1 5h5.8L19 9.1v5.8z"/><circle cx="12" cy="16" r="1"/><path d="M11 7h2v7h-2z"/></svg>Report Question</button>
 					</form>
 				</div>
 
 				<% if(question.isClosed) { %> 
 					<div class="open-question">
 						<form action="/question/<%= question._id %>/openQuestion" method="get">
-							<button class="text-fuchsia-500">Open Question</button>
+							<button class="text-fuchsia-500 text-sm font-sofia font-light"><svg class="inline-block mx-2" xmlns="http://www.w3.org/2000/svg" height="21px" viewBox="0 0 24 24" width="21px" fill="#D98EF5"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h2c0-1.66 1.34-3 3-3s3 1.34 3 3v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm0 12H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/></svg>Open Question</button>
 						</form>
 					</div>
 				<% } else { %> 
-					<div class="close-question">
+					<div class="close-question font-sofia text-sm">
 						<form action="/question/<%= question._id %>/closeQuestion" method="get">
-							<button class="text-fuchsia-500">Close Question</button>
+							<button class="text-fuchsia-500 font-sofia text-sm font-light"><svg class="inline-block mx-2" xmlns="http://www.w3.org/2000/svg" height="21px" viewBox="0 0 24 24" width="21px" fill="#D98EF5"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-4.42 3.58-8 8-8 1.85 0 3.55.63 4.9 1.69L5.69 16.9C4.63 15.55 4 13.85 4 12zm8 8c-1.85 0-3.55-.63-4.9-1.69L18.31 7.1C19.37 8.45 20 10.15 20 12c0 4.42-3.58 8-8 8z"/></svg>Close Question</button>
 						</form>
 					</div>
 				<% } %> 
@@ -223,7 +223,7 @@
 				</form>
 
 				<div class="answer-options">
-					<div class="question-options flex flex-row gap-x-14 mt-2 ml-7">
+					<div class="question-options flex flex-row justify-center items-center gap-x-14 mt-2 ml-7">
 						<form action="/report/question/<%= question._id %>/answer/<%= answer._id %>" method="post"
 							class="">
 							<div id="report-button-wrapper" class="">
