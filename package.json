@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "build":"npx tailwindcss -i ./src/styles.css -o ./public/styles/output.css --watch"
   },
   "dependencies": {
     "@tailwindcss/forms": "^0.4.0",
