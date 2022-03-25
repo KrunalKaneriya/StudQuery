@@ -27,23 +27,16 @@ app.use(methodOverride('_method'));
 app.use(mongoSanitize());
 
 const store = MongoStore.create({
-	mongoUrl:  process.env.DB_URL || 'mongodb://127.0.0.1:27017/studquery',
+	mongoUrl: 'mongodb://127.0.0.1:27017/studquery',
 	touchAfter: 24 * 60 * 60,
 	dbName:"session"
 });
 app.set('trust proxy',true);
 app.use(
 	session({
-		store,
 		secret: process.env.secret ||'thisissecret',
 		resave: false,
 		saveUninitialized: false,
-		cookie: {
-			expires: Date.now() * 1000 * 60 * 60 * 24 * 7, //Session Expires After 7 days
-			secure:true,
-			httpOnly:false,
-			sameSite:true
-		}
 	})
 );
 app.use(back());
