@@ -3,23 +3,18 @@ const Question = require("../../models/question");
 const Answer = require("../../models/answer");
 const ReportedQuestion = require("../../models/reportedQuestions");
 const ReportedAnswers = require("../../models/reportedAnswers");
-const ExpressError = require("../../utils/ExpressError");
+module.exports.renderAdminLoginPage = async (req,res) => {
+    res.render("admin/adminLogin");
+}
 
 module.exports.sendAdminLogInInfo = async (req, res) => {
     res.redirect("/admin");
 };
 
-module.exports.adminLogout = (req, res) => {
-    if (req.session) {
-        req.session.destroy(() => {
-            res.redirect("/login");
-        })
-    }
-};
 
 module.exports.renderAdminHomePage = async (req, res) => {
     const userSession = req.session;
-    const { isLoggedIn, userid } = req.session;
+    const { isLoggedIn} = req.session;
     const questionCount = await Question.find().countDocuments();
     const answerCount = await Answer.find().countDocuments();
     const userCount = await User.find().countDocuments();
@@ -29,7 +24,14 @@ module.exports.renderAdminHomePage = async (req, res) => {
         res.render("admin/homepage", { userSession, questionCount, answerCount, userCount, reportedQuestionsCount, reportedAnswersCount });
     }
     else {
-        req.flash("error","You need to login");
-        res.redirect("/login");
+        res.redirect("/admin/login");
     }
+};
+
+module.exports.adminLogout = (req, res) => {
+    if (req.session.isLoggedIn) {
+		req.session.destroy(() => {
+			res.redirect("/login");
+		});
+	}
 };
