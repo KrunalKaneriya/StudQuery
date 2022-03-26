@@ -6,246 +6,266 @@
 
 <div class="container  w-48 mt-10 float-right mr-12  font-medium">
 
-	<div class="bg-[#00A5FF] p-2 text-white hover:bg-[#938DFF] transition-all duration-200 text-center rounded-xl">
-		<% if(userSession.userid) { %>
-		<a href="/question/new">Ask A Question </a>
-		<% } else { %>
-		<a href="/login">To Ask Questions Login!!</a>
-		<% } %>
-	</div>
+    <div class="bg-[#00A5FF] p-2 text-white hover:bg-[#938DFF] transition-all duration-200 text-center rounded-xl">
+        <% if(userSession.userid) { %>
+            <a href="/question/new">Ask A Question </a>
+        <% } else { %>
+            <a href="/login">To Ask Questions Login!!</a>
+        <% } %>
+    </div>
 
 
-	<div class="my-10">
-		<p class="mb-2 bg-[#E1F5F3] text-[#3A908E] rounded-md drop-shadow-sm font-sofia p-2">New Users</p>
+    <div class="my-10">
+        <p class="mb-2 bg-[#E1F5F3] text-[#3A908E] rounded-md drop-shadow-sm font-sofia p-2">New Users</p>
 
-		<% for(let user of newUsers) { %>
+        <% for(let user of newUsers) { %>
 
-		<div class="container w-full py-1 ml-2">
-			<% if(user.image.url) { %>
-			<img src="<%= user.image.url %>" class="w-8 h-8 float-left" alt="">
-			<% } else { %>
-			<div class="rounded-full bg-purple-200 w-8 h-8 float-left mb-2"></div>
-			<% } %>
-			<div>
-				<p class=" py-1 font-sofia hover:text-blue-600 text-gray-500 delay-150 transition-colors ease-out ml-9">
-					<%= user.username %> </p>
-			</div>
-		</div>
+            <div class="container w-full py-1 ml-2">
+                <% if(user.image.url) { %>
+                    <img src="<%= user.image.url %>" class="w-8 h-8 float-left" alt="">
+                <% } else { %>
+                    <div class="rounded-full bg-purple-200 w-8 h-8 float-left mb-2"></div>
+                <% } %>
+                <div>
+                    <p class=" py-1 font-sofia hover:text-blue-600 text-gray-500 delay-150 transition-colors ease-out ml-9">
+                        <%= user.username %> </p>
+                </div>
+            </div>
 
-		<% } %>
-	</div>
+        <% } %>
+    </div>
 </div>
 
 
 
 
 <% if(success && success.length) { %>
-<div class="message container fixed left-[75%] top-10">
-	<div class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
-		role="alert">
-		<div
-			class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
-			<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-				<path fill-rule="evenodd"
-					d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-					clip-rule="evenodd"></path>
-			</svg>
-		</div>
-		<div class="ml-3 text-sm font-normal">
-			<%= success %>
-		</div>
-		<button type="button"
-			class="close-btn ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700">
-			<span class="sr-only">Close</span>
-			<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-				<path fill-rule="evenodd"
-					d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-					clip-rule="evenodd"></path>
-			</svg>
-		</button>
-	</div>
-</div>
+    <div class="message container fixed left-[75%] top-10">
+        <div class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
+             role="alert">
+            <div
+                    class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clip-rule="evenodd"></path>
+                </svg>
+            </div>
+            <div class="ml-3 text-sm font-normal">
+                <%= success %>
+            </div>
+            <button type="button"
+                    class="close-btn ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700">
+                <span class="sr-only">Close</span>
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                          clip-rule="evenodd"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
 <% } %>
 
 <div class="message container fixed left-[75%] top-10 hidden" id="success-message">
-	<div class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
-		role="alert">
-		<div
-			class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
-			<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-				<path fill-rule="evenodd"
-					d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-					clip-rule="evenodd"></path>
-			</svg>
-		</div>
-		<div class="ml-3 text-sm font-normal" id="success-message-text"></div>
-		<button type="button"
-			class="close-btn ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700">
-			<span class="sr-only">Close</span>
-			<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-				<path fill-rule="evenodd"
-					d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-					clip-rule="evenodd"></path>
-			</svg>
-		</button>
-	</div>
+    <div class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
+         role="alert">
+        <div
+                class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clip-rule="evenodd"></path>
+            </svg>
+        </div>
+        <div class="ml-3 text-sm font-normal" id="success-message-text"></div>
+        <button type="button"
+                class="close-btn ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700">
+            <span class="sr-only">Close</span>
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clip-rule="evenodd"></path>
+            </svg>
+        </button>
+    </div>
 </div>
 
 <% if(welcome && welcome.length) { %>
-<div class="message container w-[55%] mx-auto my-5 bg-green-200/80 border border-green-400/70 px-4 py-3 rounded-lg text-green-700 relative drop-shadow-md"
-	role="alert">
-	<h1 class="font-medium font-sofia">
-		<%= welcome %>
-	</h1>
-	<button class="absolute top-0 right-0 px-4 py-3 close-btn">
-		<svg class="h-6 w-6 text-green-500 hover:text-green-600 fill-current" viewBox="0 0 20 20">
-			<title>Close</title>
-			<path
-				d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
-		</svg>
-	</button>
-</div>
+    <div class="message container w-[55%] mx-auto my-5 bg-green-200/80 border border-green-400/70 px-4 py-3 rounded-lg text-green-700 relative drop-shadow-md"
+         role="alert">
+        <h1 class="font-medium font-sofia">
+            <%= welcome %>
+        </h1>
+        <button class="absolute top-0 right-0 px-4 py-3 close-btn">
+            <svg class="h-6 w-6 text-green-500 hover:text-green-600 fill-current" viewBox="0 0 20 20">
+                <title>Close</title>
+                <path
+                        d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/>
+            </svg>
+        </button>
+    </div>
 <% } %> <% if(error && error.length) { %>
-<div class="message container fixed left-[75%] top-10">
-	<div class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
-		role="alert">
-		<div
-			class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200">
-			<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-				<path fill-rule="evenodd"
-					d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-					clip-rule="evenodd"></path>
-			</svg>
-		</div>
-		<div class="ml-3 text-sm font-normal">
-			<%= error %>
-		</div>
-		<button type="button"
-			class="close-btn ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700">
-			<span class="sr-only">Close</span>
-			<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-				<path fill-rule="evenodd"
-					d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-					clip-rule="evenodd"></path>
-			</svg>
-		</button>
-	</div>
-</div>
+    <div class="message container fixed left-[75%] top-10">
+        <div class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
+             role="alert">
+            <div
+                    class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                          clip-rule="evenodd"></path>
+                </svg>
+            </div>
+            <div class="ml-3 text-sm font-normal">
+                <%= error %>
+            </div>
+            <button type="button"
+                    class="close-btn ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700">
+                <span class="sr-only">Close</span>
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                          clip-rule="evenodd"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
 <% } %>
 
 <div class="container w-[63%] mx-auto my-4" id="home">
 
-	<%- include("../partials/filter")  %>
+    <%- include("../partials/filter") %>
 
-	<% for(let post of posts) { %>
-	<div id="questionPost"
-		class="py-5 rounded-xl shadow-sm flex flex-row mx-auto <%= post.isClosed ? "bg-[#EE5C67] text-white" : "" %> ">
-		<section class="profile-picture flex flex-col h-full items-center justify-center mx-5 mt-3 flex-wrap gap-y-6">
-			<div class="image">
-				<% if(post.user.image.url) { %>
-				<a href="/user/<%= post.user._id %>">
-					<img src="<%= post.user.image ? `${post.user.image.url}` : "" %> " alt=""
-						class="w-14 h-14 rounded-full">
-				</a>
-				<% } else { %>
-					<a href="/user/<%= post.user._id %>">
-						<div class="w-14 h-14 rounded-full bg-gray-200"></div>
-					</a>
-				<% } %>
-			</div>
+    <% for(let post of posts) { %>
+        <div id="questionPost"
+             class="py-5 rounded-xl shadow-sm flex flex-row mx-auto <%= post.isClosed ? "bg-[#EE5C67] text-white" : "" %> ">
+            <section
+                    class="profile-picture flex flex-col h-full items-center justify-center mx-5 mt-3 flex-wrap gap-y-6">
+                <div class="image">
+                    <% if(post.user.image.url) { %>
+                        <a href="/user/<%= post.user._id %>">
+                            <img src="<%= post.user.image ? `${post.user.image.url}` : "" %> " alt=""
+                                 class="w-14 h-14 rounded-full">
+                        </a>
+                    <% } else { %>
+                        <a href="/user/<%= post.user._id %>">
+                            <div class="w-14 h-14 rounded-full bg-gray-200"></div>
+                        </a>
+                    <% } %>
+                </div>
 
-			<div class="h-full">
-				<div id="arrows">
-					<form action="/question/<%=post._id %>/vote/inc?_method=PUT"
-						class="upForm hover:scale-125 transition-all" method="post">
-						<button type="submit" id="post-inc">
-							<svg class="cursor-pointer ml-1" width="75" height="20" viewBox="0 0 90 108" fill="none"
-								xmlns="http://www.w3.org/2000/svg">
-								<path class="post-inc-path" id="Arrow 1"
-									d="M49.2426 2.57276C46.8995 0.229614 43.1005 0.229614 40.7574 2.57276L2.57359 40.7565C0.230446 43.0997 0.230446 46.8987 2.57359 49.2418C4.91674 51.585 8.71573 51.585 11.0589 49.2418L45 15.3007L78.9411 49.2418C81.2843 51.585 85.0833 51.585 87.4264 49.2418C89.7696 46.8987 89.7696 43.0997 87.4264 40.7565L49.2426 2.57276ZM51 107.094L51 6.8154H39L39 107.094H51Z"
-									fill="#9643FF" />
-							</svg>
-						</button>
+                <div class="h-full">
+                    <div id="arrows">
+                        <form action="/question/<%= post._id %>/vote/inc?_method=PUT"
+                              class="upForm hover:scale-125 transition-all" method="post">
+                            <button type="submit" id="post-inc">
+                                <svg class="cursor-pointer ml-1" width="75" height="20" viewBox="0 0 90 108" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path class="post-inc-path" id="Arrow 1"
+                                          d="M49.2426 2.57276C46.8995 0.229614 43.1005 0.229614 40.7574 2.57276L2.57359 40.7565C0.230446 43.0997 0.230446 46.8987 2.57359 49.2418C4.91674 51.585 8.71573 51.585 11.0589 49.2418L45 15.3007L78.9411 49.2418C81.2843 51.585 85.0833 51.585 87.4264 49.2418C89.7696 46.8987 89.7696 43.0997 87.4264 40.7565L49.2426 2.57276ZM51 107.094L51 6.8154H39L39 107.094H51Z"
+                                          fill="#9643FF"/>
+                                </svg>
+                            </button>
 
-						<input type="hidden" name="questionId" value="<%= post._id %>" />
-					</form>
+                            <input type="hidden" name="questionId" value="<%= post._id %>"/>
+                        </form>
 
-					<span
-						class="w-full text-center text-xl font-sofia inline-block <%= post.isClosed ? "bg-[#EE5C67] text-white" : "text-gray-500" %> votes">
+                        <span
+                                class="w-full text-center text-xl font-sofia inline-block <%= post.isClosed ? "bg-[#EE5C67] text-white" : "text-gray-500" %> votes">
 						<%= post.votes %>
 					</span>
 
-					<form action="/question/<%= post._id %>/vote/dec?_method=PUT" method="post"
-						class="downForm hover:scale-125 transition-all">
-						<button type="submit" id="post-dec">
-							<svg class="cursor-pointer ml-1 mt-1" width="75" height="20" viewBox="0 0 90 107"
-								fill="none" xmlns="http://www.w3.org/2000/svg">
-								<path id="Arrow 2"
-									d="M40.7574 105.191C43.1005 107.534 46.8995 107.534 49.2426 105.191L87.4264 67.0071C89.7696 64.664 89.7696 60.865 87.4264 58.5219C85.0833 56.1787 81.2843 56.1787 78.9411 58.5219L45 92.463L11.0589 58.5219C8.71573 56.1787 4.91674 56.1787 2.57359 58.5219C0.230447 60.865 0.230447 64.664 2.57359 67.0071L40.7574 105.191ZM39 0.669922L39 100.948H51L51 0.669922L39 0.669922Z"
-									fill="#E16A6A" />
-							</svg>
-						</button>
+                        <form action="/question/<%= post._id %>/vote/dec?_method=PUT" method="post"
+                              class="downForm hover:scale-125 transition-all">
+                            <button type="submit" id="post-dec">
+                                <svg class="cursor-pointer ml-1 mt-1" width="75" height="20" viewBox="0 0 90 107"
+                                     fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path id="Arrow 2"
+                                          d="M40.7574 105.191C43.1005 107.534 46.8995 107.534 49.2426 105.191L87.4264 67.0071C89.7696 64.664 89.7696 60.865 87.4264 58.5219C85.0833 56.1787 81.2843 56.1787 78.9411 58.5219L45 92.463L11.0589 58.5219C8.71573 56.1787 4.91674 56.1787 2.57359 58.5219C0.230447 60.865 0.230447 64.664 2.57359 67.0071L40.7574 105.191ZM39 0.669922L39 100.948H51L51 0.669922L39 0.669922Z"
+                                          fill="#E16A6A"/>
+                                </svg>
+                            </button>
 
-						<input type="hidden" name="questionId" value="<%= post._id %>" />
-					</form>
-				</div>
+                            <input type="hidden" name="questionId" value="<%= post._id %>"/>
+                        </form>
+                    </div>
 
-				<div class="saveQuestion mx-auto w-full mt-2">
+                    <div class="saveQuestion mx-auto w-full mt-2">
 
-					<% if(userSession && userSession.userid) {  %>
-					<form action="/user/<%= userSession.userid %>/question/<%= post._id %>/savedQuestions"
-						method="post">
-						<button type="submit">
-							<svg data-tooltip-target="tooltip-default" xmlns="http://www.w3.org/2000/svg"
-								class=" hover:scale-150 transition-all" fill="none" viewBox="0 0 24 24"
-								stroke="currentColor" width="85" height="25">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="0"
-									d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" fill="#23C197" />
-							</svg>
-						</button>
-					</form>
-					<% } %>
-				</div>
-			</div>
-		</section>
+                        <% if(userSession && userSession.userid) { %>
+                            <form action="/user/<%= userSession.userid %>/question/<%= post._id %>/savedQuestions"
+                                  method="post">
+                                <button type="submit">
+                                    <svg data-tooltip-target="tooltip-default" xmlns="http://www.w3.org/2000/svg"
+                                         class=" hover:scale-150 transition-all" fill="none" viewBox="0 0 24 24"
+                                         stroke="currentColor" width="85" height="25">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="0"
+                                              d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" fill="#23C197"/>
+                                    </svg>
+                                </button>
+                            </form>
+                        <% } %>
+                    </div>
+                </div>
+            </section>
 
-		<section class="question-body flex flex-col gap-y-3.5">
-			<p class="font-sofia text-sm <%= post.isClosed ? "bg-[#EE5C67] text-white" : "text-[#AAAABC]" %>">
-				<%= post.createdAt %> <a href=""></a>
-			</p>
-			<p class=""> <a href="/question/<%= post._id%>"
-					class="font-sofia  text-xl font-semibold <%= post.isClosed ? "text-white" : "text-[#464555]" %>"><%= post.questionTitle %></a>
-			</p>
-			<p class="font-sofia font-light w-[94%] leading-7 <%= post.isClosed ? "text-white" : "text-[#464555ce]" %>">
-				<%= post.snippet %></p>
+            <section class="question-body flex flex-col gap-y-3.5">
+                <p class="font-sofia text-sm <%= post.isClosed ? "bg-[#EE5C67] text-white" : "text-[#AAAABC]" %>">
+                    <%= post.createdAt %> <a href=""></a>
+                </p>
+                <p class=""><a href="/question/<%= post._id %>"
+                               class="font-sofia  text-xl font-semibold <%= post.isClosed ? "text-white" : "text-[#464555]" %>"><%= post.questionTitle %></a>
+                </p>
+                <p class="font-sofia font-light w-[94%] leading-7 <%= post.isClosed ? "text-white" : "text-[#464555ce]" %>">
+                    <%= post.snippet %></p>
 
-			<div class="tags flex flex-row flex-wrap gap-4 my-2">
-				<% post.tags.forEach(el=> { %>
-				<div class="tag-wrapper px-2 py-1 bg-[#EEEDED] rounded-lg">
-					<p><a href="/explore/<%= el %>"
-							class=" <%= post.isClosed ? "text-gray-700" : "text-[#AAA4BC]" %>  font-semibold "><%= el %></a>
-					</p>
-				</div>
-				<% }) %>
-			</div>
-			<div class="question-options flex flex-row gap-x-14 mt-3">
-				<p class="text-[#7485F2] <%= post.isClosed ? "text-white" : "text-[#7485F2]" %>  font-sofia font-light">
-					<svg class="inline-block mx-2" xmlns="http://www.w3.org/2000/svg" height="21px" viewBox="0 0 24 24" width="21px" fill="#7485F2"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M15 4v7H5.17l-.59.59-.58.58V4h11m1-2H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zm5 4h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1z"/></svg><%= post.answers.length %> Answers</p>
-				<% if(!post.isClosed) { %>
-				<p><a class="font-sofia text-[#00A97B] font-light" href="/question/<%= post._id %>"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px" fill="#00A97B" class="inline-block mx-2"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>Add Answer</a></p>
-				<% } %>
-				<form action="/report/question/<%= post._id %>" method="post">
-					<button
-						class=" font-sofia font-light <%= post.isClosed ? "text-white" : "text-[#EE5C67]" %>">
-						<svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px" fill="#EE5C67" class="inline-block mx-2"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M15.73 3H8.27L3 8.27v7.46L8.27 21h7.46L21 15.73V8.27L15.73 3zM19 14.9L14.9 19H9.1L5 14.9V9.1L9.1 5h5.8L19 9.1v5.8z"/><circle cx="12" cy="16" r="1"/><path d="M11 7h2v7h-2z"/></svg>Report</button>
-				</form>
-				<% if(post.isClosed) { %>
-				<p class="text-white font-sofia font-light">This Question is Closed</p>
-				<% } %>
+                <div class="tags flex flex-row flex-wrap gap-4 my-2">
+                    <% post.tags.forEach(el=> { %>
+                        <div class="tag-wrapper px-2 py-1 bg-[#EEEDED] rounded-lg">
+                            <p><a href="/explore/<%= el %>"
+                                  class=" <%= post.isClosed ? "text-gray-700" : "text-[#AAA4BC]" %>  font-semibold "><%= el %></a>
+                            </p>
+                        </div>
+                    <% }) %>
+                </div>
+                <div class="question-options flex flex-row gap-x-14 mt-3">
+                    <p class="text-[#7485F2] <%= post.isClosed ? "text-white" : "text-[#7485F2]" %>  font-sofia font-light">
+                        <svg class="inline-block mx-2" xmlns="http://www.w3.org/2000/svg" height="21px"
+                             viewBox="0 0 24 24" width="21px" fill="#7485F2">
+                            <path d="M0 0h24v24H0V0z" fill="none"/>
+                            <path d="M15 4v7H5.17l-.59.59-.58.58V4h11m1-2H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zm5 4h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1z"/>
+                        </svg><%= post.answers.length %> Answers
+                    </p>
+                    <% if(!post.isClosed) { %>
+                        <p><a class="font-sofia text-[#00A97B] font-light" href="/question/<%= post._id %>">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px"
+                                     fill="#00A97B" class="inline-block mx-2">
+                                    <path d="M0 0h24v24H0V0z" fill="none"/>
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
+                                </svg>
+                                Add Answer</a></p>
+                    <% } %>
+                    <form action="/report/question/<%= post._id %>" method="post">
+                        <button
+                                class=" font-sofia font-light <%= post.isClosed ? "text-white" : "text-[#EE5C67]" %>">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px"
+                                 fill="#EE5C67" class="inline-block mx-2">
+                                <path d="M0 0h24v24H0V0z" fill="none"/>
+                                <path d="M15.73 3H8.27L3 8.27v7.46L8.27 21h7.46L21 15.73V8.27L15.73 3zM19 14.9L14.9 19H9.1L5 14.9V9.1L9.1 5h5.8L19 9.1v5.8z"/>
+                                <circle cx="12" cy="16" r="1"/>
+                                <path d="M11 7h2v7h-2z"/>
+                            </svg>
+                            Report
+                        </button>
+                    </form>
+                    <% if(post.isClosed) { %>
+                        <p class="text-white font-sofia font-light">This Question is Closed</p>
+                    <% } %>
 
-			</div>
+                </div>
 
-		</section>
-	</div>
-	<% } %>
+            </section>
+        </div>
+    <% } %>
 </div>

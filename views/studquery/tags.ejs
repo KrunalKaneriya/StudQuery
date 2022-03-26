@@ -1,4 +1,4 @@
-<% layout ("../layout/boilerplate") %>
+<% layout("../layout/boilerplate") %>
 <%- include("../partials/sidebar") %>
 <%- include("../partials/flash") %>
 
@@ -7,81 +7,114 @@
 <div class="container w-[70%] ml-[18%] my-6">
 
     <div id="heading" class="font-sofia text-gray-500 text-xl pl-10 pt-5">
-        <%= tag %> 
+        <%= tag %>
     </div>
     <div id="separator" class="h-0.5 w-full rounded-xl bg-[#EEEDFF] my-3">
 
-    <div class="container">
-        <% for(let post of tagResult) { %>
-            <div id="post" class="py-5 rounded-xl shadow-sm flex flex-row <%= post.isClosed ? "bg-[#EE5C67]" : "" %> ">
+        <div class="container">
+            <% for(let post of tagResult) { %>
+                <div id="post"
+                     class="py-5 rounded-xl shadow-sm flex flex-row <%= post.isClosed ? "bg-[#EE5C67]" : "" %> ">
 
-                <section class="profile-picture flex flex-col h-full items-center justify-center mx-5 mt-3 flex-wrap gap-y-6">
-                    <div class="image">
-                        <% if(post.user.image.url) {  %>
+                    <section
+                            class="profile-picture flex flex-col h-full items-center justify-center mx-5 mt-3 flex-wrap gap-y-6">
+                        <div class="image">
+                            <% if(post.user.image.url) { %>
 
-                            <a href="/user/<%= post.user._id %>">
-                                <img src="<%= post.user.image ? `${post.user.image.url}` : "" %> " alt=""
-                                class="w-14 h-14 rounded-full">
-                            </a>
-                        
-                        <% } else { %>
-                        <div class="w-14 h-14 rounded-full bg-gray-200"></div>
-                        <% } %>
-                    </div>
-                        
+                                <a href="/user/<%= post.user._id %>">
+                                    <img src="<%= post.user.image ? `${post.user.image.url}` : "" %> " alt=""
+                                         class="w-14 h-14 rounded-full">
+                                </a>
+
+                            <% } else { %>
+                                <div class="w-14 h-14 rounded-full bg-gray-200"></div>
+                            <% } %>
+                        </div>
+
                         <div class="flex flex-col gap-y-2">
-                            <p class="text-center font-sofia text-sm font-light <%= post.isClosed ? "text-white" : "" %>  my-2">Votes:<%= post.votes %></p>
-                            <p class="text-center font-sofia text-sm font-light <%= post.isClosed ? "text-white" : "" %>">Answers: <%= post.answers.length %> </p>
+                            <p class="text-center font-sofia text-sm font-light p-2 bg-indigo-100 text-indigo-600 rounded-xl <%= post.isClosed ? "text-white" : "" %>  my-2">
+                                Votes:<%= post.votes %></p>
+                            <p class="text-center font-sofia text-sm font-light p-2 bg-fuchsia-100 text-fuchsia-600 rounded-xl <%= post.isClosed ? "text-white" : "" %>">
+                                Answers: <%= post.answers.length %> </p>
                             <div class="saveQuestion mx-auto w-full mt-2">
-        
-                                <% if(userSession && userSession.isLoggedIn) {  %>
-                                <form action="/user/<%= userSession.userid %>/question/<%= post._id %>/savedQuestions"
-                                    method="post">
-                                    <button type="submit">
-                                        <svg data-tooltip-target="tooltip-default" xmlns="http://www.w3.org/2000/svg"
-                                            class=" hover:scale-150 transition-all" fill="none" viewBox="0 0 24 24"
-                                            stroke="currentColor" width="85" height="25">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="0"
-                                                d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" fill="#23C197" />
-                                        </svg>
-                                    </button>
-                                </form>
+
+                                <% if(userSession && userSession.isLoggedIn) { %>
+                                    <form action="/user/<%= userSession.userid %>/question/<%= post._id %>/savedQuestions"
+                                          method="post">
+                                        <button type="submit">
+                                            <svg data-tooltip-target="tooltip-default"
+                                                 xmlns="http://www.w3.org/2000/svg"
+                                                 class=" hover:scale-150 transition-all" fill="none" viewBox="0 0 24 24"
+                                                 stroke="currentColor" width="85" height="25">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="0"
+                                                      d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
+                                                      fill="#23C197"/>
+                                            </svg>
+                                        </button>
+                                    </form>
                                 <% } %>
                             </div>
                         </div>
 
-                </section>
+                    </section>
 
-                <section class="question-body flex flex-col gap-y-3.5">
-                    <p class="font-sofia  <%= post.isClosed ? "text-white" : "text-[#AAAABC]" %>  text-sm"><%= post.createdAt %> <a href=""></a> </p>
-                    <p class=""> <a href="/question/<%= post._id%>"
-                            class="font-sofia  text-xl <%= post.isClosed ? "text-white" : "text-[#464555]" %>  font-semibold"><%= post.questionTitle %></a></p>
-                    <p class="font-sofia  font-light w-[94%] leading-7 <%= post.isClosed ? "text-white" : "text-[#464555ce]" %> "><%= post.snippet %></p>
-                    <div class="tags flex flex-row flex-wrap gap-4 my-2">
-                        <% post.tags.forEach(el=> { %>
-                        <div class="tag-wrapper px-2 py-1 bg-[#EEEDED] rounded-lg">
-                            <p><a href="/explore/<%= el %>" class="<%= post.isClosed ? "text-gray-600" :"text-[#AAA4BC]" %>  font-semibold "><%= el %></a></p>
+                    <section class="question-body flex flex-col gap-y-3.5">
+                        <p class="font-sofia  <%= post.isClosed ? "text-white" : "text-[#AAAABC]" %>  text-sm"><%= post.createdAt %>
+                            <a href=""></a></p>
+                        <p class=""><a href="/question/<%= post._id %>"
+                                       class="font-sofia  text-xl <%= post.isClosed ? "text-white" : "text-[#464555]" %>  font-semibold"><%= post.questionTitle %></a>
+                        </p>
+                        <p class="font-sofia  font-light w-[94%] leading-7 <%= post.isClosed ? "text-white" : "text-[#464555ce]" %> "><%= post.snippet %></p>
+                        <div class="tags flex flex-row flex-wrap gap-4 my-2">
+                            <% post.tags.forEach(el=> { %>
+                                <div class="tag-wrapper px-2 py-1 bg-[#EEEDED] rounded-lg">
+                                    <p><a href="/explore/<%= el %>"
+                                          class="<%= post.isClosed ? "text-gray-600" : "text-[#AAA4BC]" %>  font-semibold "><%= el %></a>
+                                    </p>
+                                </div>
+                            <% }) %>
                         </div>
-                        <% }) %>
-                    </div>
-                    <div class="question-options flex flex-row gap-x-14 mt-3">
-                        <p class=" <%= post.isClosed ? "text-white" : "text-[#7485F2]" %>  font-sofia font-light"><%= post.answers.length %> Answers</p>
-                        <% if(!post.isClosed) { %> 
-                        <p><a href="/question/<%= post._id %>" class=" <%= post.isClosed ? "text-white" : "text-[#00A97B]" %>  font-sofia font-light">Add Answer</a></p>
-                        <% } %> 
-                        <form action="/report/question/<%= post._id %>" method="post">
-                            <button class=" <%= post.isClosed ? "text-white" : "text-[#EE5C67]" %>  font-sofia font-light">Report</button>
-                        </form>
-                        <% if(post.isClosed) { %>
-                            <p class="text-white font-sofia font-light">This Question is closed</p>
-                        <% } %> 
-        
-                    </div>
-        
-                </section>
+                        <div class="question-options flex flex-row gap-x-14 mt-3">
+                            <p class=" <%= post.isClosed ? "text-white" : "text-[#7485F2]" %>  font-sofia font-light">
+                                <svg class="inline-block mx-2" xmlns="http://www.w3.org/2000/svg" height="21px"
+                                     viewBox="0 0 24 24" width="21px" fill="#7485F2">
+                                    <path d="M0 0h24v24H0V0z" fill="none"/>
+                                    <path d="M15 4v7H5.17l-.59.59-.58.58V4h11m1-2H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zm5 4h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1z"/>
+                                </svg><%= post.answers.length %> Answers
+                            </p>
+                            <% if(!post.isClosed) { %>
+                                <p><a href="/question/<%= post._id %>"
+                                      class=" <%= post.isClosed ? "text-white" : "text-[#00A97B]" %>  font-sofia font-light">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24"
+                                             width="20px" fill="#00A97B" class="inline-block mx-2">
+                                            <path d="M0 0h24v24H0V0z" fill="none"/>
+                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
+                                        </svg>
+                                        Add Answer</a></p>
+                            <% } %>
+                            <form action="/report/question/<%= post._id %>" method="post">
+                                <button class=" <%= post.isClosed ? "text-white" : "text-[#EE5C67]" %>  font-sofia font-light">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="21px" viewBox="0 0 24 24"
+                                         width="21px" fill="#EE5C83" class="inline-block mx-2">
+                                        <path d="M0 0h24v24H0V0z" fill="none"/>
+                                        <path d="M15.73 3H8.27L3 8.27v7.46L8.27 21h7.46L21 15.73V8.27L15.73 3zM19 14.9L14.9 19H9.1L5 14.9V9.1L9.1 5h5.8L19 9.1v5.8z"/>
+                                        <circle cx="12" cy="16" r="1"/>
+                                        <path d="M11 7h2v7h-2z"/>
+                                    </svg>
+                                    Report
+                                </button>
+                            </form>
+                            <% if(post.isClosed) { %>
+                                <p class="text-white font-sofia font-light">This Question is closed</p>
+                            <% } %>
+
+                        </div>
+
+                    </section>
 
 
-            </div>
+                </div>
             <% } %>
+        </div>
     </div>
 </div>
