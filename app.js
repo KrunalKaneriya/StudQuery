@@ -12,7 +12,6 @@ const session = require('express-session');
 const methodOverride = require('method-override');
 const flash = require('connect-flash');
 const ejsMate = require('ejs-mate');
-const joi = require('joi');
 const back = require('express-back');
 const mongoSanitize = require('express-mongo-sanitize'); //Package that removes special characters when getting input
 const MongoStore = require('connect-mongo');
@@ -22,22 +21,22 @@ app.engine('ejs', ejsMate); //Setting The Engine To EjsMate So we can use Partia
 app.set('views', path.join(__dirname, 'views/studquery'));
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended: true}));
 app.use(methodOverride('_method'));
 app.use(mongoSanitize());
 
 const store = MongoStore.create({
-	mongoUrl: process.env.DB_URL || 'mongodb://127.0.0.1:27017/studquery',
-	touchAfter: 24 * 60 * 60,
+    mongoUrl: process.env.DB_URL || 'mongodb://127.0.0.1:27017/studquery',
+    touchAfter: 24 * 60 * 60,
 });
 // app.set('trust proxy',true);
 app.use(
-	session({
-		store,
-		secret: process.env.secret ||'thisissecret',
-		resave: false,
-		saveUninitialized: false,
-	})
+    session({
+        store,
+        secret: process.env.secret || 'thisissecret',
+        resave: false,
+        saveUninitialized: false,
+    })
 );
 app.use(back());
 app.use(flash());
@@ -47,13 +46,13 @@ app.use(flash());
  *******************************************************************/
 
 app.use((req, res, next) => {
-	res.locals.success = req.flash('success');
-	res.locals.error = req.flash('error');
-	res.locals.voteinc = req.flash('voteinc');
-	res.locals.votedec = req.flash('votedec');
-	res.locals.edit = req.flash('edit');
-	res.locals.welcome = req.flash('welcome');
-	next();
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    res.locals.voteinc = req.flash('voteinc');
+    res.locals.votedec = req.flash('votedec');
+    res.locals.edit = req.flash('edit');
+    res.locals.welcome = req.flash('welcome');
+    next();
 });
 
 /*********************
@@ -72,7 +71,7 @@ const ExpressError = require('./utils/ExpressError');
 /******************************
  * ADMIN ROUTES CONFIGURATION *
  ******************************/
-const adminLogin = require('./routes/admin/home');
+const adminHome = require('./routes/admin/home');
 const adminUsers = require('./routes/admin/user');
 const adminQuestions = require('./routes/admin/question');
 const adminAnswers = require('./routes/admin/answer');
@@ -85,18 +84,18 @@ const report = require('./routes/admin/report');
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
-	console.log(`Started Server At Port ${port}`);
+    console.log(`Started Server At Port ${port}`);
 });
 
 mongoose
-	.connect(process.env.DB_URL)
-	.then(() => {
-		console.log('Mongodb Connected');
-	})
-	.catch((e) => {
-		console.log(e);
-		console.log('Error Connecting to Mongodb');
-	});
+    .connect(process.env.DB_URL)
+    .then(() => {
+        console.log('Mongodb Connected');
+    })
+    .catch((e) => {
+        console.log(e);
+        console.log('Error Connecting to Mongodb');
+    });
 /**********************
  * USING LOGIN ROUTER *
  **********************/
@@ -137,9 +136,9 @@ app.use(explore);
  **********************/
 
 /***************************
- * USING ADMIN LOGIN ROUTE *
+ * USING ADMIN Home ROUTE *
  ***************************/
-app.use(adminLogin);
+app.use(adminHome);
 
 /****************************
  * USING ADMIN SEARCH ROUTE *
@@ -173,15 +172,15 @@ app.use(report);
 //Now When The Route or URL is Not Found then this Error will be Called
 //and it will create a new expressError object and pass to below function
 app.all('*', (req, res, next) => {
-	next(new ExpressError(404, 'Page Not Found'));
+    next(new ExpressError(404, 'Page Not Found'));
 });
 
 //Now if any error occurs then this function will be called compulsory.
 app.use((err, req, res, next) => {
-	const userSession = req.session;
-	const { statusCode = 500 } = err;
-	if (!err.message) {
-		err.message = 'Oh Nooo.. Something Went Wrong!!!';
-	}
-	res.status(statusCode).render('error', { userSession, err });
+    const userSession = req.session;
+    const {statusCode = 500} = err;
+    if (!err.message) {
+        err.message = 'Oh Nooo.. Something Went Wrong!!!';
+    }
+    res.status(statusCode).render('error', {userSession, err});
 });
