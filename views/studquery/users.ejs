@@ -4,13 +4,13 @@
 
 <div class="container mx-auto my-4" id="home">
 
-    <h1 class="font-sofia text-xl text-gray-600 my-10">Followed Users</h1>
+    <h1 class="font-sofia text-xl text-gray-600 mt-10">Users</h1>
 
-    <div id="usersList" class="w-full ">
-           <section class="w-full">
+    <div id="usersList" class="w-[80%] float-right">
+           <section class="">
                 <% for(let user of users) { %> 
-                    <div class="my-6 flex justify-evenly items-center gap-10">
-                        <div class="ml-20 w-[30%] relative">
+                    <div class="my-6 flex justify-evenly items-center">
+                        <div class="w-[30%] relative">
                             <% if(user.image.url) { %> 
                             <img src="<%= user.image.url %>" alt="" class="w-14 h-14 rounded-full inline-block">
                             <% } else { %>
