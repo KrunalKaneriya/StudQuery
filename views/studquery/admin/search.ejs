@@ -1,6 +1,6 @@
 <% layout("../layout/adminBoilerplate.ejs") %>
 
-<div class="container mt-10 w-[95%] mx-auto ">
+<div class="container mt-10 w-[95%] mx-auto ">  
     <header>
         <h1 class="text-3xl font-sofia ml-5">Search</h1>
         <h3 class="text-xl font-sofia mt-5 ml-5">Search and retrieve questions answers and Users</h3>
@@ -11,14 +11,6 @@
             <form action="/admin/searchData" method="get" id="searchFormData">
                 <input type="text" name="searchData" id="search" placeholder="Search here!!" class="rounded-lg shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 w-[70%] border-2 border-gray-300 px-3 py-2 mr-3">
 
-                <!-- <input type="checkbox" name="users" id="users" class="rounded border-gray-700 text-indigo-500 focus:ring-indigo-400">
-                <label for="users" class="ml-1 text-sm mr-4">Users</label>
-               
-                <input type="checkbox" name="questions" id="questions" class="rounded border-gray-700 text-indigo-500 focus:ring-indigo-400">
-                <label for="questions" class="ml-1 text-sm mr-4">Questions</label>
-
-                <input type="checkbox" name="answers" id="answers" class="rounded border-gray-700 text-indigo-500 focus:ring-indigo-400">
-                <label for="answers" class="ml-1 text-sm mr-4">Answers</label> -->
 
                 <button type="submit" class="p-2 w-32 bg-violet-400 hover:bg-indigo-500 text-white rounded-lg">Search</button>
             </form>
@@ -227,11 +219,3 @@
         })
     </script>
 </div>
-
-<!-- <h2>Username:Krunal Kaneria</h2>
-                <h2>Alias:Kennedy</h2>
-                <h2>Email:krunal@gmail.com</h2>
-                <h2>Age:22</h2>
-                <h2>Description:My name is Krunal Kaneria and I am studying in TYBCA..</h2>
-                <h2>Studying In:TYBCA</h2>
-                <h2>City</h2> -->
