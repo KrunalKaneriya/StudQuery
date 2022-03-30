@@ -15,7 +15,6 @@ db.once("open",() => {
 
 async function saveAdmin() {
     const userhash = await crypt.hash("admin",12);
-    console.log(userhash);
 
     const admin = new Admin({
         username:"admin",
