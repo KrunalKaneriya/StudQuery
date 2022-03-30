@@ -6,12 +6,8 @@ const Answer = require("../../models/answer");
 const catchAsync = require("../../utils/catchAsync");
 const ExpressError = require("../../utils/ExpressError");
 
-module.exports.renderAdminSearchForm = (req,res) => {
-     const userSession = req.session;
- 
-     // if(!userSession.isLoggedIn) {
-     //     throw new ExpressError(401,"User is required to login..");
-     // }
+module.exports.renderAdminSearchForm =async (req,res) => {
+    const userSession = req.session;
  
      res.render("admin/search",{userSession});
 };
