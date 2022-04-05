@@ -16,6 +16,10 @@ const QuestionSchema = new Schema({
         type:String,
         default:"No Question Specified"
     },
+    comments:[{
+        type:Schema.Types.ObjectId,
+        ref:"Comments"
+    }],
     tags:{
         type:[String],
         default:"No Tags Given"
