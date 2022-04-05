@@ -4,6 +4,7 @@ const User = require("../../models/user");
 const Question = require("../../models/question");
 const Answers = require("../../models/answer");
 const catchAsync = require("../../utils/catchAsync");
+const Comment = require("../../models/comment");
 const ExpressError = require("../../utils/ExpressError");
 const {stripHtml} = require("string-strip-html");
 const { cloudinary } = require("../../cloudinary");
@@ -13,12 +14,14 @@ module.exports.viewQuestion = async (req, res) => {
 	req.session.redirectUrl = req.originalUrl;
 	const { questionId } = req.params;
 	const question = await Question.findById(questionId)
-		.populate("user")
-		.populate({ path: "answers", populate: { path: "user" } });
+		.populate("user").
+		populate({ path: "answers", populate: { path: "user" } }).
+		populate({path:"comments",populate: {path:"user"}});
 
 
 	const answers = question.answers;
-	res.render("fullQuestion", { question, answers, userSession });
+	const comments = question.comments;
+	res.render("fullQuestion", { question, answers,comments , userSession });
 };
 
 module.exports.renderEditQuestionForm = async (req, res) => {
@@ -266,6 +269,70 @@ module.exports.questionVoteDec = async (req, res) => {
 	}
 
 };
+
+module.exports.addComment = async(req,res) => {
+	const userSession = req.session;
+	const {userid,isLoggedIn} = userSession;
+	const {questionId} = req.params
+	if(isLoggedIn) {
+		
+		const user = await User.findById(userid);
+		const {commentDescription} = req.body;
+		const question = await Question.findById(questionId);
+		const comment = new Comment({
+			commentDescription,
+			user,
+			question
+		});
+		question.comments.push(comment);
+		await question.save();
+		await comment.save();
+		req.flash("success","Comment Created");
+		res.redirect(`/question/${questionId}`);
+	} else {
+		req.flash("error","Login to Add A Comment");
+		res.redirect(`/question/${questionId}`);
+	}
+}
+
+module.exports.editComment = async(req,res) => {
+	const userSession = req.session;
+	const {userid,isLoggedIn} = userSession;
+	const {questionId,commentId} = req.params;
+	const {editCommentDescription} = req.body;
+
+	if(isLoggedIn) {
+		const existingComment = await Comment.findById(commentId);
+		existingComment.commentDescription = editCommentDescription;
+		await existingComment.save();
+		req.flash("success","Comment Edited");
+		res.redirect(`/question/${questionId}`);
+	} else {
+		req.flash("error","Error Changing A Comment");
+		res.redirect(`/question/${questionId}`);
+	}
+}
+module.exports.deleteComment = async(req,res) => {
+	const userSession = req.session;
+	const {userid,isLoggedIn} = userSession;
+	const {questionId,commentId} = req.params;
+	
+	if(isLoggedIn) {
+		//Remove the Comment from the Question
+		await Question.findByIdAndUpdate(questionId,{ $pull : {comments : commentId } });
+
+		//Remove the Comment from Comment Schema
+		await Comment.findByIdAndDelete(commentId);
+
+		req.flash("success","Comment Deleted!");
+		res.redirect(`/question/${questionId}`);
+
+	} else {
+
+		req.flash("error","Error Deleting Comment!!");
+		res.redirect(`/question/${questionId}`);
+	}
+}
 
 module.exports.renderNewQuestionForm = async (req, res) => {
 	//If the User Viewed The Question Page And When Clicks On Login Then redirect to the same page.
