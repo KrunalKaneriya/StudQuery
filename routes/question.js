@@ -46,4 +46,12 @@ router.put("/question/:questionId/vote/inc", catchAsync(questionController.quest
 //Put or Update Route to Decrease Question Vote
 router.put("/question/:questionId/vote/dec", catchAsync(questionController.questionVoteDec));
 
+//Post Route to add a comment in question
+router.post("/question/:questionId/addComment",catchAsync(questionController.addComment));
+
+//Put route to edit a comment in question
+router.put("/question/:questionId/comment/:commentId",catchAsync(questionController.editComment));
+
+//Delete route to delete a comment in question
+router.delete("/question/:questionId/comment/:commentId",catchAsync(questionController.deleteComment));
 module.exports = router;
