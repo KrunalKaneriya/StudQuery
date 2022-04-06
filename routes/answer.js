@@ -31,4 +31,12 @@ router.post("/question/:questionId/answer/:answerId/report",catchAsync(answerCon
 //Delete Route to delete the answer from database
 router.delete("/question/:questionId/answer/:answerId",catchAsync(answerController.deleteAnswer) );
 
+//Post Route to add a comment in answer
+router.post("/question/:questionId/answer/:answerId/addComment",catchAsync(answerController.addComment));
+
+//Put Route to edit a comment in answer
+router.put("/question/:questionId/answer/:answerId/comment/:commentId",catchAsync(answerController.editComment))
+
+//Delete Route to delete a comment in answer
+router.delete("/question/:questionId/answer/:answerId/comment/:commentId",catchAsync(answerController.deleteComment))
 module.exports = router;
