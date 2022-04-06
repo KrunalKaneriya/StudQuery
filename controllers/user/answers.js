@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require("../../models/user");
 const Question = require("../../models/question");
 const Answer = require("../../models/answer");
+const AnswerComment = require("../../models/answerComment");
 const catchAsync = require("../../utils/catchAsync");
 const ExpressError = require("../../utils/ExpressError");
 const multer = require("multer");
@@ -110,6 +111,13 @@ module.exports.deleteAnswer = async (req, res) => {
 			await cloudinary.uploader.destroy(image.filename,{invalidate:true,resource_type:"image",type:"upload"})
           }
      }
+
+     //Remove the Comments From AnswerComments Database
+     await AnswerComment.deleteMany({
+          _id:{
+               $in:answer.answerComments
+          }
+     });
     
      //Remove the answer from the user where answers == answerId
      await User.findByIdAndUpdate(userid, { $pull: { answers: answerId } });
@@ -215,3 +223,68 @@ module.exports.answerVoteDec = async (req, res) => {
      }
 
 };
+
+module.exports.addComment = async(req,res) => {
+     const userSession = req.session;
+	const {userid,isLoggedIn} = userSession;
+	const {questionId,answerId} = req.params
+     const {answerCommentDescription} = req.body;
+     if(isLoggedIn) {
+		const user = await User.findById(userid);
+		
+		const answer = await Answer.findById(answerId);
+		const comment = new AnswerComment({
+			answerCommentDescription,
+			user,
+			answer
+		});
+		answer.answerComments.push(comment);
+		await answer.save();
+		await comment.save();
+		req.flash("success","Comment Created");
+		res.redirect(`/question/${questionId}`);
+	} else {
+		req.flash("error","Login to Add A Comment");
+		res.redirect(`/question/${questionId}`);
+	}
+}
+
+module.exports.editComment = async(req,res) => {
+     const userSession = req.session;
+	const {userid,isLoggedIn} = userSession;
+	const {questionId,commentId,answerid} = req.params;
+	const {editAnswerCommentDescription} = req.body;
+
+	if(isLoggedIn) {
+		const existingComment = await AnswerComment.findById(commentId);
+		existingComment.answerCommentDescription = editAnswerCommentDescription;
+		await existingComment.save();
+		req.flash("success","Comment Edited");
+		res.redirect(`/question/${questionId}`);
+	} else {
+		req.flash("error","Error Changing A Comment");
+		res.redirect(`/question/${questionId}`);
+	}
+}
+
+module.exports.deleteComment = async(req,res) => {
+     const userSession = req.session;
+	const {userid,isLoggedIn} = userSession;
+	const {questionId,commentId,answerId} = req.params;
+	
+	if(isLoggedIn) {
+		//Remove the Comment from the Question
+		await Answer.findByIdAndUpdate(answerId,{ $pull : {answerComments : commentId } });
+
+		//Remove the Comment from Comment Schema
+		await AnswerComment.findByIdAndDelete(commentId);
+
+		req.flash("success","Comment Deleted!");
+		res.redirect(`/question/${questionId}`);
+
+	} else {
+
+		req.flash("error","Error Deleting Comment!!");
+		res.redirect(`/question/${questionId}`);
+	}
+}
