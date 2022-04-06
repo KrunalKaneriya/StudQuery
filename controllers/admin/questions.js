@@ -13,9 +13,30 @@ module.exports.getAdminQuestions = async (req, res) => {
 module.exports.getAdminSingleQuestion = async (req, res) => {
     const userSession = req.session;
     const { questionId } = req.params;
-    const question = await Question.findById(questionId).populate({ path: "answers", populate: { path: "user" } }).populate("user");
+    const question = await Question.findById(questionId)
+    .populate("user")
+    .populate({
+         path: "answers", 
+         populate: { path: "user" }
+     }).
+     populate({
+         path:"comments",
+         populate:{path:"user"}
+     }).
+     populate({
+         path:"answers",
+         populate:{
+             path:"answerComments",
+             populate:{
+                 path:"user"
+             }
+         }
+     })
 
-    res.render("admin/fullQuestion", { userSession, question });
+     const answers = question.answers;
+	 const comments = question.comments;
+
+    res.render("admin/fullQuestion", { userSession, question,answers,comments });
 };
 
 module.exports.deleteAdminSingleQuestion = async (req, res) => {
