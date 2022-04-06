@@ -4,38 +4,36 @@
 
 <div class="container mx-auto my-4" id="home">
 
-    <h1 class="font-sofia text-xl text-gray-600 mt-10">Users</h1>
+    <h1 class="font-sofia text-xl text-gray-600 my-10">Users</h1>
 
-    <div id="usersList" class="w-[80%] float-right">
-           <section class="">
-                <% for(let user of users) { %> 
-                    <div class="my-6 flex justify-evenly items-center">
-                        <div class="w-[30%] relative">
-                            <% if(user.image.url) { %> 
-                            <img src="<%= user.image.url %>" alt="" class="w-14 h-14 rounded-full inline-block">
-                            <% } else { %>
-                                <div class="w-14 h-14 rounded-full bg-gray-200 inline-block"></div>
-                            <% } %> 
-                            <h1 class="font-sofia text-gray-600 inline-block absolute top-5 ml-5"><%= user.username %>[<%= user.alias %>]</h1>
-                        </div>
-                        
-                        <div class="view-user-btn">
-                            <form action="/user/<%= user._id %>" method="get">
-                                <button class="p-2 font-sofia bg-[#00ABCA] text-white rounded-xl">
-                                    View Profile
-                                </button>
-                            </form>
-                        </div>
+    <div id="usersList" class="flex flex-row flex-wrap gap-x-5 gap-y-10">
+            <% for(let user of users) { %> 
+                <div class="w-[30%] relative flex flex-col flex-wrap justify-center items-center border border-gray-300 hover:border-purple-300 hover:ring-2 hover:ring-purple-300 transition-all hover:-translate-y-3 rounded-xl py-5">
 
-                        <div class="question-count">
-                            <p class="p-2 rounded-xl font-sofia bg-[#EE5C67] text-white">Questions: <%= user.questions.length%></p>
-                        </div>
-
-                        <div class="answer-count">
-                            <p class="p-2 rounded-xl font-sofia bg-[#5068D0] text-white">Answers: <%= user.answers.length%></p>
-                        </div>
+                    <% if(user.image.url) { %> 
+                    <img src="<%= user.image.url %>" alt="" class="w-24 h-24 rounded-full inline-block">
+                    <% } else { %>
+                        <div class="w-24 h-24 rounded-full bg-[#CDD7FF] inline-block"></div>
+                    <% } %> 
+                    <h1 class="font-sofia mt-3 ml-5 text-[#8A75DB] bg-[#EEEDFF] p-2 rounded-xl"><%= user.username %> (<%= user.alias %>)</h1>
+                    <h2 class="font-sofia my-3 bg-[#464555] text-[#f4f4fd] p-2 rounded-xl"><%= user.email %> </h2>
+                    <div class="view-user-btn my-2">
+                        <form action="/user/<%= user._id %>" method="get">
+                            <button class="p-2 font-sofia text-[#00ABCA] hover:text-[#e0f9fc] hover:bg-[#00ABCA] transition-colors bg-[#d0f9fd] rounded-xl">
+                                View Profile
+                            </button>
+                        </form>
                     </div>
-                <% } %> 
-           </section>
+
+                    <div class="question-count my-2">
+                        <p class="p-2 rounded-xl font-sofia text-[#EE5C67] hover:text-[#FFE4E3] transition-colors hover:bg-[#EE5C67] bg-[#FFE4E3] w-fit">Questions: <%= user.questions.length%></p>
+                    </div>
+
+                    <div class="answer-count my-2">
+                        <p class="p-2 rounded-xl font-sofia hover:text-[#E6F4F1] hover:bg-[#1FC198] transition-colors bg-[#E6F4F1] text-[#1FC198] w-fit">Answers: <%= user.answers.length%></p>
+                    </div>
+
+                </div>
+            <% } %> 
     </div>
 </div>
