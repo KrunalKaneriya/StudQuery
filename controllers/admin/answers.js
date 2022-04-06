@@ -2,6 +2,7 @@ const User = require('../../models/user');
 const Question = require('../../models/question');
 const Answer = require('../../models/answer');
 const ReportedAnswers = require('../../models/reportedAnswers');
+const AnswerComment = require("../../models/answerComment");
 
 module.exports.getAdminAnswers = async (req, res) => {
 	const userSession = req.session;
@@ -35,6 +36,13 @@ module.exports.deleteAnswer = async (req, res) => {
 		await Question.findByIdAndUpdate(answer.question._id, {
 			$pull: { answers: answerId }
 		});
+
+		//Remove the AnswerComments From AnswerComments Database
+		await AnswerComment.deleteMany({
+			_id:{
+				$in:answer.answerComments
+			}
+		})
 
 		//Now find that the answer has ReportedAnswer or not.
 		//If the answer is reported then remove the answer from the reportedAnswers also
