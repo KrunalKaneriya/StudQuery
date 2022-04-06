@@ -14,13 +14,27 @@ module.exports.viewQuestion = async (req, res) => {
 	req.session.redirectUrl = req.originalUrl;
 	const { questionId } = req.params;
 	const question = await Question.findById(questionId)
-		.populate("user").
-		populate({ path: "answers", populate: { path: "user" } }).
-		populate({path:"comments",populate: {path:"user"}});
-
-
+			.populate("user").
+			populate({ 
+				path: "answers",
+			 	populate: { path: "user" } 
+			}).
+			populate({
+				path:"comments",
+				populate: {path:"user"}
+			}).
+			populate({
+				path:"answers",
+				populate : {
+					path:"answerComments",
+					populate:{
+						path:"user"
+					}
+				}
+			})
 	const answers = question.answers;
 	const comments = question.comments;
+
 	res.render("fullQuestion", { question, answers,comments , userSession });
 };
 
@@ -139,6 +153,13 @@ module.exports.deleteQuestion = async (req, res) => {
 			if(question.user._id == userid) {
 				//Remove the Question from database
 				await Question.findByIdAndDelete(questionId);
+
+				//Deleting Comments From Comment Database
+				await Comment.deleteMany({
+					_id:{
+						$in:question.comments
+					}
+				});
 
 				//Delete Single Question From the User Schema By Using Pull and Questionid
 				await User.findByIdAndUpdate(userid, { $pull: { questions: questionId } });
