@@ -3,6 +3,8 @@ const Question = require('../../models/question');
 const Answer = require('../../models/answer');
 const ReportedQuestion = require('../../models/reportedQuestions');
 const ReportedAnswer = require('../../models/reportedAnswers');
+const Comment = require("../../models/comment");
+const AnswerComment = require("../../models/answerComment");
 
 module.exports.adminGetReportedQuestions = async (req, res) => {
 	const userSession = req.session;
@@ -89,18 +91,33 @@ module.exports.deleteReportedQuestion = async (req, res) => {
 	const userSession = req.session;
 	const { questionId } = req.params;
 	const { isLoggedIn } = userSession;
+	var commentArray = [];
 
 	//Find the Reported Question And Populate User Details
-	const question = await ReportedQuestion.findById(questionId).populate({
-		path: 'reportedQuestion',
-		populate: { path: 'user answers' }
-	});
+	const question = await ReportedQuestion.findById(questionId)
+	.populate({path:"reportedQuestion",
+	populate:[{
+		path:"answers",populate:{path:"answerComments"}
+	},{
+		path:"user"
+	}]
+})
+
+	
+	// console.log(question.reportedQuestion.answers.answerComments);
 
 	//Remove the Reported Question
 	await ReportedQuestion.findByIdAndDelete(questionId);
 
 	 //Remove The Original Question
 	 await Question.findByIdAndDelete(question.reportedQuestion._id);
+
+	 //Remove The Comments From Comments Database
+	 await Comment.deleteMany({
+		 _id:{
+			 $in:question.reportedQuestion.comments
+		 }
+	 });
 
 	//Now remove the Question from the userid
 	await User.findByIdAndUpdate(question.reportedQuestion.user._id, {
@@ -118,6 +135,20 @@ module.exports.deleteReportedQuestion = async (req, res) => {
 			$in: question.reportedQuestion.answers
 		}
 	});
+
+		//Iterate Over the Answer Comments and Push it in array to delete the Comments
+		for(let answer of question.reportedQuestion.answers) {
+			for(let comment of answer.answerComments) {
+				commentArray.push(comment._id);
+			}
+		}
+
+		//Remove the Answer Comments From Database
+		await AnswerComment.deleteMany({
+			_id:{
+				$in:commentArray
+			}
+		})
 
 	//Delete the Reported answers of the questions if there are found
 	await ReportedAnswer.deleteMany({
