@@ -177,7 +177,82 @@
                 <% } %>
 
             </div>
+
+            <section class="viewComments text-sm text-slate-600 w-[95%] my-5 ml-7">
+                <% comments.forEach((comment,i) => { %>
+                
+                    <div>
+                        <p id="p-<%=i %>" class="border-b p-2 comment-description"><%= comment.commentDescription %> - <%= comment.user.username %> - <span class="comment-date"><%= comment.createdAt %></span> 
+                        </p>
+
+                        <form action="/question/<%= question._id %>/comment/<%= comment._id %>?_method=PUT" method="post" class="w-full hidden" id="editform-<%=i%>">
+                            <input type="text" name="editCommentDescription" id="comment" class="text-sm text-slate-600 ring-0 border-b-[#C0A975] border-t-0 border-l-0 border-r-0 w-[80%] focus:ring-0" value="<%= comment.commentDescription %>">    
+                            <button class="rounded-xl text-[#847655]  border-0 font-sofia bg-[#EEE8A9] p-2 text-sm">Edit Comment</button>
+                        </form>
+
+                        <% if(comment.user._id == userSession.userid){ %> 
+                            <div class="flex flex-row">
+                                <div class="mx-2 mt-1 w-auto">
+                                    <button class="text-[#D17800] edit-btn" id="editbtn-<%= i %>">Edit</button>
+                                </div>
+                                <div class="mx-2 mt-1">
+                                    <form action="/question/<%= question._id %>/comment/<%= comment._id %>?_method=DELETE" method="post">
+                                        <button type="submit" class="text-[#B02039] delete-btn">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            
+
+                            <script>
+                                $("#editbtn-<%=i%>").click(function() {
+                                    $("#editform-<%= i %>").fadeToggle("fast");
+                                    $("#p-<%=i%>").fadeToggle("fast");
+                                })
+                            </script>
+                            
+                        <% } %> 
+                    </div>
+
+                    
+                <% });  %> 
+
+
+                    <script>
+                        const commentDates = document.querySelectorAll(".comment-date");
+                        commentDates.forEach(item => {
+                            const date = new Date(item.innerText);
+                            item.innerText = `${date.toDateString()} at ${date.toLocaleTimeString()}`
+                        })
+                    </script>
+            </section>
+
+            <!-- Displaying Add a Comment Box when user is Logged in -->
+            <% if(userSession.isLoggedIn){ %> 
+            <section class="addComment">
+                <button class="comment-btn text-sm rounded-xl ml-7 text-gray-600">
+                    Add A Comment
+                </button>
+                <form action="/question/<%= question._id %>/addComment" method="post" class="w-full comment-container hidden">
+                    <input required type="text" name="commentDescription" id="comment" class="text-sm text-slate-600 ring-0 border-b-[#56B7B4] border-t-0 border-l-0 border-r-0 w-[80%] focus:ring-0">
+                    <button class="rounded-xl text-[#008A65]  border-0 font-sofia bg-[#E6F4F1] p-2 mx-2 text-sm">Post Comment</button>
+                </form>
+            </section>
+            <% } %> 
+
+            
+
+            <script>
+                $(".comment-btn").click(function() {
+                    $(".comment-btn").hide();
+                    $(".comment-container").fadeIn("fast");
+                })
+
+              
+            </script>
         </section>
+
+        
 
     </div>
 
@@ -191,7 +266,7 @@
     </div>
 
     <% if(typeof answers == 'object' && answers && answers.length) { %>
-        <% for(let answer of answers) { %>
+        <% answers.forEach((answer,i) => { %>
             <div class="answer-wrapper py-5 rounded-xl shadow-sm flex">
 
                 <section class="profile-picture flex flex-col mx-5">
@@ -315,12 +390,74 @@
 
                     </section>
 
+                    <section class="answer-comments w-[95%] ml-3 my-3">
+                        <% answer.answerComments.forEach(comment => { %> 
+                            <p id="answer-comment-<%=comment._id%>" class="p-2 my-2 comment-description text-slate-600 text-sm border-b border-b-gray-300 "><%= comment.answerCommentDescription %> - <%= comment.user.username %> - <span class="answer-comment-date"><%= comment.createdAt %></span> 
+                            </p>
+
+                            
+
+                            <form action="/question/<%= question._id %>/answer/<%= answer._id %>/comment/<%= comment._id %>?_method=PUT" method="post" class="w-full my-2 hidden" id="answer-editform-<%=comment._id%>">
+                                <input required type="text" name="editAnswerCommentDescription" id="" class="text-sm text-slate-600 ring-0 border-gray-400 border-t-0 border-l-0 border-r-0 w-[80%] focus:ring-0" value="<%= comment.answerCommentDescription %>">    
+                                <button class="rounded-xl text-white  border-0 font-sofia bg-[#464555] p-2 text-sm">Edit Comment</button>
+                            </form>
+
+                            <% if(comment.user._id == userSession.userid) { %> 
+                            <div class="flex flex-row">
+                                <div class="mx-2 mt-1 w-auto">
+                                    <button class="text-[#D17800] edit-btn" id="answer-editbtn-<%= comment._id %>">Edit</button>
+                                </div>
+                                <div class="mx-2 mt-1">
+                                    <form action="/question/<%= question._id %>/answer/<%=answer._id%>/comment/<%= comment._id %>?_method=DELETE" method="post">
+                                        <button type="submit" class="text-[#B02039] delete-btn" id="answer-deletebtn-<%= i %>">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <script>
+                                $("#answer-editbtn-<%=comment._id%>").click(function() {
+                                    $("#answer-editform-<%= comment._id %>").fadeToggle("fast");
+                                    $("#answer-comment-<%=comment._id%>").fadeToggle("fast");
+                                })
+                            </script>
+
+                            <% } %>
+
+                          
+                             
+                        <% }); %> 
+
+                       
+                    </section>
+                    
+                          <!-- Displaying Add a Comment Box when user is Logged in -->
+                          <% if(userSession.isLoggedIn){ %> 
+                            <section class="answer-addComment">
+                                <button class="answer-comment-btn text-sm rounded-xl  ml-4 text-gray-600" id="answer-comment-btn-<%=i%>">
+                                    Add A Comment
+                                </button>
+                                <form action="/question/<%= question._id %>/answer/<%= answer._id %>/addComment" method="post" class="w-full answer-comment-container hidden ml-2" id="answer-comment-form-<%=i%>">
+                                    <input required type="text" name="answerCommentDescription" id="" class="text-sm text-slate-600 ring-0 border-b-[#4962CA] border-t-0 border-l-0 border-r-0 w-[80%] focus:ring-0">
+                                    <button class="rounded-xl bg-[#D8E1FF]  border-0 font-sofia text-[#7485F2] p-2 mx-2 text-sm">Post Comment</button>
+                                </form>
+                                
+                            </section>
+
+                            <script>
+                                $("#answer-comment-btn-<%=i%>").click(function() {
+                                    $(this).hide();
+                                    $("#answer-comment-form-<%=i%>").fadeIn("fast");
+                                })
+                                
+                            </script>
+                        <% } %> 
+
 
                 </section>
 
 
             </div>
-        <% } %>
+        <% }); %>
     <% } %>
 
     <% if(userSession.isLoggedIn && question.isClosed != true) { %>
@@ -373,6 +510,14 @@
 
 
 <script>
+    //Code To change the answer dates
+    const answerCommentDates = document.querySelectorAll(".answer-comment-date");
+    answerCommentDates.forEach(item => {
+        const date = new Date(item.innerText);
+        item.innerText = `${date.toDateString()} at ${date.toLocaleTimeString()}`
+    })
+    //Code end
+
     const answerViewer = document.querySelectorAll(".answerViewer");
 
     const viewer = toastui.Editor.factory({

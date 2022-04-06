@@ -97,6 +97,31 @@
                     <% }) %>
                 </div>
 
+                <!-- *Question Comment Section Start -->
+                <section class="viewComments text-sm text-slate-600 w-[95%] my-5 ml-2">
+                    <% if(comments.length) { %>
+                        <h1 class="mb-2 text-teal-700 text-lg font-sofia">Comments</h1>
+                     <% } %> 
+                   
+                    <% comments.forEach((comment,i) => { %>
+                    
+                        <div>
+                            <p id="p-<%=i %>" class="border-b p-2 comment-description"><%= comment.commentDescription %> - <%= comment.user.username %> - <span class="comment-date"><%= comment.createdAt %></span> 
+                            </p>
+                        </div>
+
+                    <% });  %> 
+
+                        <script>
+                            const commentDates = document.querySelectorAll(".comment-date");
+                            commentDates.forEach(item => {
+                                const date = new Date(item.innerText);
+                                item.innerText = `${date.toDateString()} at ${date.toLocaleTimeString()}`
+                            })
+                        </script>
+                </section>
+                <!-- *Question Comment Section End -->
+
 
                 <div class="answer-title flex flex-row w-full justify-start">
                     <% if(typeof question.answers=='object' && question.answers) { %>
@@ -214,6 +239,21 @@
                             </div>
 
                         </section>
+                        
+                        <!--* Answer Comments Section Start -->
+                        <section class="answer-comments w-[95%] my-3">
+                            <% if(answer.answerComments.length) { %>
+                                <h1 class="text-lg text-cyan-600 font-sofia mt-1">Comments</h1>
+                             <% } %> 
+                            
+                            <% answer.answerComments.forEach(comment => { %> 
+                                <p id="answer-comment-<%=comment._id%>" class="p-2 my-2 comment-description text-slate-600 text-sm border-b border-b-gray-300 "><%= comment.answerCommentDescription %> - <%= comment.user.username %> - <span class="answer-comment-date"><%= comment.createdAt %></span> 
+                                </p>
+                        
+                            <% }); %> 
+
+                        </section>
+                        <!--* Answer Comments Section End -->
 
                     </section>
 

@@ -1,25 +1,38 @@
 <% layout("../layout/authBoilerplate") %> <!--*All The Contents Of this File Will be Passed To This Layout File-->
 
+<div class="container flex flex-row">
+    <div class="image float-left inline-block w-[50%] ml-20 mt-2">
+        <img src="/images/engineer.svg" class="inline-block float-left" alt="">
+    </div>
+
+    <div class=" ml-36 mt-10">
+        <img src="/images/logo.png" alt="" class="mb-4 w-24 h-20 mt-5 mx-auto">
+
+        <div class="flex flex-col">
+            <h1 class="font-sans text-xl  text-center">Sign in To Studquery</h1>
+    
+            <form method="post" action="/admin/login" class="bg-gray-100/50 mt-10 flex justify-center flex-col p-5 w-96 rounded-xl backdrop-blur-xl" autocomplete="off">
+                <label for="username" class="font-jost my-2">Username</label>
+                <input type="text" id="username" class="rounded-xl border-1 border-gray-200" name="username">
+    
+    
+                <label for="password" class="font-jost my-2">Password</label>
+                <input type="password" id="password" class="rounded-xl border-1 border-gray-200" name="password">
+    
+                <button type="submit" class="w-full bg-green-600 text-white rounded-xl my-3 mt-10 p-2 font-sofia hover:bg-green-500">Sign In</button>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+
 <div class="container flex flex-col my-5 justify-center items-center min-w-full">
 
-    <div class=" rounded-none">
-        <img src="/images/logo.png" alt="" class="mb-4 w-24 h-20 mt-5 ">
+    
 
-    </div>
+  
 
-    <div class="flex flex-col">
-        <h1 class="font-sans text-xl  text-center">Sign in To Studquery</h1>
-
-        <form method="post" action="/admin/login" class="bg-gray-100 mt-10 flex justify-center flex-col p-5 w-96 rounded-xl backdrop-blur-xl" autocomplete="off">
-            <label for="username" class="font-jost my-2">Username</label>
-            <input type="text" id="username" class="rounded-xl border-1 border-gray-200" name="username">
-
-
-            <label for="password" class="font-jost my-2">Password</label>
-            <input type="password" id="password" class="rounded-xl border-1 border-gray-200" name="password">
-
-            <button type="submit" class="w-full bg-green-600 text-white rounded-xl my-3 mt-10 p-2 font-sofia hover:bg-green-500">Sign In</button>
-        </form>
-    </div>
+    
 
 </div>
