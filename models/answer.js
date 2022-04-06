@@ -30,7 +30,11 @@ const AnswerSchema = new Schema({
     user:{
         type:Schema.Types.ObjectId,
         ref:"User"
-    }
+    },
+    answerComments:[{
+        type:Schema.Types.ObjectId,
+        ref:"AnswerComments"
+    }],
 },{timestamps:true})
 
 module.exports = mongoose.model("Answer",AnswerSchema);
