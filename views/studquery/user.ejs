@@ -20,7 +20,7 @@
 
             <% if(userSession.isLoggedIn && userSession.username != "admin") { %> 
 
-            <div class="follow text-center font-sofia text-[#464555] font-semibold text-xl mt-10 bg-[#BEBFF7] p-2 rounded-xl">
+            <div class="follow text-center font-sofia text-[#7c64df] bg-[#dedcfc] hover:text-[#EEEDFF] hover:bg-[#8A75DB] font-semibold text-xl mt-10  p-2 rounded-xl">
 
                     <% if(isUserFollowed) { %> 
                         <form action="/user/<%= user._id %>/unfollow" method="get">
@@ -59,7 +59,7 @@
 
                     <div id="delete-button-wrapper" class="font-sofia">
                         <div
-                            class="bg-orange-300 shadow-md shadow-orange-200/80 inline-block float-right mr-10 rounded-xl p-3 pl-10 relative mb-5 cursor-pointer">
+                            class="bg-[#FFEBCD] text-[#C18542] drop-shadow-sm inline-block float-right mr-10 rounded-xl p-3 pl-10 relative mb-5 cursor-pointer">
 
                             <button type="button" id="open-btn">
                                 <span class="material-icons right-[76%] absolute">
@@ -110,7 +110,7 @@
                 <form action="/user/<%= user._id %>?_method=PUT" method="post" autocomplete="off" enctype="multipart/form-data" id="userUpdateForm">
 
                     <div id="edit-button-wrapper" class="font-sofia">
-                        <div class="bg-yellow-300 shadow-md shadow-yellow-200/80 inline-block float-right mr-20 rounded-xl p-3 pl-10 relative mb-5 cursor-pointer"
+                        <div class=" bg-[#BEFBFF] text-[#2a7985] drop-shadow-sm inline-block float-right mr-20 rounded-xl p-3 pl-10 relative mb-5 cursor-pointer"
                             id="edit-button">
 
                             <span class="material-icons absolute right-[75%]">
@@ -192,23 +192,23 @@
 
     <div id="stats" class="container">
 
-        <div class="w-[70%] text-center mt-10 bg-[#464555] rounded-3xl py-2">
-            <p class="font-semibold text-md text-white">Question Asked</p>
-            <span class="font-semibold text-md text-white">
+        <div class="w-[70%] text-center mt-10 bg-[#C9FBE8] rounded-3xl py-2">
+            <p class="font-sofia text-md text-[#007D59]">Question Asked</p>
+            <span class="font-sofia text-md text-[#007D59]">
                 <%= questionCount %>
             </span>
         </div>
 
-        <div class="w-[70%] text-center mt-10 bg-[#C0A975] rounded-3xl py-2">
-            <p class="font-semibold text-md  text-white">Answers Given</p>
-            <span class="font-semibold text-md text-white">
+        <div class="w-[70%] text-center mt-10 bg-[#F7DFE8] rounded-3xl py-2">
+            <p class=" text-md font-sofia text-[#FF577B]">Answers Given</p>
+            <span class="font-sofia text-md text-[#FF577B]">
                 <%= answerCount %>
             </span>
         </div>
 
-        <div class="w-[70%] text-center my-10 rounded-3xl py-2 bg-[#9C58AA]">
-            <p class="text-md font-sofia text-white">Created At</p>
-            <span class="text-white" id="userdate">
+        <div class="w-[70%] text-center my-10 rounded-3xl py-2 bg-[#FFE7FF]">
+            <p class="text-md font-sofia text-[#9C58AA]">Created At</p>
+            <span class="text-[#9C58AA] font-sofia" id="userdate">
                 <%= user.createdAt %> 
             </span> 
         </div>
