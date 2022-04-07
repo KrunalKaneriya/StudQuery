@@ -13,11 +13,11 @@
     
             <form method="post" action="/admin/login" class="bg-gray-100/50 mt-10 flex justify-center flex-col p-5 w-96 rounded-xl backdrop-blur-xl" autocomplete="off">
                 <label for="username" class="font-jost my-2">Username</label>
-                <input type="text" id="username" class="rounded-xl border-1 border-gray-200" name="username">
+                <input required type="text" id="username" class="rounded-xl border-1 border-gray-200" name="username">
     
     
                 <label for="password" class="font-jost my-2">Password</label>
-                <input type="password" id="password" class="rounded-xl border-1 border-gray-200" name="password">
+                <input required type="password" id="password" class="rounded-xl border-1 border-gray-200" name="password">
     
                 <button type="submit" class="w-full bg-green-600 text-white rounded-xl my-3 mt-10 p-2 font-sofia hover:bg-green-500">Sign In</button>
             </form>

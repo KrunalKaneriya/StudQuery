@@ -186,7 +186,7 @@
                         </p>
 
                         <form action="/question/<%= question._id %>/comment/<%= comment._id %>?_method=PUT" method="post" class="w-full hidden" id="editform-<%=i%>">
-                            <input type="text" name="editCommentDescription" id="comment" class="text-sm text-slate-600 ring-0 border-b-[#C0A975] border-t-0 border-l-0 border-r-0 w-[80%] focus:ring-0" value="<%= comment.commentDescription %>">    
+                            <input required type="text" name="editCommentDescription" id="comment" class="text-sm text-slate-600 ring-0 border-b-[#C0A975] border-t-0 border-l-0 border-r-0 w-[80%] focus:ring-0" value="<%= comment.commentDescription %>">    
                             <button class="rounded-xl text-[#847655]  border-0 font-sofia bg-[#EEE8A9] p-2 text-sm">Edit Comment</button>
                         </form>
 
