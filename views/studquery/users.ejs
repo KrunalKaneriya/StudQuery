@@ -16,7 +16,6 @@
                         <div class="w-24 h-24 rounded-full bg-[#CDD7FF] inline-block"></div>
                     <% } %> 
                     <h1 class="font-sofia mt-3 ml-5 text-[#8A75DB] bg-[#EEEDFF] p-2 rounded-xl"><%= user.username %> (<%= user.alias %>)</h1>
-                    <h2 class="font-sofia my-3 bg-[#464555] text-[#f4f4fd] p-2 rounded-xl"><%= user.email %> </h2>
                     <div class="view-user-btn my-2">
                         <form action="/user/<%= user._id %>" method="get">
                             <button class="p-2 font-sofia text-[#00ABCA] hover:text-[#e0f9fc] hover:bg-[#00ABCA] transition-colors bg-[#d0f9fd] rounded-xl">
