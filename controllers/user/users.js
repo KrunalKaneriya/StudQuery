@@ -157,12 +157,13 @@ module.exports.filterQuestions = async(req,res) => {
 		res.redirect('back');
 	} else {
 		const {createdAt,votes} = req.query;
+		const user = await User.findById(userid);
 		if(createdAt) {
 			const result = await Question.find().populate("answers").populate("user").sort({createdAt:createdAt})
-			res.render("myQuestions",{result,userSession});
+			res.render("myQuestions",{result,userSession,user});
 	   } else if(votes) {
 			const result = await Question.find().populate("answers").populate("user").sort({votes:votes});
-			res.render("myQuestions",{result,userSession});
+			res.render("myQuestions",{result,userSession,user});
 	   }
 	}
 }
