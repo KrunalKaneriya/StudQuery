@@ -62,9 +62,9 @@ module.exports.deleteUser = async (req, res) => {
      const { id } = req.params;
      const userSession = req.session;
      const user = await User.findById(id).populate("questions").populate("answers");
-     const deletedQuestions = await question.deleteMany({ _id: { $in: user.questions } });
-     const deletedUser = await User.findByIdAndDelete(id);
-     const deletedAnswers = await Answer.deleteMany({ _id: { $in: user.answers } });
+     await Question.deleteMany({ _id: { $in: user.questions } });
+     await User.findByIdAndDelete(id);
+     await Answer.deleteMany({ _id: { $in: user.answers } });
      res.redirect("/logout");
 };
 
