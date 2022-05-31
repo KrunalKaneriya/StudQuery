@@ -17,7 +17,7 @@ module.exports.renderUserProfilePage = async (req, res) => {
 	 //Checking if the loggedin User follows the other user of which the profile page is viewed.
 	 const isUserFollowed = await User.exists({_id:userid,followedUsers:id});
 
-     const questions = await User.findById(id).populate("questions");
+     const questions = await User.findById(id).populate("questions").lean();
     //  const questionCount = await User.findById(id,{questions}).countDocuments({questions});
 	const questionCount = questions.questions.length;
      const answerCount = questions.answers.length
@@ -41,7 +41,7 @@ module.exports.getNotifications = async (req,res) => {
 module.exports.editUser = async (req, res) => {
      const { id } = req.params;
 	 const {username,alias,email,country,description} = req.body;
-	 const user = await User.findById(id);
+	 const user = await User.findById(id).lean();
 
 	 if(req.file) {
 		const {path,filename} = req.file;
@@ -60,8 +60,7 @@ module.exports.editUser = async (req, res) => {
 
 module.exports.deleteUser = async (req, res) => {
      const { id } = req.params;
-     const userSession = req.session;
-     const user = await User.findById(id).populate("questions").populate("answers");
+     const user = await User.findById(id).populate("questions").populate("answers").lean();
      await Question.deleteMany({ _id: { $in: user.questions } });
      await User.findByIdAndDelete(id);
      await Answer.deleteMany({ _id: { $in: user.answers } });
@@ -77,7 +76,7 @@ module.exports.getSavedQuestions = async(req,res) => {
 		res.redirect(redirectUrl);
 	} else {
 		const {userid} = userSession;
-		const data = await User.findById(userid).populate({path:"savedQuestions" , populate:{path:"user"}});
+		const data = await User.findById(userid).populate({path:"savedQuestions" , populate:{path:"user"}}).lean();
 		res.render("savedQuestions",{userSession,data:data.savedQuestions})
 	}
 }

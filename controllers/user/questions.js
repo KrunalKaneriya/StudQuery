@@ -14,7 +14,7 @@ module.exports.viewQuestion = async (req, res) => {
 	req.session.redirectUrl = req.originalUrl;
 	const { questionId } = req.params;
 	const question = await Question.findById(questionId)
-			.populate("user").
+			.lean().populate("user").
 			populate({ 
 				path: "answers",
 			 	populate: { path: "user" } 
@@ -47,7 +47,7 @@ module.exports.renderEditQuestionForm = async (req, res) => {
 		res.redirect(`/question/${questionId}`);
 	} else {
 		const question = await Question.findById(questionId)
-			.populate("user")
+			.lean().populate("user")
 			.populate({ path: "answers", populate: { path: "user" } });
 
 		if(question.user._id == userid) {
@@ -361,7 +361,7 @@ module.exports.renderNewQuestionForm = async (req, res) => {
 
 	const { id } = req.params;
 	const userSession = req.session;
-	const user = await User.findById(userSession.userid);
+	const user = await User.findById(userSession.userid).lean();
 	res.render("question", { user, userSession });
 };
 
@@ -408,7 +408,7 @@ module.exports.searchQuestion = async (req, res) => {
 	const { search } = searchTerm;
 	const userSession = req.session;
 	const array = search.split(" ");
-	const result = await Question.find({ tags: { $in: array } })
+	const result = await Question.find({ tags: { $in: array } }).lean()
 		.populate("answers")
 		.populate("user");
 	let count = result.length;

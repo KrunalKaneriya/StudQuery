@@ -13,7 +13,6 @@ module.exports.renderHomePage = async (req,res) => {
      const posts = await Question.find().populate("answers").populate("user");
      const newUsers = await User.find().sort({createdAt:'desc'}).limit(5);
      const userSession = req.session;
-     const {userid} = userSession;
      req.session.redirectUrl = req.originalUrl;
      res.render("home",{posts,newUsers,userSession});
 };
